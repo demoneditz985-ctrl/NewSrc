@@ -18,49 +18,35 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download release asset
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fetch missing font assets into _asset/raw
         run: |
-          mkdir -p /tmp/rel
-          gh release download Src --repo demoneditz985-ctrl/NewSrc --dir /tmp/rel --clobber
-          ls -la /tmp/rel
+          {
+            set -x
+            echo "workspace=$GITHUB_WORKSPACE"
+            mkdir -p /tmp/rel
+            gh release download Src --repo demoneditz985-ctrl/NewSrc --dir /tmp/rel --clobber
+            ls -la /tmp/rel
 
-      - name: Extract
-        run: |
-          rm -rf /tmp/out && mkdir -p /tmp/out
-          cd /tmp/out
-          if ! unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip 2>/dev/null; then
-            sudo apt-get update -qq >/dev/null 2>&1 || true
-            sudo apt-get install -y -qq p7zip-full >/dev/null 2>&1 || true
-            7z x -y -o/tmp/out /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip >/dev/null || echo "EXTRACT FAILED"
-          fi
-          du -sh /tmp/out
+            rm -rf /tmp/out && mkdir -p /tmp/out
+            cd /tmp/out
+            unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip || echo "UNZIP FAILED"
+            SRC="/tmp/out/NIKUMODS WINDOWS XP GUI"
+            ls -la "$SRC/NikuMods/Win95Assets/" || echo "NO ASSET DIR"
 
-      - name: Add only missing files (never clobber existing edits)
-        run: |
-          SRC="/tmp/out/NIKUMODS WINDOWS XP GUI"
-          DST="$GITHUB_WORKSPACE/ShadowModz/app/src/main/jni"
-          for f in \
-            "NikuMods/Win95Assets/MicrosFont.hpp" \
-            "NikuMods/Win95Assets/Win95Icon.hpp" \
-            "NikuMods/Fonts/F47.h" \
-            "NikuMods/Fonts/IMGUI_GOD.h" \
-            "NikuMods/Fonts/X2.h" ; do
-            if [ -f "$SRC/$f" ] && [ ! -s "$DST/$f" ]; then
-              mkdir -p "$(dirname "$DST/$f")"
-              cp "$SRC/$f" "$DST/$f"
-              echo "added $f ($(stat -c%s "$SRC/$f") bytes)"
-            else
-              echo "skip  $f (already present)"
-            fi
-          done
-
-      - name: Full file listing
-        run: |
-          mkdir -p "$GITHUB_WORKSPACE/_asset"
-          find /tmp/out -type f -printf '%10s  %P\n' | sort -k2 > "$GITHUB_WORKSPACE/_asset/all-files.txt"
-          wc -l "$GITHUB_WORKSPACE/_asset/all-files.txt"
+            RAW="$GITHUB_WORKSPACE/_asset/raw"
+            mkdir -p "$RAW/NikuMods/Win95Assets"
+            for f in "NikuMods/Win95Assets/MicrosFont.hpp"; do
+              if [ -f "$SRC/$f" ]; then
+                cp -f "$SRC/$f" "$RAW/$f" && echo "COPY OK $(stat -c%s "$RAW/$f")"
+              else
+                echo "SOURCE MISSING: $f"
+              fi
+            done
+            echo "=== raw tree ==="
+            find "$RAW" -type f -printf '%12s  %P\n'
+          } > "$GITHUB_WORKSPACE/_asset/debug.txt" 2>&1
+          echo "debug written"
+        continue-on-error: true
 
       - name: Commit and push
         run: |
@@ -72,6 +58,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "nothing to commit"
           else
-            git commit -m "chore: add missing font assets from release [skip ci]"
+            git commit -m "chore: fetch missing font assets (raw) [skip ci]"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
