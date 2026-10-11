@@ -1,0 +1,408 @@
+=== TOP LEVEL ===
+total 12
+drwxr-xr-x  3 runner runner 4096 Oct 11 16:07 .
+drwxrwxrwt 15 root   root   4096 Oct 11 16:07 ..
+drwxr-xr-x  3 runner runner 4096 Oct  5 16:02 NIKUMODS WINDOWS XP GUI
+
+=== DIRS ===
+.
+./NIKUMODS WINDOWS XP GUI
+./NIKUMODS WINDOWS XP GUI/app
+./NIKUMODS WINDOWS XP GUI/app/src
+./NIKUMODS WINDOWS XP GUI/app/src/main
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/Struct
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86_64
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86_64/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86_64/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86_64/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86_64/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips64
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips64/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips64/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips64/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips64/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-arm64-v8a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-arm64-v8a/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-arm64-v8a/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-arm64-v8a/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-arm64-v8a/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi-v7a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi-v7a/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi-v7a/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi-v7a/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi-v7a/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/engines-1.1
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/ssl/private
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/ssl/certs
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/Dobby
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/Dobby/libraries
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/Dobby/libraries/armeabi-v7a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/Dobby/libraries/arm64-v8a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/IMAGE
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/IMAGE/MENU
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/fonts
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Backbends
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Backbends/com
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Backbends/com/android
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Backbends/com/android/support
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Backbends/backends
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/include/Substrate
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/include/And64InlineHook
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/KittyMemory
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/xdl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/xdl/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Icon
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Hacks
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/IL2CppSDKGenerator
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/curl-android-armeabi-v7a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/curl-android-armeabi-v7a/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/curl-android-armeabi-v7a/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/curl-android-armeabi-v7a/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/curl-android-armeabi-v7a/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/lib/engines-1.1
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/ssl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/ssl/misc
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/ssl/private
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/ssl/certs
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/Dobby
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/Dobby/libraries
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/Dobby/libraries/armeabi-v7a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/Dobby/libraries/arm64-v8a
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86_64
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86_64/lib
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86_64/lib/pkgconfig
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86_64/include
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86_64/include/curl
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-mips64
+./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-mips64/lib
+sed: couldn't write 86 items to stdout: Broken pipe
+
+=== FILES BY SIZE (top 200) ===
+sort: write failed: 'standard output': Broken pipe
+sort: write error
+     8173597  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/IMAGE/MENU/Eagleuser.h
+     6936972  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Icon/OPPOSans-H.h
+     6925014  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/lib/libcrypto.a
+     6925014  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/lib/libcrypto.a
+     4605102  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/lib/libcrypto.a
+     4605102  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/lib/libcrypto.a
+     4155536  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/lib/libcrypto.a
+     4155536  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/lib/libcrypto.a
+     3974796  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/lib/libcrypto.a
+     3974796  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/lib/libcrypto.a
+     3904576  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/lib/libcrypto.a
+     3904576  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/lib/libcrypto.a
+     3157996  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
+     3157996  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
+     3157996  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
+     3157944  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/lib/libcrypto.a
+     3157944  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/lib/libcrypto.a
+     2701666  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Win95Assets/MicrosFont.hpp
+     2680757  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/F86.h
+     2178958  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/IMAGE/MENU/Logo.h
+     1934640  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/IMGUI_GOD.h
+     1436988  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-mips64/lib/libcurl.a
+     1436988  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips64/lib/libcurl.a
+     1241208  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/lib/libssl.a
+     1241208  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/lib/libssl.a
+     1059876  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86_64/lib/libcurl.a
+     1059876  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86_64/lib/libcurl.a
+     1001481  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/𝗜𝗠𝗚𝗨𝗜_𝗚𝗢𝗗.h
+      969004  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-arm64-v8a/lib/libcurl.a
+      969004  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-arm64-v8a/lib/libcurl.a
+      964353  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/Font.h
+      926233  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/json.hpp
+      926233  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/json.hpp
+      926233  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/json.hpp
+      903179  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Icon/Font.h
+      891375  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/F47.h
+      873704  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-mips/lib/libcurl.a
+      873704  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips/lib/libcurl.a
+      856298  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86/lib/libcurl.a
+      856298  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86/lib/libcurl.a
+      808552  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-armeabi/lib/libcurl.a
+      808552  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi/lib/libcurl.a
+      783268  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/curl-android-armeabi-v7a/lib/libcurl.a
+      783268  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-armeabi-v7a/lib/libcurl.a
+      783268  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi-v7a/lib/libcurl.a
+      774768  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/lib/libssl.a
+      774768  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/lib/libssl.a
+      726315  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/fonts/FontAwesome6_solid.h
+      688716  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/fonts/ShantellSans.h
+      679187  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui.cpp
+      675792  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/lib/libssl.a
+      675792  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/lib/libssl.a
+      643700  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/lib/libssl.a
+      643700  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/lib/libssl.a
+      623096  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/lib/libssl.a
+      623096  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/lib/libssl.a
+      508068  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/lib/libssl.a
+      508068  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/lib/libssl.a
+      508068  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/lib/libssl.a
+      508068  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/lib/libssl.a
+      508068  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libssl.a
+      446082  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui_widgets.cpp
+      396651  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/X2.h
+      387831  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui_demo.cpp
+      386891  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Icon/Iconcpp.h
+      366194  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/Dobby/libraries/arm64-v8a/libdobby.a
+      366194  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/Dobby/libraries/arm64-v8a/libdobby.a
+      366194  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Dobby/arm64-v8a/libdobby.a
+      356147  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/IMAGE/MENU/logopanicoteam.png
+      293814  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui.h.bak
+      292836  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui.h
+      283322  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/Dobby/libraries/armeabi-v7a/libdobby.a
+      283322  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/Dobby/libraries/armeabi-v7a/libdobby.a
+      283322  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Dobby/armeabi-v7a/libdobby.a
+      239912  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/fonts/GoogleSans.h
+      218013  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui_draw.cpp
+      214539  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui_tables.cpp
+      206509  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imgui_internal.h
+      199484  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imstb_truetype.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include/openssl/obj_mac.h
+      191201  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include/openssl/obj_mac.h
+      129032  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Win95Assets/Win95Icon.hpp
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include/openssl/ssl.h
+      123446  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include/openssl/ssl.h
+      117396  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/stb_image.cpp
+      116027  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/Struct/autohelp.h
+      113852  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/fonts/FontAwesome6_regular.h
+       99150  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Icon/Icon.h
+       94295  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/LoginLogo.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/curl-android-armeabi-v7a/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86_64/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-x86/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-mips64/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-mips/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-armeabi/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-armeabi-v7a/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/curl-android-arm64-v8a/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86_64/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-x86/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips64/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-mips/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-armeabi-v7a/include/curl/curl.h
+       92631  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/curl-android-arm64-v8a/include/curl/curl.h
+       90973  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Win95UI.h
+       85353  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/F19.h
+       74822  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/F50.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include/openssl/evp.h
+       74356  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include/openssl/evp.h
+       73969  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/fonts/IconsFontAwesome6.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include/openssl/ec.h
+       70473  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include/openssl/ec.h
+       64789  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuMods/Fonts/Social.h
+       61479  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/Struct/Hooks.h
+       54857  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/imgui/imstb_textedit.h
+       54166  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Hooks.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include/openssl/tls1.h
+       49487  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include/openssl/tls1.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/include/openssl/x509.h
+       47981  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/include/openssl/x509.h
+       46219  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/include/openssl/asn1.h
+       46219  ./NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/include/openssl/asn1.h
+
+=== FILE COUNT ===
+1612
+=== TOTAL SIZE ===
+148M	/tmp/out
+
+=== EXTENSIONS ===
+   1343 h
+     60 pc
+     51 a
+     28 cpp
+     17 hpp
+     15 pl
+     15 la
+     15 dist
+     15 cnf
+     11 xml
+      6 c
+      4 java
+      2 rartemp1642365237460
+      2 rartemp1642365237459
+      2 rartemp1642365237458
+      2 mk
+      2 DS_Store
+      1 zip
+      1 pro
+      1 png
+      1 iml
+      1 gradle
+      1 gitignore
+      1 bak
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/ur_nikuu/Tools/curl/openssl-android-armeabi-v7a/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86_64/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-x86/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips64/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-mips/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-armeabi-v7a/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/curl/openssl-android-arm64-v8a/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86_64/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-x86/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips64/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-mips/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/ssl/misc/tsget
+      1 /tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-arm64-v8a/ssl/misc/tsget
