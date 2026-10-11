@@ -1,0 +1,27 @@
++ echo workspace=/home/runner/work/NewSrc/NewSrc
+workspace=/home/runner/work/NewSrc/NewSrc
++ mkdir -p /tmp/rel
++ gh release download Src --repo demoneditz985-ctrl/NewSrc --dir /tmp/rel --clobber
++ ls -la /tmp/rel
+total 42220
+drwxr-xr-x  2 runner runner     4096 Oct 11 16:21 .
+drwxrwxrwt 14 root   root       4096 Oct 11 16:21 ..
+-rw-r--r--  1 runner runner 43221663 Oct 11 16:21 NIKUMODS.WINDOWS.XP.GUI.zip
++ rm -rf /tmp/out
++ mkdir -p /tmp/out
++ cd /tmp/out
++ unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip
++ SRC='/tmp/out/NIKUMODS WINDOWS XP GUI'
++ ls -la '/tmp/out/NIKUMODS WINDOWS XP GUI/NikuMods/Win95Assets/'
+ls: cannot access '/tmp/out/NIKUMODS WINDOWS XP GUI/NikuMods/Win95Assets/': No such file or directory
++ echo 'NO ASSET DIR'
+NO ASSET DIR
++ RAW=/home/runner/work/NewSrc/NewSrc/_asset/raw
++ mkdir -p /home/runner/work/NewSrc/NewSrc/_asset/raw/NikuMods/Win95Assets
++ for f in "NikuMods/Win95Assets/MicrosFont.hpp"
++ '[' -f '/tmp/out/NIKUMODS WINDOWS XP GUI/NikuMods/Win95Assets/MicrosFont.hpp' ']'
++ echo 'SOURCE MISSING: NikuMods/Win95Assets/MicrosFont.hpp'
+SOURCE MISSING: NikuMods/Win95Assets/MicrosFont.hpp
++ echo '=== raw tree ==='
+=== raw tree ===
++ find /home/runner/work/NewSrc/NewSrc/_asset/raw -type f -printf '%12s  %P\n'
