@@ -7,12 +7,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download release asset
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,22 +23,80 @@ jobs:
           mkdir -p /tmp/rel
           gh release download Src --repo demoneditz985-ctrl/NewSrc --dir /tmp/rel --clobber
           ls -la /tmp/rel
+          sha256sum /tmp/rel/*.zip
 
       - name: Extract
         run: |
           mkdir -p /tmp/out
           cd /tmp/out
-          unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip || \
-            (echo "plain unzip failed, trying 7z"; sudo apt-get update -qq >/dev/null 2>&1; sudo apt-get install -y -qq p7zip-full >/dev/null 2>&1; 7z x -y -o/tmp/out /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip >/dev/null)
-          echo "=== TOP LEVEL ==="
-          ls -la /tmp/out
-          echo "=== DIRS ==="
-          find /tmp/out -type d | head -120
-          echo "=== FILES BY SIZE (top 150) ==="
-          find /tmp/out -type f -printf '%12s  %p\n' | sort -rn | head -150
-          echo "=== TOTAL FILE COUNT ==="
-          find /tmp/out -type f | wc -l
-          echo "=== TOTAL SIZE ==="
+          if ! unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip 2>/dev/null; then
+            echo "plain unzip failed, trying 7z"
+            sudo apt-get update -qq >/dev/null 2>&1 || true
+            sudo apt-get install -y -qq p7zip-full >/dev/null 2>&1 || true
+            7z x -y -o/tmp/out /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip >/dev/null || echo "EXTRACT FAILED"
+          fi
+          echo "extracted ok"
           du -sh /tmp/out
-          echo "=== EXTENSIONS ==="
-          find /tmp/out -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -40
+
+      - name: Build report
+        run: |
+          mkdir -p _asset
+          {
+            echo "=== TOP LEVEL ==="
+            ls -la /tmp/out
+            echo
+            echo "=== DIRS ==="
+            find /tmp/out -type d | sed 's|/tmp/out|.|' | head -150
+            echo
+            echo "=== FILES BY SIZE (top 200) ==="
+            find /tmp/out -type f -printf '%12s  %p\n' | sort -rn | head -200 | sed 's|/tmp/out|.|'
+            echo
+            echo "=== FILE COUNT ==="
+            find /tmp/out -type f | wc -l
+            echo "=== TOTAL SIZE ==="
+            du -sh /tmp/out
+            echo
+            echo "=== EXTENSIONS ==="
+            find /tmp/out -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -60
+          } > _asset/listing.txt 2>&1
+          echo "--- report preview ---"
+          head -80 _asset/listing.txt
+          echo "--- bytes ---"
+          wc -c _asset/listing.txt
+
+      - name: Pack small text/config files
+        run: |
+          cd /tmp/out
+          # only small, human-editable UI/config files (never any binaries)
+          find . -type f -size -400k \
+            \( -iname '*.html' -o -iname '*.htm' -o -iname '*.css' -o -iname '*.js' \
+               -o -iname '*.json' -o -iname '*.xml' -o -iname '*.qss' -o -iname '*.xaml' \
+               -o -iname '*.ini' -o -iname '*.cfg' -o -iname '*.conf' -o -iname '*.txt' \
+               -o -iname '*.md' -o -iname '*.py' -o -iname '*.cs' -o -iname '*.java' \
+               -o -iname '*.kt' -o -iname '*.ahk' -o -iname '*.au3' -o -iname '*.ps1' \
+               -o -iname '*.bat' -o -iname '*.cmd' -o -iname '*.svg' -o -iname '*.rc' \
+               -o -iname '*.iss' -o -iname '*.nsi' -o -iname '*.manifest' -o -iname '*.yml' \
+               -o -iname '*.yaml' -o -iname '*.properties' -o -iname '*.resx' -o -iname '*.ui' \
+               -o -iname '*.htm' \) \
+            -print0 > /tmp/filelist 2>/dev/null || true
+          count=$(tr -dc '\0' < /tmp/filelist | wc -c)
+          echo "matched files: $count"
+          if [ "$count" -gt 0 ]; then
+            mkdir -p "$GITHUB_WORKSPACE/_asset"
+            tar -czf "$GITHUB_WORKSPACE/_asset/text-files.tar.gz" --null -T /tmp/filelist
+            ls -la "$GITHUB_WORKSPACE/_asset/"
+          fi
+
+      - name: Commit and push
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          git config user.name "Arena Agent"
+          git config user.email "agent@arena.ai"
+          git pull --rebase origin "${GITHUB_REF_NAME}" 2>/dev/null || true
+          git add _asset
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "chore: add release-asset listing [skip ci]"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
