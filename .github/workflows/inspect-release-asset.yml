@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Download release asset
         env:
@@ -23,80 +25,66 @@ jobs:
           mkdir -p /tmp/rel
           gh release download Src --repo demoneditz985-ctrl/NewSrc --dir /tmp/rel --clobber
           ls -la /tmp/rel
-          sha256sum /tmp/rel/*.zip
 
       - name: Extract
         run: |
-          mkdir -p /tmp/out
+          rm -rf /tmp/out && mkdir -p /tmp/out
           cd /tmp/out
           if ! unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip 2>/dev/null; then
-            echo "plain unzip failed, trying 7z"
             sudo apt-get update -qq >/dev/null 2>&1 || true
             sudo apt-get install -y -qq p7zip-full >/dev/null 2>&1 || true
             7z x -y -o/tmp/out /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip >/dev/null || echo "EXTRACT FAILED"
           fi
-          echo "extracted ok"
           du -sh /tmp/out
 
-      - name: Build report
+      - name: Full file listing
         run: |
-          mkdir -p _asset
-          {
-            echo "=== TOP LEVEL ==="
-            ls -la /tmp/out
-            echo
-            echo "=== DIRS ==="
-            find /tmp/out -type d | sed 's|/tmp/out|.|' | head -150
-            echo
-            echo "=== FILES BY SIZE (top 200) ==="
-            find /tmp/out -type f -printf '%12s  %p\n' | sort -rn | head -200 | sed 's|/tmp/out|.|'
-            echo
-            echo "=== FILE COUNT ==="
-            find /tmp/out -type f | wc -l
-            echo "=== TOTAL SIZE ==="
-            du -sh /tmp/out
-            echo
-            echo "=== EXTENSIONS ==="
-            find /tmp/out -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -60
-          } > _asset/listing.txt 2>&1
-          echo "--- report preview ---"
-          head -80 _asset/listing.txt
-          echo "--- bytes ---"
-          wc -c _asset/listing.txt
+          mkdir -p "$GITHUB_WORKSPACE/_asset"
+          find /tmp/out -type f -printf '%10s  %P\n' | sed 's|^|  |' | sort -k2 > "$GITHUB_WORKSPACE/_asset/all-files.txt"
+          wc -l "$GITHUB_WORKSPACE/_asset/all-files.txt"
 
-      - name: Pack small text/config files
+      - name: Copy source-only subset
         run: |
-          cd /tmp/out
-          # only small, human-editable UI/config files (never any binaries)
-          find . -type f -size -400k \
-            \( -iname '*.html' -o -iname '*.htm' -o -iname '*.css' -o -iname '*.js' \
-               -o -iname '*.json' -o -iname '*.xml' -o -iname '*.qss' -o -iname '*.xaml' \
-               -o -iname '*.ini' -o -iname '*.cfg' -o -iname '*.conf' -o -iname '*.txt' \
-               -o -iname '*.md' -o -iname '*.py' -o -iname '*.cs' -o -iname '*.java' \
-               -o -iname '*.kt' -o -iname '*.ahk' -o -iname '*.au3' -o -iname '*.ps1' \
-               -o -iname '*.bat' -o -iname '*.cmd' -o -iname '*.svg' -o -iname '*.rc' \
-               -o -iname '*.iss' -o -iname '*.nsi' -o -iname '*.manifest' -o -iname '*.yml' \
-               -o -iname '*.yaml' -o -iname '*.properties' -o -iname '*.resx' -o -iname '*.ui' \
-               -o -iname '*.htm' \) \
-            -print0 > /tmp/filelist 2>/dev/null || true
-          count=$(tr -dc '\0' < /tmp/filelist | wc -c)
-          echo "matched files: $count"
-          if [ "$count" -gt 0 ]; then
-            mkdir -p "$GITHUB_WORKSPACE/_asset"
-            tar -czf "$GITHUB_WORKSPACE/_asset/text-files.tar.gz" --null -T /tmp/filelist
-            ls -la "$GITHUB_WORKSPACE/_asset/"
-          fi
+          SRC="/tmp/out/NIKUMODS WINDOWS XP GUI"
+          DST=/tmp/keep
+          rm -rf "$DST" && mkdir -p "$DST"
+          cd "$SRC"
+          # project files, minus vendored binaries / huge font blobs
+          find . -type f \
+            ! -path '*/curl/*' \
+            ! -path '*/openssl-*/*' \
+            ! -path '*/ur_nikuu/*' \
+            ! -path '*/Hacks/Tools/*' \
+            ! -path '*/build/*' \
+            ! -path '*/.gradle/*' \
+            ! -name '*.a' ! -name '*.so' ! -name '*.o' ! -name '*.zip' \
+            ! -name '*.DS_Store' ! -name '*.rartemp*' ! -name '*.bak' \
+            -size -3M -print0 > /tmp/keep_list
+          echo "files kept: $(tr -dc '\0' < /tmp/keep_list | wc -c)"
+          tar -cf - --null -T /tmp/keep_list | tar -xf - -C "$DST"
+          echo "=== kept size ==="
+          du -sh "$DST"
+          echo "=== top 30 kept files ==="
+          find "$DST" -type f -printf '%12s  %P\n' | sort -rn | head -30
+          echo "=== excluded (big) files ==="
+          cd "$SRC"
+          find . -type f \( -size +3M -o -name '*.a' -o -name '*.so' \) -printf '%12s  %P\n' | sort -rn | head -30
 
       - name: Commit and push
         run: |
           cd "$GITHUB_WORKSPACE"
           git config user.name "Arena Agent"
           git config user.email "agent@arena.ai"
+          rm -rf ShadowModz
+          mkdir -p ShadowModz
+          cp -a /tmp/keep/. ShadowModz/
           git pull --rebase origin "${GITHUB_REF_NAME}" 2>/dev/null || true
-          git add _asset
+          git add _asset ShadowModz
           if git diff --cached --quiet; then
             echo "nothing to commit"
           else
-            git commit -m "chore: add release-asset listing [skip ci]"
+            git commit -m "chore: import release source subset for rebrand [skip ci]"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
+          echo "=== committed size ==="
+          du -sh ShadowModz || true
