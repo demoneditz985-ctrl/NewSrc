@@ -1,7 +1,7 @@
 #pragma once
 // ===========================================================================
-// NikuMods - backing state for the cloned menu
-// Folder: NikuMods  |  Credits: @ur_nikuu
+// SHADOW MODZ - backing state for the menu
+// Folder: NikuMods (module name stays so the loader keeps finding the .so)
 // ---------------------------------------------------------------------------
 // Every control of the cloned A-to-Z layout has a real variable here, so
 // nothing is a dead toggle.  Defaults match the original CloneThisUi menu.

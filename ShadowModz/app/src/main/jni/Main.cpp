@@ -112,7 +112,8 @@ std::string getClipboard() {
 #define Application_OpenURL(url) ((void(*)(Il2CppString*))Il2CppGetMethodOffset(OBFUSCATE("UnityEngine.CoreModule.dll"), OBFUSCATE("UnityEngine"), OBFUSCATE("Application"), OBFUSCATE("OpenURL"), 1))(url)
 
 void OpenKeyGeneratorURL() {
-    std::string url = OBFUSCATE("https://nikumods.site/GetFreeKey.php");
+    // Endpoint lives in NikuMods/ShadowBrand.h (SHADOW_KEY_URL_LITERAL).
+    std::string url = OBFUSCATE(SHADOW_KEY_URL_LITERAL);
     Application_OpenURL(Il2CppString::Create(url.c_str()));
 }
 //Auth System ( line 118 - 270 ) 🫦
@@ -122,12 +123,13 @@ void ShowAuthWindow() {
     ImGui::SetNextWindowSize(ImVec2(720, 600), ImGuiCond_Always);
     ImGui::SetNextWindowPos(ImVec2(g_GlWidth/2 - 260, g_GlHeight/2 - 225), ImGuiCond_Always);
     
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(16/255.0f, 16/255.0f, 16/255.0f, 1.00f));
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 1.0f, 1.0f, 0.85f));
+    // SHADOW MODZ login: dark black glass with a violet seam across the top.
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(11/255.0f, 8/255.0f, 18/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(168/255.0f, 85/255.0f, 247/255.0f, 0.85f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 6.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 2.0f);
     
-    ImGui::Begin(OBFUSCATE("NIKUMODS LOGIN"), &showAuthWindow, 
+    ImGui::Begin(OBFUSCATE("SHADOW MODZ LOGIN"), &showAuthWindow, 
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
     
     float windowWidth = ImGui::GetWindowWidth();
@@ -135,12 +137,14 @@ void ShowAuthWindow() {
     ImDrawList* draw = ImGui::GetWindowDrawList();
     ImVec2 pos = ImGui::GetWindowPos();
     ImVec2 size = ImGui::GetWindowSize();
-    draw->AddRectFilled(pos, ImVec2(pos.x + size.x, pos.y + 4), IM_COL32(30, 30, 30, 255));
+    draw->AddRectFilled(pos, ImVec2(pos.x + size.x, pos.y + 4), IM_COL32(124, 58, 237, 255));
+    draw->AddRectFilled(ImVec2(pos.x, pos.y + 4), ImVec2(pos.x + size.x, pos.y + 5),
+                        IM_COL32(216, 180, 254, 130));
     
     ImGui::SetCursorPosY(30);
     ImGui::SetCursorPosX((windowWidth - 120) / 2);
     ImGui::SetWindowFontScale(1.4f);
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), OBFUSCATE("NIKUMODS"));
+    ImGui::TextColored(ImVec4(216/255.0f, 180/255.0f, 254/255.0f, 1.0f), OBFUSCATE("SHADOW MODZ"));
     ImGui::SetWindowFontScale(1.0f);
     
     ImGui::SetCursorPosY(70);
@@ -152,9 +156,9 @@ void ShowAuthWindow() {
     ImGui::SetCursorPosY(120);
     ImGui::SetCursorPosX(inputX);
     
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(30/255.0f, 30/255.0f, 30/255.0f, 1.00f));
-    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(28/255.0f, 28/255.0f, 28/255.0f, 1.00f));
-    ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(28/255.0f, 28/255.0f, 28/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(18/255.0f, 14/255.0f, 28/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(26/255.0f, 21/255.0f, 38/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(34/255.0f, 27/255.0f, 54/255.0f, 1.00f));
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(15, 10));
@@ -170,9 +174,9 @@ void ShowAuthWindow() {
     float totalButtonsWidth = (buttonWidth * 3) + (spacing * 2);
     float buttonsStartX = (windowWidth - totalButtonsWidth) / 2;   
     ImGui::SetCursorPosX(buttonsStartX);
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(36/255.0f, 36/255.0f, 36/255.0f, 1.00f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(40/255.0f, 40/255.0f, 40/255.0f, 1.00f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(40/255.0f, 40/255.0f, 40/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(26/255.0f, 21/255.0f, 38/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(58/255.0f, 42/255.0f, 92/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(88/255.0f, 52/255.0f, 140/255.0f, 1.00f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(20, 8));    
     if(ImGui::Button(OBFUSCATE("GET KEY"), ImVec2(buttonWidth, 40))) {
@@ -181,9 +185,9 @@ void ShowAuthWindow() {
     ImGui::PopStyleVar(2);
     ImGui::PopStyleColor(3);    
     ImGui::SameLine(0, spacing);
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(36/255.0f, 36/255.0f, 36/255.0f, 1.00f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(40/255.0f, 40/255.0f, 40/255.0f, 1.00f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(40/255.0f, 40/255.0f, 40/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(26/255.0f, 21/255.0f, 38/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(58/255.0f, 42/255.0f, 92/255.0f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(88/255.0f, 52/255.0f, 140/255.0f, 1.00f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(20, 8));    
     if(ImGui::Button(OBFUSCATE("PASTE"), ImVec2(buttonWidth, 40))) {
@@ -202,9 +206,9 @@ void ShowAuthWindow() {
     ImGui::PopStyleColor(3);    
     // LOGIN Button
     ImGui::SameLine(0, spacing);
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.5f, 0.9f, 0.9f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.6f, 1.0f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.15f, 0.45f, 0.85f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.49f, 0.23f, 0.93f, 0.95f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.66f, 0.33f, 0.97f, 1.00f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.36f, 0.15f, 0.78f, 1.00f));
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(20, 8));    
     if(ImGui::Button(OBFUSCATE("LOGIN"), ImVec2(buttonWidth, 40))) {
@@ -236,12 +240,12 @@ void ShowAuthWindow() {
         ImGui::TextColored(textColor, "%s", authMessage.c_str());
     }
     ImGui::SetCursorPosY(300);
-    std::string telegramText = "Contact Telegram: @ur_nikuu";
+    std::string telegramText = std::string(ShadowBrand::TelegramLabel) + ": " + ShadowBrand::TelegramText;
     float telegramWidth = ImGui::CalcTextSize(telegramText.c_str()).x;
     ImGui::SetCursorPosX((windowWidth - telegramWidth) / 2);
-    ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), "%s", telegramText.c_str());
+    ImGui::TextColored(ImVec4(0.78f, 0.62f, 0.95f, 1.0f), "%s", telegramText.c_str());
     ImGui::SetCursorPosY(340);
-    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.62f, 0.58f, 0.72f, 1.0f));
 
     float maxInstructionWidth = 0;
     const char* instructions[] = {
@@ -269,7 +273,7 @@ void ShowAuthWindow() {
     ImGui::PopStyleColor(2);
 }
 
-void NikuMods07() {//uncomment this gay's 🏳️‍🌈 if u need login 
+void ShadowMenu07() {//uncomment this gay's 🏳️‍🌈 if u need login 
 /*if (!authSuccess) { 
     ShowAuthWindow();
     return;
@@ -325,7 +329,7 @@ inline EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
                     
 	UpdateResetGuest();
     DrawESP(g_GlWidth, g_GlHeight);
-    NikuMods07();
+    ShadowMenu07();
    
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -385,7 +389,7 @@ void hack_thread() {
     } while (il2cpp_base == 0);
     LOGD("libil2cpp.so found at address: 0x%" PRIxPTR, il2cpp_base);
     Il2CppAttach();
-	//Credit - https://t.me/ur_nikuu
+	// SHADOW MODZ - Telegram: COMING SOON
 	
     DobbyHook((void*)Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"),OBFUSCATE("COW.GamePlay"),OBFUSCATE("Player"),OBFUSCATE("get_InSwapWeaponCD"),0),(void*)_get_InSwapWeaponCD,(void**)&get_InSwapWeaponCD);
 	DobbyHook(Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("UpdateBehavior"), 2), (void*)_LateUpdate, (void**)&LateUpdate);

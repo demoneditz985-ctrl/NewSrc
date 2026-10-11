@@ -1,22 +1,25 @@
 #pragma once
 /* ===========================================================================
- * Win95 desktop shell
+ * SHADOW MODZ shell  (Windows-XP chrome, dark black + violet skin)
  * ---------------------------------------------------------------------------
- *   font: framework/fonts/micross.c  (MS Sans Serif, 16px)
- *   ico : framework/images/icon.c    (title-bar icon PNG)
- *   dev : https://t.me/ur_nikuu
- * Android adaptations (everything else is verbatim upstream):
+ *   font: NikuMods/Win95Assets/MicrosFont.hpp   (MS Sans Serif, 16px)
+ *   ico : NikuMods/Win95Assets/Win95Icon.hpp    (SHADOW MODZ title-bar icon)
+ *   brand: NikuMods/ShadowBrand.h               (every string + colour)
+ *
+ * Original upstream Win95 desktop shell, rebranded and reskinned:
  *   - HostMode::Standalone / HWND / win32 SetWindowPos removed. The window is
  *     always embedded, so dragging uses ImGui::SetWindowPos("##win95") and
  *     resizing ImGui::SetWindowSize("##win95"), which is exactly what the
  *     upstream HostMode::Embedded path already did.
  *   - ShellExecuteA replaced by an OpenUrl() no-op (no browser on device).
  *   - WIC/D3D11 icon upload replaced by stb_image + a GLES3 texture.
- *   - Telegram Channel https://t.me/NikuMods
+ *   - Palette: dark black surfaces, violet accents, bevelled XP frames kept.
+ *   - Telegram: COMING SOON (see ShadowBrand::TelegramUrl).
  * =========================================================================== */
 
 #include "imgui.h"
 #include "stb_image.h"
+#include "ShadowBrand.h"
 
 #include <cstdio>
 #include <cstring>
@@ -38,7 +41,8 @@
 
 #ifndef BRU_LEGACY_FORK_GLOBALS
 #define BRU_LEGACY_FORK_GLOBALS
-float  menu[3] = { 30.f / 255.f, 185.f / 255.f, 175.f / 255.f };
+// SHADOW MODZ accent (violet) - was the upstream teal.
+float  menu[3] = { 168.f / 255.f, 85.f / 255.f, 247.f / 255.f };
 ImFont* F52    = nullptr;
 ImFont* F19    = nullptr;
 ImFont* F48    = nullptr;
@@ -85,23 +89,36 @@ namespace style
  * chrome, scrollbar) without rows overlapping or controls overflowing. */
 constexpr float S           = 1.25f;
 
-constexpr ImU32 Face         = IM_COL32(192, 192, 192, 255);
-constexpr ImU32 Light        = IM_COL32(223, 223, 223, 255);
-constexpr ImU32 Highlight    = IM_COL32(255, 255, 255, 255);
-constexpr ImU32 Shadow       = IM_COL32(128, 128, 128, 255);
-constexpr ImU32 DarkShadow   = IM_COL32(0, 0, 0, 255);
+// ---- SHADOW MODZ palette (dark black + violet). Edit ShadowBrand.h only. ---
+constexpr ImU32 Face         = IM_COL32(ShadowBrand::Face.r,         ShadowBrand::Face.g,         ShadowBrand::Face.b,         255);
+constexpr ImU32 Light        = IM_COL32(ShadowBrand::Light.r,        ShadowBrand::Light.g,        ShadowBrand::Light.b,        255);
+constexpr ImU32 Highlight    = IM_COL32(ShadowBrand::Highlight.r,    ShadowBrand::Highlight.g,    ShadowBrand::Highlight.b,    255);
+constexpr ImU32 Shadow       = IM_COL32(ShadowBrand::Shadow.r,       ShadowBrand::Shadow.g,       ShadowBrand::Shadow.b,       255);
+constexpr ImU32 DarkShadow   = IM_COL32(ShadowBrand::DarkShadow.r,   ShadowBrand::DarkShadow.g,   ShadowBrand::DarkShadow.b,   255);
 
-constexpr ImU32 Field        = IM_COL32(255, 255, 255, 255);
-constexpr ImU32 Text         = IM_COL32(0, 0, 0, 255);
-constexpr ImU32 TextDisabled = IM_COL32(128, 128, 128, 255);
+constexpr ImU32 Field        = IM_COL32(ShadowBrand::Field.r,        ShadowBrand::Field.g,        ShadowBrand::Field.b,        255);
+constexpr ImU32 Text         = IM_COL32(ShadowBrand::Text.r,         ShadowBrand::Text.g,         ShadowBrand::Text.b,         255);
+constexpr ImU32 TextDisabled = IM_COL32(ShadowBrand::TextDisabled.r, ShadowBrand::TextDisabled.g, ShadowBrand::TextDisabled.b, 255);
 
-constexpr ImU32 TitleLeft    = IM_COL32(0, 0, 128, 255);
-constexpr ImU32 TitleRight   = IM_COL32(16, 132, 208, 255);
-constexpr ImU32 TitleText    = IM_COL32(255, 255, 255, 255);
+constexpr ImU32 TitleLeft    = IM_COL32(ShadowBrand::TitleLeft.r,    ShadowBrand::TitleLeft.g,    ShadowBrand::TitleLeft.b,    255);
+constexpr ImU32 TitleRight   = IM_COL32(ShadowBrand::TitleRight.r,   ShadowBrand::TitleRight.g,   ShadowBrand::TitleRight.b,   255);
+constexpr ImU32 TitleText    = IM_COL32(ShadowBrand::TitleText.r,    ShadowBrand::TitleText.g,    ShadowBrand::TitleText.b,    255);
 
-constexpr ImU32 Selection    = IM_COL32(0, 0, 128, 255);
-constexpr ImU32 SelText      = IM_COL32(255, 255, 255, 255);
-constexpr ImU32 SliderFill   = IM_COL32(0, 0, 160, 255);
+constexpr ImU32 Selection    = IM_COL32(ShadowBrand::Selection.r,    ShadowBrand::Selection.g,    ShadowBrand::Selection.b,    255);
+constexpr ImU32 SelText      = IM_COL32(ShadowBrand::SelText.r,      ShadowBrand::SelText.g,      ShadowBrand::SelText.b,      255);
+constexpr ImU32 SliderFill   = IM_COL32(ShadowBrand::SliderFill.r,   ShadowBrand::SliderFill.g,   ShadowBrand::SliderFill.b,   255);
+
+// accents the original Win95 palette had no equivalent for
+constexpr ImU32 BgDeep       = IM_COL32(ShadowBrand::BgDeep.r,       ShadowBrand::BgDeep.g,       ShadowBrand::BgDeep.b,       255);
+constexpr ImU32 Accent       = IM_COL32(ShadowBrand::Accent.r,       ShadowBrand::Accent.g,       ShadowBrand::Accent.b,       255);
+constexpr ImU32 AccentDeep   = IM_COL32(ShadowBrand::AccentDeep.r,   ShadowBrand::AccentDeep.g,   ShadowBrand::AccentDeep.b,   255);
+constexpr ImU32 AccentGlow   = IM_COL32(ShadowBrand::AccentGlow.r,   ShadowBrand::AccentGlow.g,   ShadowBrand::AccentGlow.b,   255);
+constexpr ImU32 BtnTop       = IM_COL32(ShadowBrand::BtnTop.r,       ShadowBrand::BtnTop.g,       ShadowBrand::BtnTop.b,       255);
+constexpr ImU32 BtnBot       = IM_COL32(ShadowBrand::BtnBot.r,       ShadowBrand::BtnBot.g,       ShadowBrand::BtnBot.b,       255);
+constexpr ImU32 BtnTopHover  = IM_COL32(ShadowBrand::BtnTopHover.r,  ShadowBrand::BtnTopHover.g,  ShadowBrand::BtnTopHover.b,  255);
+constexpr ImU32 BtnBotHover  = IM_COL32(ShadowBrand::BtnBotHover.r,  ShadowBrand::BtnBotHover.g,  ShadowBrand::BtnBotHover.b,  255);
+constexpr ImU32 GroupBg      = IM_COL32(ShadowBrand::GroupBg.r,      ShadowBrand::GroupBg.g,      ShadowBrand::GroupBg.b,      255);
+constexpr ImU32 StatusBg     = IM_COL32(ShadowBrand::StatusBg.r,     ShadowBrand::StatusBg.g,     ShadowBrand::StatusBg.b,     255);
 
 constexpr float FrameBorder    = 3. * S;
 constexpr float TitleBarH      = 18. * S;
@@ -188,6 +205,52 @@ inline void Stipple(ImDrawList* dl, const ImVec2& a, const ImVec2& b, ImU32 c0, 
         }
     }
 }
+
+/* --- SHADOW MODZ extras ------------------------------------------------- */
+
+// Vertical gradient, used for the title bar, buttons and the launcher disc.
+inline void FillGradientV(ImDrawList* dl, const ImVec2& a, const ImVec2& b, ImU32 top, ImU32 bottom)
+{
+    dl->AddRectFilledMultiColor(a, b, top, top, bottom, bottom);
+}
+
+// Soft violet halo: five translucent outlines fading outwards. Pure draw-list
+// work, so it costs nothing on a phone and needs no texture or shader.
+inline void Glow(ImDrawList* dl, const ImVec2& a, const ImVec2& b, float strength)
+{
+    if (strength <= 0.f) { return; }
+
+    for (int i = 5; i >= 1; --i)
+    {
+        const float o  = (float)i * 2.f;
+        const int   al = (int)(15.f * strength);
+        dl->AddRect(ImVec2(a.x - o, a.y - o), ImVec2(b.x + o, b.y + o),
+                    IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, al),
+                    0.f, 0, 1.f + (float)i * 0.5f);
+    }
+}
+
+// Hairline accent border - lifts panels and controls off the black.
+inline void AccentEdge(ImDrawList* dl, const ImVec2& a, const ImVec2& b, ImU32 col)
+{
+    dl->AddRect(a, b, col, 0.f, 0, 1.f);
+}
+
+// Glossy highlight along the top inside edge of a control.
+inline void Gloss(ImDrawList* dl, const ImVec2& a, const ImVec2& b, int alpha)
+{
+    dl->AddRectFilled(ImVec2(a.x + 2.f, a.y + 1.f),
+                      ImVec2(b.x - 2.f, a.y + 2.f),
+                      IM_COL32(255, 255, 255, alpha));
+}
+
+// Triangle wave 0..1 on the frame clock, for the launcher pulse.
+inline float Pulse(float speed = 1.6f)
+{
+    const float t = (float)ImGui::GetTime() * speed;
+    const float f = t - std::floor(t);
+    return (f < 0.5f) ? (f * 2.f) : ((1.f - f) * 2.f);
+}
 }
 /* ---------------------------------------------------------------------------
  * shell.cpp - window frame, tab bar, groups, scrollbar, status bar
@@ -217,7 +280,7 @@ inline float  s_panelX       = 0.f;
 inline float  s_panelW       = 0.f;
 inline float  s_indent       = 0.f;
 
-inline ImU32  s_accent     = style::TitleLeft;
+inline ImU32  s_accent     = style::Accent;
 inline bool   s_accentOn   = false;
 inline float  s_groupStartY = 0.f;
 inline char   s_groupLabel[64] = { 0 };
@@ -432,12 +495,20 @@ inline void BeginMain(const char* title)
     const ImVec2 winSize = ImGui::GetWindowSize();
     s_winMax = ImVec2(s_winMin.x + winSize.x, s_winMin.y + winSize.y);
 
+    // SHADOW MODZ: window body fades from panel violet-black down to near-black.
+    style::FillGradientV(s_dl, s_winMin, s_winMax, style::Face, style::BgDeep);
     style::Raised(s_dl, s_winMin, s_winMax);
+    style::AccentEdge(s_dl, s_winMin, s_winMax, style::AccentDeep);
 
     const float  inset = style::FrameBorder;
     const ImVec2 titleMin(s_winMin.x + inset, s_winMin.y + inset);
     const ImVec2 titleMax(s_winMax.x - inset, titleMin.y + style::TitleBarH);
-    s_dl->AddRectFilled(titleMin, titleMax, AccentColor());
+
+    // Title bar: violet XP gradient + glow seam where the body starts.
+    style::FillGradientV(s_dl, titleMin, titleMax, AccentColor(), style::TitleRight);
+    s_dl->AddRectFilled(ImVec2(titleMin.x, titleMax.y - 1.f),
+                        ImVec2(titleMax.x, titleMax.y), style::AccentGlow);
+    style::Glow(s_dl, titleMin, titleMax, 0.35f);
 
     const float  icoSize = style::TitleBarH - 4.f;
     const ImVec2 icoMin(titleMin.x + 3.f, titleMin.y + (style::TitleBarH - icoSize) * 0.5f);
@@ -453,6 +524,7 @@ inline void BeginMain(const char* title)
     }
 
     const float textY = titleMin.y + (style::TitleBarH - ImGui::GetTextLineHeight()) * 0.5f;
+    s_dl->AddText(ImVec2(icoMax.x + 5.f, textY + 1.f), IM_COL32(0, 0, 0, 160), title);
     s_dl->AddText(ImVec2(icoMax.x + 4.f, textY), style::TitleText, title);
 
     const float btnY   = titleMin.y + (style::TitleBarH - style::TitleBtnH) * 0.5f;
@@ -508,11 +580,24 @@ inline bool TabButton(const char* label, int index)
     const ImVec2 ts     = ImGui::CalcTextSize(label);
     const float  w      = ts.x + style::TabPadX * 2.f;
 
-    const float  top = active ? s_tabY : s_tabY + 2.f;
+    const float  top     = active ? s_tabY : s_tabY + 2.f;
     const ImVec2 a(s_tabX, top);
     const ImVec2 b(s_tabX + w, s_bodyTop + (active ? 1.f : -1.f));
+    const bool   hovered = PopUpsAreClosed() && ImGui::IsMouseHoveringRect(a, b);
 
-    style::FillFace(s_dl, a, b);
+    // SHADOW MODZ tabs: violet when selected, dark bevelled when not.
+    if (active)
+    {
+        style::FillGradientV(s_dl, a, b, style::BtnTopHover, style::BtnBotHover);
+        style::Glow(s_dl, a, b, 0.55f);
+        s_dl->AddRectFilled(ImVec2(a.x, b.y - 2.f), ImVec2(b.x, b.y), style::Accent);
+    }
+    else
+    {
+        style::FillGradientV(s_dl, a, b, style::Light, style::Face);
+        if (hovered) { style::Glow(s_dl, a, b, 0.35f); }
+    }
+
     style::Edge(s_dl, a, b, style::Highlight, style::Shadow);
     s_dl->AddRectFilled(ImVec2(b.x - 1.f, a.y), ImVec2(b.x, b.y), style::DarkShadow);
 
@@ -522,7 +607,8 @@ inline bool TabButton(const char* label, int index)
     }
 
     const ImVec2 tp(a.x + style::TabPadX, (a.y + b.y) * 0.5f - ts.y * 0.5f);
-    s_dl->AddText(tp, style::Text, label);
+    s_dl->AddText(ImVec2(tp.x + 1.f, tp.y + 1.f), IM_COL32(0, 0, 0, 150), label);
+    s_dl->AddText(tp, active ? style::AccentGlow : style::Text, label);
 
     bool clicked = false;
     if (ImGui::IsMouseHoveringRect(a, b) && ImGui::IsMouseReleased(ImGuiMouseButton_Left) && PopUpsAreClosed())
@@ -566,12 +652,16 @@ inline void EndGroup()
     const ImVec2 a(s_panelX, s_groupStartY);
     const ImVec2 b(s_panelX + s_panelW, s_groupStartY + h);
 
+    // SHADOW MODZ group box: near-black fill, etched violet frame, glowing title.
+    s_dl->AddRectFilled(a, b, style::GroupBg);
     style::Etched(s_dl, a, b);
+    style::AccentEdge(s_dl, ImVec2(a.x + 1.f, a.y + 1.f), ImVec2(b.x - 1.f, b.y - 1.f),
+                      IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 55));
 
     const ImVec2 ts = ImGui::CalcTextSize(s_groupLabel);
     const float  lx = a.x + 7.f;
-    s_dl->AddRectFilled(ImVec2(lx - 2.f, a.y - 1.f), ImVec2(lx + ts.x + 2.f, a.y + 2.f), style::Face);
-    s_dl->AddText(ImVec2(lx, a.y - ts.y * 0.5f + 1.f), style::Text, s_groupLabel);
+    s_dl->AddRectFilled(ImVec2(lx - 2.f, a.y - 1.f), ImVec2(lx + ts.x + 2.f, a.y + 2.f), style::GroupBg);
+    s_dl->AddText(ImVec2(lx, a.y - ts.y * 0.5f + 1.f), style::AccentGlow, s_groupLabel);
 
     s_colY[s_curCol] = s_groupStartY + h + style::GroupGap;
     if (s_colY[s_curCol] > s_maxColBottom)
@@ -782,12 +872,19 @@ inline void EndMain()
     const ImVec2 statusMax(s_winMax.x - inset, s_winMax.y - inset);
 
     const ImVec2 cellMax(statusMax.x - 16.f, statusMax.y);
+
+    // SHADOW MODZ status bar: dark strip with a violet seam on top.
+    s_dl->AddRectFilled(statusMin, cellMax, style::StatusBg);
+    s_dl->AddRectFilled(ImVec2(statusMin.x, statusMin.y - 1.f),
+                        ImVec2(cellMax.x, statusMin.y),
+                        IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 120));
     style::Sunken(s_dl, statusMin, cellMax);
+
     const float ty = statusMin.y + (style::StatusBarH - ImGui::GetTextLineHeight()) * 0.5f;
-    s_dl->AddText(ImVec2(statusMin.x + 5.f, ty), style::Text, "ur_nikuu");
-    const char*  uid = "UID: 1337";
+    s_dl->AddText(ImVec2(statusMin.x + 5.f, ty), style::AccentGlow, ShadowBrand::StatusUser);
+    const char*  uid = ShadowBrand::StatusUid;
     const ImVec2 uidSize = ImGui::CalcTextSize(uid);
-    s_dl->AddText(ImVec2(cellMax.x - uidSize.x - 5.f, ty), style::Text, uid);
+    s_dl->AddText(ImVec2(cellMax.x - uidSize.x - 5.f, ty), style::TextDisabled, uid);
 
     DrawGrip(ImVec2(statusMax.x, statusMax.y));
     UpdateResize(ImVec2(statusMax.x - style::GripSize, statusMax.y - style::GripSize), statusMax);
@@ -831,22 +928,28 @@ inline bool Checkbox(const char* label, bool* value)
     const bool enabled = PopUpsAreClosed();
     const bool hovered = enabled && ImGui::IsMouseHoveringRect(boxA, boxB);
 
-    style::FillFace(s_dl, boxA, boxB);
+    // SHADOW MODZ checkbox: sunken dark field, violet tick, halo when live.
+    style::FillGradientV(s_dl, boxA, boxB, style::Field, style::Face);
     if (*value) { style::Sunken(s_dl, boxA, boxB); }
     else        { style::Raised(s_dl, boxA, boxB); }
 
     if (*value)
     {
+        style::Glow(s_dl, boxA, boxB, 0.5f);
+        s_dl->AddRectFilled(InsetMin(boxA, 2.f), InsetMax(boxB, 2.f),
+                            IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 38));
+
         const ImVec2 ca(boxA.x + 3.f, boxA.y + 3.f);
         const ImVec2 cb(boxB.x - 3.f, boxB.y - 3.f);
-        s_dl->AddLine(ImVec2(ca.x, (ca.y + cb.y) * 0.5f),
-                      ImVec2(ca.x + (cb.x - ca.x) * 0.35f, cb.y), AccentColor(), 1.6f);
-        s_dl->AddLine(ImVec2(ca.x + (cb.x - ca.x) * 0.35f, cb.y), ImVec2(cb.x, ca.y), AccentColor(), 1.6f);
+        s_dl->AddLine(ImVec2(ca.x - 0.5f, (ca.y + cb.y) * 0.5f),
+                      ImVec2(ca.x + (cb.x - ca.x) * 0.35f, cb.y), AccentColor(), 2.0f);
+        s_dl->AddLine(ImVec2(ca.x + (cb.x - ca.x) * 0.35f, cb.y), ImVec2(cb.x, ca.y - 0.5f), AccentColor(), 2.0f);
     }
 
     if (hovered)
     {
-        s_dl->AddRect(InsetMin(boxA, 1.f), InsetMax(boxB, 1.f), AccentColor(), 1.f, 0, 1.f);
+        style::Glow(s_dl, boxA, boxB, 0.6f);
+        s_dl->AddRect(InsetMin(boxA, 1.f), InsetMax(boxB, 1.f), style::AccentGlow, 1.f, 0, 1.f);
     }
 
     s_dl->AddText(ImVec2(boxB.x + 5.f, ty), style::Text, label);
@@ -881,14 +984,63 @@ inline bool Button(const char* label, const ImVec2& size)
     const bool hovered = enabled && ImGui::IsMouseHoveringRect(a, b);
     const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
 
-    style::FillFace(s_dl, a, b);
+    // SHADOW MODZ button: violet gradient face, XP bevel, halo on hover.
+    if (hovered) { style::Glow(s_dl, a, b, held ? 1.0f : 0.8f); }
+
+    style::FillGradientV(s_dl, a, b,
+                         hovered ? style::BtnTopHover : style::BtnTop,
+                         hovered ? style::BtnBotHover : style::BtnBot);
+
     if (held) { style::Pressed(s_dl, a, b); }
     else      { style::Raised(s_dl, a, b); }
 
+    style::AccentEdge(s_dl, a, b, hovered ? style::AccentGlow : style::AccentDeep);
+    style::Gloss(s_dl, a, b, hovered ? 48 : 20);
+
     const float  push = held ? 1.f : 0.f;
     const ImVec2 ts   = ImGui::CalcTextSize(label);
-    s_dl->AddText(ImVec2(a.x + (size.x - ts.x) * 0.5f + push, a.y + (size.y - ts.y) * 0.5f + push),
-                  style::Text, label);
+    const ImVec2 tp(a.x + (size.x - ts.x) * 0.5f + push, a.y + (size.y - ts.y) * 0.5f + push);
+    s_dl->AddText(ImVec2(tp.x + 1.f, tp.y + 1.f), IM_COL32(0, 0, 0, 170), label);
+    s_dl->AddText(tp, hovered ? style::AccentGlow : style::Text, label);
+
+    AddItem(size);
+    return hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left);
+}
+
+// Full-violet variant for the primary action of a page (Telegram, Save, ...).
+inline bool AccentButton(const char* label, const ImVec2& size, bool enabled = true)
+{
+    const ImVec2 a = s_cursor;
+    const ImVec2 b(s_cursor.x + size.x, s_cursor.y + size.y);
+
+    const bool live    = enabled && PopUpsAreClosed();
+    const bool hovered = live && ImGui::IsMouseHoveringRect(a, b);
+    const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
+
+    if (hovered) { style::Glow(s_dl, a, b, 1.0f); }
+
+    if (!enabled)
+    {
+        style::FillGradientV(s_dl, a, b, style::BtnBot, style::BgDeep);
+        style::AccentEdge(s_dl, a, b, style::Light);
+    }
+    else
+    {
+        style::FillGradientV(s_dl, a, b,
+                             hovered ? style::AccentGlow : style::Accent,
+                             hovered ? style::Accent : style::AccentDeep);
+        style::AccentEdge(s_dl, a, b, hovered ? style::AccentGlow : style::AccentDeep);
+    }
+
+    if (held) { style::Pressed(s_dl, a, b); }
+    else      { style::Raised(s_dl, a, b); }
+    style::Gloss(s_dl, a, b, enabled ? (hovered ? 70 : 40) : 14);
+
+    const float  push = held ? 1.f : 0.f;
+    const ImVec2 ts   = ImGui::CalcTextSize(label);
+    const ImVec2 tp(a.x + (size.x - ts.x) * 0.5f + push, a.y + (size.y - ts.y) * 0.5f + push);
+    s_dl->AddText(ImVec2(tp.x + 1.f, tp.y + 1.f), IM_COL32(0, 0, 0, 170), label);
+    s_dl->AddText(tp, enabled ? style::TitleText : style::TextDisabled, label);
 
     AddItem(size);
     return hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left);
@@ -898,6 +1050,18 @@ inline bool Button(const char* label)
 {
     const ImVec2 ts = ImGui::CalcTextSize(label);
     return Button(label, ImVec2(ts.x + 18.f, style::ButtonH));
+}
+
+inline bool AccentButton(const char* label)
+{
+    const ImVec2 ts = ImGui::CalcTextSize(label);
+    return AccentButton(label, ImVec2(ts.x + 18.f, style::ButtonH));
+}
+
+inline bool AccentButton(const char* label, bool enabled)
+{
+    const ImVec2 ts = ImGui::CalcTextSize(label);
+    return AccentButton(label, ImVec2(ts.x + 18.f, style::ButtonH), enabled);
 }
 
 inline void ProgressBar(const char* label, float fraction)
@@ -1805,10 +1969,12 @@ inline bool MenuItemClicked() { return s_menuPressed; }
 
 inline bool BeginMenuBar()
 {
-    style::FillFace(s_dl, ImVec2(s_winMin.x + style::FrameBorder, s_menuBarY),
-                    ImVec2(s_winMax.x - style::FrameBorder, s_menuBarY + style::MenuBarH));
-    s_dl->AddLine(ImVec2(s_winMin.x + style::FrameBorder, s_menuBarY + style::MenuBarH),
-                  ImVec2(s_winMax.x - style::FrameBorder, s_menuBarY + style::MenuBarH), style::Shadow);
+    const ImVec2 barA(s_winMin.x + style::FrameBorder, s_menuBarY);
+    const ImVec2 barB(s_winMax.x - style::FrameBorder, s_menuBarY + style::MenuBarH);
+    style::FillGradientV(s_dl, barA, barB, style::Face, style::GroupBg);
+    s_dl->AddLine(ImVec2(barA.x, barB.y), ImVec2(barB.x, barB.y), style::Shadow);
+    s_dl->AddLine(ImVec2(barA.x, barB.y - 1.f), ImVec2(barB.x, barB.y - 1.f),
+                  IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 90));
     s_mouseReleased = false;
     s_menuPressed   = false;
     s_cursor        = ImVec2(s_winMin.x + style::FrameBorder + 4.f, s_menuBarY);
@@ -2012,13 +2178,22 @@ inline bool ToolbarButton(const char* id, int glyph, const char* tip, bool toggl
 
     const bool active = toggle && *on;
 
-    style::FillFace(s_dl, a, b);
+    // SHADOW MODZ toolbar: violet-lit when toggled on, haloed on hover.
+    if (hovered || active) { style::Glow(s_dl, a, b, active ? 0.7f : 0.5f); }
+
+    if (active)      { style::FillGradientV(s_dl, a, b, style::Accent, style::AccentDeep); }
+    else if (hovered){ style::FillGradientV(s_dl, a, b, style::BtnTopHover, style::BtnBotHover); }
+    else             { style::FillGradientV(s_dl, a, b, style::BtnTop, style::BtnBot); }
+
     if (held)                 { style::Pressed(s_dl, a, b); }
     else if (active)          { style::Pressed(s_dl, a, b); }
     else if (hovered)         { style::Raised(s_dl, a, b); }
     else                      { style::Raised(s_dl, a, b); }
 
-    ToolGlyph(s_dl, ImVec2((a.x + b.x) * 0.5f, (a.y + b.y) * 0.5f), glyph, style::Text);
+    style::AccentEdge(s_dl, a, b, active ? style::AccentGlow : style::AccentDeep);
+
+    ToolGlyph(s_dl, ImVec2((a.x + b.x) * 0.5f, (a.y + b.y) * 0.5f), glyph,
+              active ? style::TitleText : (hovered ? style::AccentGlow : style::Text));
 
     s_lastItemMin = a;
     s_lastItemMax = b;
@@ -2182,29 +2357,30 @@ inline void ApplyStyle()
     st.ScrollbarRounding = 0.f;
     st.WindowRounding    = 0.f;
 
+    // SHADOW MODZ: dark surfaces, violet accents (see ShadowBrand.h).
     st.Colors[ImGuiCol_Text]            = ImGui::ColorConvertU32ToFloat4(style::Text);
     st.Colors[ImGuiCol_TextDisabled]    = ImGui::ColorConvertU32ToFloat4(style::TextDisabled);
-    st.Colors[ImGuiCol_WindowBg]        = ImGui::ColorConvertU32ToFloat4(style::Face);
-    st.Colors[ImGuiCol_PopupBg]         = ImGui::ColorConvertU32ToFloat4(style::Face);
-    st.Colors[ImGuiCol_Border]          = ImGui::ColorConvertU32ToFloat4(style::DarkShadow);
-    st.Colors[ImGuiCol_FrameBg]         = ImGui::ColorConvertU32ToFloat4(style::Face);
+    st.Colors[ImGuiCol_WindowBg]        = ImGui::ColorConvertU32ToFloat4(style::BgDeep);
+    st.Colors[ImGuiCol_PopupBg]         = ImGui::ColorConvertU32ToFloat4(style::GroupBg);
+    st.Colors[ImGuiCol_Border]          = ImGui::ColorConvertU32ToFloat4(style::AccentDeep);
+    st.Colors[ImGuiCol_FrameBg]         = ImGui::ColorConvertU32ToFloat4(style::Field);
     st.Colors[ImGuiCol_FrameBgHovered]  = ImGui::ColorConvertU32ToFloat4(style::Light);
-    st.Colors[ImGuiCol_FrameBgActive]   = ImGui::ColorConvertU32ToFloat4(style::Light);
-    st.Colors[ImGuiCol_TitleBg]         = ImGui::ColorConvertU32ToFloat4(style::Selection);
-    st.Colors[ImGuiCol_TitleBgActive]   = ImGui::ColorConvertU32ToFloat4(style::TitleLeft);
-    st.Colors[ImGuiCol_Button]          = ImGui::ColorConvertU32ToFloat4(style::Face);
-    st.Colors[ImGuiCol_ButtonHovered]   = ImGui::ColorConvertU32ToFloat4(style::Light);
-    st.Colors[ImGuiCol_ButtonActive]    = ImGui::ColorConvertU32ToFloat4(style::Light);
-    st.Colors[ImGuiCol_Header]          = ImGui::ColorConvertU32ToFloat4(style::Selection);
+    st.Colors[ImGuiCol_FrameBgActive]   = ImGui::ColorConvertU32ToFloat4(style::Highlight);
+    st.Colors[ImGuiCol_TitleBg]         = ImGui::ColorConvertU32ToFloat4(style::AccentDeep);
+    st.Colors[ImGuiCol_TitleBgActive]   = ImGui::ColorConvertU32ToFloat4(style::Accent);
+    st.Colors[ImGuiCol_Button]          = ImGui::ColorConvertU32ToFloat4(style::BtnBot);
+    st.Colors[ImGuiCol_ButtonHovered]   = ImGui::ColorConvertU32ToFloat4(style::BtnTopHover);
+    st.Colors[ImGuiCol_ButtonActive]    = ImGui::ColorConvertU32ToFloat4(style::Accent);
+    st.Colors[ImGuiCol_Header]          = ImGui::ColorConvertU32ToFloat4(style::AccentDeep);
     st.Colors[ImGuiCol_HeaderHovered]   = ImGui::ColorConvertU32ToFloat4(style::Selection);
-    st.Colors[ImGuiCol_HeaderActive]    = ImGui::ColorConvertU32ToFloat4(style::TitleLeft);
-    st.Colors[ImGuiCol_SliderGrab]      = ImGui::ColorConvertU32ToFloat4(style::SliderFill);
-    st.Colors[ImGuiCol_SliderGrabActive]= ImGui::ColorConvertU32ToFloat4(style::Selection);
-    st.Colors[ImGuiCol_CheckMark]       = ImGui::ColorConvertU32ToFloat4(style::Selection);
-    st.Colors[ImGuiCol_ScrollbarBg]     = ImGui::ColorConvertU32ToFloat4(style::Highlight);
-    st.Colors[ImGuiCol_ScrollbarGrab]   = ImGui::ColorConvertU32ToFloat4(style::Face);
-    st.Colors[ImGuiCol_ScrollbarGrabHovered] = ImGui::ColorConvertU32ToFloat4(style::Light);
-    st.Colors[ImGuiCol_ScrollbarGrabActive]  = ImGui::ColorConvertU32ToFloat4(style::Light);
+    st.Colors[ImGuiCol_HeaderActive]    = ImGui::ColorConvertU32ToFloat4(style::Accent);
+    st.Colors[ImGuiCol_SliderGrab]      = ImGui::ColorConvertU32ToFloat4(style::Accent);
+    st.Colors[ImGuiCol_SliderGrabActive]= ImGui::ColorConvertU32ToFloat4(style::AccentGlow);
+    st.Colors[ImGuiCol_CheckMark]       = ImGui::ColorConvertU32ToFloat4(style::AccentGlow);
+    st.Colors[ImGuiCol_ScrollbarBg]     = ImGui::ColorConvertU32ToFloat4(style::BgDeep);
+    st.Colors[ImGuiCol_ScrollbarGrab]   = ImGui::ColorConvertU32ToFloat4(style::AccentDeep);
+    st.Colors[ImGuiCol_ScrollbarGrabHovered] = ImGui::ColorConvertU32ToFloat4(style::Accent);
+    st.Colors[ImGuiCol_ScrollbarGrabActive]  = ImGui::ColorConvertU32ToFloat4(style::AccentGlow);
 }
 /* ---------------------------------------------------------------------------
  * launcher.cpp - overlay entry point (menu starts hidden, like upstream)
@@ -2223,46 +2399,107 @@ inline void ToggleLauncher()
     s_scrollY         = 0.f;
 }
 
+/* SHADOW MODZ floating icon: a draggable, pulsing violet disc instead of the
+ * old grey "Niku Mods" rectangle. Tap opens the menu, drag moves it, and it
+ * never leaves the screen. Draws itself, so it adds no ImGui items. */
 inline void DrawLauncher()
 {
     if (!s_launcherOpen) { return; }
 
-    const float bw = 96.f;
-    const float bh = 26.f;
+    const float      R = 27.f;
+    static ImVec2    s_pos   = ImVec2(18.f + R, 18.f + R);   // centre of the disc
+    static bool      s_drag  = false;
+    static bool      s_moved = false;
+    static ImVec2    s_grab  = ImVec2(0.f, 0.f);
 
-    ImGui::SetNextWindowPos(ImVec2(16.f, 16.f), ImGuiCond_Always);
+    const ImVec2 m = ImGui::GetIO().MousePos;
+    const float  dx = m.x - s_pos.x;
+    const float  dy = m.y - s_pos.y;
+    const bool   hovered = (dx * dx + dy * dy) <= (R * R);
+
+    // --- drag / tap -------------------------------------------------------
+    if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    {
+        s_drag  = true;
+        s_moved = false;
+        s_grab  = ImVec2(dx, dy);
+    }
+    if (s_drag)
+    {
+        const ImVec2 np(m.x - s_grab.x, m.y - s_grab.y);
+        if (std::fabs(np.x - s_pos.x) > 2.f || std::fabs(np.y - s_pos.y) > 2.f) { s_moved = true; }
+
+        // clamp so the disc always stays fully on screen
+        const ImVec2 disp = ImGui::GetIO().DisplaySize;
+        s_pos.x = (np.x < R) ? R : ((np.x > disp.x - R) ? disp.x - R : np.x);
+        s_pos.y = (np.y < R) ? R : ((np.y > disp.y - R) ? disp.y - R : np.y);
+
+        if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+        {
+            s_drag = false;
+            if (!s_moved)          // a tap, not a drag -> open the menu
+            {
+                ToggleLauncher();
+                return;
+            }
+        }
+    }
+
+    // --- paint ------------------------------------------------------------
+    const float pad = R + 16.f;   // room for the halo
+    ImGui::SetNextWindowPos(ImVec2(s_pos.x - pad, s_pos.y - pad), ImGuiCond_Always);
     ImGui::SetNextWindowBgAlpha(0.f);
     // Fixed size, not AlwaysAutoResize: the launcher draws directly and adds no
     // ImGui items, so auto-fit would collapse it to a zero-size clipped window.
-    ImGui::SetNextWindowSize(ImVec2(bw, bh), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(pad * 2.f, pad * 2.f), ImGuiCond_Always);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
-    if (ImGui::Begin("##launcher", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove |
-                                             ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs))
+    if (ImGui::Begin("##shadow_launcher", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove |
+                                                   ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs))
     {
         ImDrawList* dl = ImGui::GetWindowDrawList();
-        const ImVec2 p = ImGui::GetWindowPos();
-        const ImVec2 a(p.x + 1.f, p.y + 1.f);
-        const ImVec2 b(p.x + bw - 1.f, p.y + bh - 1.f);
+        const float pulse = style::Pulse(1.3f);
+        const int   ar = ShadowBrand::Accent.r;
+        const int   ag = ShadowBrand::Accent.g;
+        const int   ab = ShadowBrand::Accent.b;
 
-        style::FillFace(dl, a, b);
-        style::Raised(dl, a, b);
+        // breathing halo rings
+        for (int i = 3; i >= 1; --i)
+        {
+            const float rr = R + 2.f + (float)i * 4.f + pulse * 4.f;
+            dl->AddCircle(s_pos, rr, IM_COL32(ar, ag, ab, 14 + i * 11), 30, 2.f);
+        }
 
-        const char* txt = "Niku Mods";
-        const ImVec2 ts = ImGui::CalcTextSize(txt);
-        dl->AddText(ImVec2((a.x + b.x) * 0.5f - ts.x * 0.5f, (a.y + b.y) * 0.5f - ts.y * 0.5f),
-                    style::Text, txt);
+        // disc: dark base + lighter top half so it reads as a lit sphere
+        dl->AddCircleFilled(s_pos, R, style::BgDeep, 32);
+        const float kPi = 3.14159265f;
+        dl->PathArcTo(s_pos, R - 1.5f, kPi, kPi * 2.0f, 24);
+        dl->PathFillConvex(hovered ? style::BtnTopHover : style::BtnTop);
+        dl->AddCircleFilled(s_pos, R - 3.f, style::BtnBot, 32);
+
+        // violet rim + inner hairline
+        dl->AddCircle(s_pos, R - 1.f, hovered ? style::AccentGlow : style::Accent, 32, hovered ? 3.f : 2.f);
+        dl->AddCircle(s_pos, R - 5.f, IM_COL32(ar, ag, ab, 70), 32, 1.f);
+
+        // centre: brand icon texture if it built, otherwise the SM glyph
+        const float ir = R - 11.f;
+        if (IconTex() != 0)
+        {
+            dl->AddImage(IconTex(), ImVec2(s_pos.x - ir, s_pos.y - ir),
+                         ImVec2(s_pos.x + ir, s_pos.y + ir));
+        }
+        else
+        {
+            const char* txt = ShadowBrand::LauncherText;
+            const ImVec2 ts = ImGui::CalcTextSize(txt);
+            const ImVec2 tp(s_pos.x - ts.x * 0.5f, s_pos.y - ts.y * 0.5f);
+            dl->AddText(ImVec2(tp.x + 1.f, tp.y + 1.f), IM_COL32(0, 0, 0, 180), txt);
+            dl->AddText(tp, hovered ? style::AccentGlow : style::Text, txt);
+        }
+
         ImGui::End();
     }
     ImGui::PopStyleVar(2);
-
-    const ImVec2 winA(16.f, 16.f);
-    const ImVec2 winB(16.f + bw, 16.f + bh);
-
-    if (ImGui::IsMouseHoveringRect(winA, winB) && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-    {
-        ToggleLauncher();
-    }
 }
 
 /* ---------------------------------------------------------------------------
@@ -2523,11 +2760,20 @@ inline void PageConfig()
     EndGroup();
 
     BeginGroup("About", 1);
-    Label("Nikumods v3.1.0");
-    Label("Win95 shell port");
-    if (Button("Open README"))
     {
-        OpenUrl("https://github.com/");
+        char line[96];
+        std::snprintf(line, sizeof(line), "%s %s", ShadowBrand::Name, ShadowBrand::Version);
+        Label(line);
+        Label(ShadowBrand::BuildTag);
+
+        // Telegram: rendered as a dead violet button reading "COMING SOON"
+        // until ShadowBrand::TelegramUrl is filled and TelegramLive is true.
+        char tg[96];
+        std::snprintf(tg, sizeof(tg), "%s - %s", ShadowBrand::TelegramLabel, ShadowBrand::TelegramText);
+        if (AccentButton(tg, ShadowBrand::TelegramLive) && ShadowBrand::TelegramUrl[0] != '\0')
+        {
+            OpenUrl(ShadowBrand::TelegramUrl);
+        }
     }
     EndGroup();
 
