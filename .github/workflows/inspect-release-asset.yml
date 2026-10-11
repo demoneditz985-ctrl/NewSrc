@@ -37,54 +37,41 @@ jobs:
           fi
           du -sh /tmp/out
 
+      - name: Add only missing files (never clobber existing edits)
+        run: |
+          SRC="/tmp/out/NIKUMODS WINDOWS XP GUI"
+          DST="$GITHUB_WORKSPACE/ShadowModz/app/src/main/jni"
+          for f in \
+            "NikuMods/Win95Assets/MicrosFont.hpp" \
+            "NikuMods/Win95Assets/Win95Icon.hpp" \
+            "NikuMods/Fonts/F47.h" \
+            "NikuMods/Fonts/IMGUI_GOD.h" \
+            "NikuMods/Fonts/X2.h" ; do
+            if [ -f "$SRC/$f" ] && [ ! -s "$DST/$f" ]; then
+              mkdir -p "$(dirname "$DST/$f")"
+              cp "$SRC/$f" "$DST/$f"
+              echo "added $f ($(stat -c%s "$SRC/$f") bytes)"
+            else
+              echo "skip  $f (already present)"
+            fi
+          done
+
       - name: Full file listing
         run: |
           mkdir -p "$GITHUB_WORKSPACE/_asset"
-          find /tmp/out -type f -printf '%10s  %P\n' | sed 's|^|  |' | sort -k2 > "$GITHUB_WORKSPACE/_asset/all-files.txt"
+          find /tmp/out -type f -printf '%10s  %P\n' | sort -k2 > "$GITHUB_WORKSPACE/_asset/all-files.txt"
           wc -l "$GITHUB_WORKSPACE/_asset/all-files.txt"
-
-      - name: Copy source-only subset
-        run: |
-          SRC="/tmp/out/NIKUMODS WINDOWS XP GUI"
-          DST=/tmp/keep
-          rm -rf "$DST" && mkdir -p "$DST"
-          cd "$SRC"
-          # project files, minus vendored binaries / huge font blobs
-          find . -type f \
-            ! -path '*/curl/*' \
-            ! -path '*/openssl-*/*' \
-            ! -path '*/ur_nikuu/*' \
-            ! -path '*/Hacks/Tools/*' \
-            ! -path '*/build/*' \
-            ! -path '*/.gradle/*' \
-            ! -name '*.a' ! -name '*.so' ! -name '*.o' ! -name '*.zip' \
-            ! -name '*.DS_Store' ! -name '*.rartemp*' ! -name '*.bak' \
-            -size -3M -print0 > /tmp/keep_list
-          echo "files kept: $(tr -dc '\0' < /tmp/keep_list | wc -c)"
-          tar -cf - --null -T /tmp/keep_list | tar -xf - -C "$DST"
-          echo "=== kept size ==="
-          du -sh "$DST"
-          echo "=== top 30 kept files ==="
-          find "$DST" -type f -printf '%12s  %P\n' | sort -rn | head -30
-          echo "=== excluded (big) files ==="
-          cd "$SRC"
-          find . -type f \( -size +3M -o -name '*.a' -o -name '*.so' \) -printf '%12s  %P\n' | sort -rn | head -30
 
       - name: Commit and push
         run: |
           cd "$GITHUB_WORKSPACE"
           git config user.name "Arena Agent"
           git config user.email "agent@arena.ai"
-          rm -rf ShadowModz
-          mkdir -p ShadowModz
-          cp -a /tmp/keep/. ShadowModz/
           git pull --rebase origin "${GITHUB_REF_NAME}" 2>/dev/null || true
-          git add _asset ShadowModz
+          git add -A
           if git diff --cached --quiet; then
             echo "nothing to commit"
           else
-            git commit -m "chore: import release source subset for rebrand [skip ci]"
+            git commit -m "chore: add missing font assets from release [skip ci]"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
-          echo "=== committed size ==="
-          du -sh ShadowModz || true
