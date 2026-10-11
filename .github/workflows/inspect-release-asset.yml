@@ -1,6 +1,9 @@
 name: Inspect release asset
 
 on:
+  push:
+    branches:
+      - 'arena/**'
   workflow_dispatch:
 
 permissions:
