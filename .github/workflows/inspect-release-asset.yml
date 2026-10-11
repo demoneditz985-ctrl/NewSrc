@@ -30,7 +30,7 @@ jobs:
             rm -rf /tmp/out && mkdir -p /tmp/out
             cd /tmp/out
             unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip || echo "UNZIP FAILED"
-            SRC="/tmp/out/NIKUMODS WINDOWS XP GUI"
+            SRC="/tmp/out/NIKUMODS WINDOWS XP GUI/app/src/main/jni"
             ls -la "$SRC/NikuMods/Win95Assets/" || echo "NO ASSET DIR"
 
             RAW="$GITHUB_WORKSPACE/_asset/raw"
