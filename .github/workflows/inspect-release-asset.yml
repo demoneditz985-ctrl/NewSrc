@@ -1,0 +1,38 @@
+name: Inspect release asset
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p /tmp/rel
+          gh release download Src --repo demoneditz985-ctrl/NewSrc --dir /tmp/rel --clobber
+          ls -la /tmp/rel
+
+      - name: Extract
+        run: |
+          mkdir -p /tmp/out
+          cd /tmp/out
+          unzip -o -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip || \
+            (echo "plain unzip failed, trying 7z"; sudo apt-get update -qq >/dev/null 2>&1; sudo apt-get install -y -qq p7zip-full >/dev/null 2>&1; 7z x -y -o/tmp/out /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip >/dev/null)
+          echo "=== TOP LEVEL ==="
+          ls -la /tmp/out
+          echo "=== DIRS ==="
+          find /tmp/out -type d | head -120
+          echo "=== FILES BY SIZE (top 150) ==="
+          find /tmp/out -type f -printf '%12s  %p\n' | sort -rn | head -150
+          echo "=== TOTAL FILE COUNT ==="
+          find /tmp/out -type f | wc -l
+          echo "=== TOTAL SIZE ==="
+          du -sh /tmp/out
+          echo "=== EXTENSIONS ==="
+          find /tmp/out -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -40
