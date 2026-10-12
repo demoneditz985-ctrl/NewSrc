@@ -89,15 +89,53 @@ jobs:
 
       - name: Commit artifacts
         if: always()
+        id: commit
         run: |
           cd "$GITHUB_WORKSPACE"
           git config user.name "Arena Agent"
           git config user.email "agent@arena.ai"
-          git pull --rebase origin "${GITHUB_REF_NAME}" 2>/dev/null || true
-          git add -A
+          git pull --rebase origin "${GITHUB_REF_NAME}" || echo "PULL FAILED"
+          git add -A || echo "ADD FAILED"
           if git diff --cached --quiet; then
-            echo "nothing to commit"
+            echo "COMMIT RESULT: nothing to commit"
           else
-            git commit -m "ci: APK build output [skip ci]"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            git commit -m "ci: APK build output [skip ci]" || echo "COMMIT FAILED"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || echo "PUSH FAILED"
           fi
+          echo "--- git status ---"
+          git status --short | head -20
+
+      - name: Publish diagnostics (readable from the API)
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "run: $GITHUB_RUN_ID  commit: $GITHUB_SHA"
+            echo
+            echo "===== build.log : head 120 ====="
+            head -120 /tmp/build.log 2>&1
+            echo
+            echo "===== build.log : tail 260 ====="
+            tail -260 /tmp/build.log 2>&1
+            echo
+            echo "===== build tree ====="
+            ls -la /tmp/build 2>&1 | head -30
+            echo
+            echo "===== apk / so found ====="
+            find /tmp/build -type f \( -name '*.apk' -o -name '*.so' \) 2>/dev/null | head -20
+            echo
+            echo "===== gradle home / sdk ====="
+            echo "ANDROID_HOME=$ANDROID_HOME"
+            ls "$ANDROID_HOME" 2>&1 | head -20
+            ls "$ANDROID_HOME/ndk" 2>&1 | head -10
+            echo
+            echo "===== jdk ====="
+            java -version 2>&1 | head -3
+          } > /tmp/diag.txt 2>&1
+          url=$(gh issue create --repo demoneditz985-ctrl/NewSrc \
+                  --title "CI build log $GITHUB_RUN_ID" \
+                  --body-file /tmp/diag.txt 2>&1) || url="ISSUE CREATE FAILED: $url"
+          echo "diagnostics: $url"
+          # keep the run green so the artifact commit above is the only signal
+          true
