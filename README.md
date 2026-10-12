@@ -85,3 +85,31 @@ app/src/main/jni/Android.mk   (ndk-build, armeabi-v7a + arm64-v8a)
 The vendored curl/openssl `.a` blobs and the multi‑MB font headers were not
 imported into git (see below); copy them back from the release zip before
 building, or keep using your original project tree with these files dropped in.
+
+## APK
+
+`apk/ShadowModz-v4.0.apk` (4.6 MB, debug-signed, `armeabi-v7a` + `arm64-v8a`)
+was produced by `.github/workflows/build-apk.yml`. Because this sandbox has no
+JDK / Android SDK / NDK (and `dl.google.com` is unreachable), the build runs on
+a GitHub Actions runner: it downloads the release archive to restore the
+vendored Dobby / curl / OpenSSL prebuilts, overlays the rebranded sources, then
+runs `gradle assembleDebug`.
+
+> The app shell (`src/main/java/com/akn/MainActivity.java`, `MenuService.java`)
+> is a **placeholder** - the release archive contained no Java sources at all,
+> even though the manifest declares both classes. It loads the native module and
+> shows the branded screen. Replace those two files with your real activity and
+> the same workflow builds the full app.
+
+Rebuild any time: push to `arena/**`, or **Actions → Build APK → Run workflow**.
+The run commits `apk/`, `native/` and `ci-out/build.log` back into the branch.
+
+Two build fixes were needed for a modern NDK (kept in the tree):
+- `ci/fix-include-case.py` repairs `#include` directives whose letter case does
+  not match the files on disk (`dobby/dobby.h`, `Il2cpp.h`), a leftover from
+  authoring on a case-insensitive filesystem.
+- `jni/sync_shim.c` supplies `__sync_add_and_fetch_4`, still referenced by the
+  32-bit OpenSSL prebuilt but no longer exported by current NDKs.
+- `minSdkVersion` is 21 (matches `APP_PLATFORM := android-21` in
+  `Application.mk`); AGP would otherwise force `android-19` and the 32-bit
+  OpenSSL prebuilt fails to link.
