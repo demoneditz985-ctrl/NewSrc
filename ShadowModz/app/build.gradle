@@ -5,7 +5,7 @@ android {
     ndkVersion "25.2.9519653"
     defaultConfig {
         applicationId "com.akn"
-        minSdkVersion 19
+        minSdkVersion 21   // 21 matches APP_PLATFORM in jni/Application.mk; the prebuilt OpenSSL needs those libc symbols
         targetSdkVersion 29
         versionCode 1
         versionName "4.0"
