@@ -63,11 +63,16 @@ This migration can be done automatically using the AGP Upgrade Assistant, please
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
 > Task :app:processDebugJavaRes NO-SOURCE
-> Task :app:checkDebugDuplicateClasses
+> Task :app:processDebugManifestForPackage
 > Task :app:mergeDebugJavaResource
+> Task :app:checkDebugDuplicateClasses
+> Task :app:processDebugResources
 > Task :app:desugarDebugFileDependencies
+> Task :app:compileDebugJavaWithJavac
 > Task :app:mergeExtDexDebug
 > Task :app:mergeLibDexDebug
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
 > Task :app:configureNdkBuildDebug[arm64-v8a]
 > Task :app:buildNdkBuildDebug[arm64-v8a]
 > Task :app:configureNdkBuildDebug[armeabi-v7a]
@@ -76,17 +81,12 @@ This migration can be done automatically using the AGP Upgrade Assistant, please
 > Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
-> Task :app:processDebugManifestForPackage
 > Task :app:writeDebugAppMetadata
-> Task :app:stripDebugDebugSymbols
 > Task :app:writeDebugSigningConfigVersions
-> Task :app:processDebugResources
-> Task :app:compileDebugJavaWithJavac
-> Task :app:dexBuilderDebug
-> Task :app:mergeProjectDexDebug
+> Task :app:stripDebugDebugSymbols
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 1m 18s
+BUILD SUCCESSFUL in 1m 31s
 36 actionable tasks: 36 executed
