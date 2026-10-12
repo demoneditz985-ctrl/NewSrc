@@ -6,17 +6,16 @@
  * Current NDKs ship compiler-rt instead of libgcc and no longer export that
  * symbol, so the armeabi-v7a link fails with "undefined symbol".
  *
- * Provide it in terms of the __atomic_* builtin that does exist. Harmless on
- * arm64-v8a, where the symbol is never referenced.
+ * Redefine the symbol in terms of the __atomic_* builtin that does exist,
+ * using an asm label so we never redeclare a compiler builtin. Never
+ * referenced on arm64-v8a, where the prebuilt does not need it.
  *
  * This file only exists to satisfy the linker - no source references it.
  */
-int shadowmodz_sync_add_and_fetch_4(int *ptr, int value);
+int shadowmodz_sync_add_and_fetch_4(int *ptr, int value)
+    __asm__("__sync_add_and_fetch_4");
 
 int shadowmodz_sync_add_and_fetch_4(int *ptr, int value)
 {
     return __atomic_add_fetch(ptr, value, __ATOMIC_SEQ_CST);
 }
-
-extern int __sync_add_and_fetch_4(int *, int)
-    __attribute__((alias("shadowmodz_sync_add_and_fetch_4")));
