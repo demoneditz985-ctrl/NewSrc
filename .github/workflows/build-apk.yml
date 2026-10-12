@@ -60,6 +60,7 @@ jobs:
           # overlay the rebranded SHADOW MODZ sources from this repo
           cp -a ShadowModz/app/src/main/jni/NikuMods/. /tmp/build/app/src/main/jni/NikuMods/
           cp    ShadowModz/app/src/main/jni/Main.cpp   /tmp/build/app/src/main/jni/Main.cpp
+          cp -a ShadowModz/app/src/main/jni/Struct/.   /tmp/build/app/src/main/jni/Struct/
           # linker shim for the legacy __sync_add_and_fetch_4 call in the 32-bit OpenSSL prebuilt
           cp    ShadowModz/app/src/main/jni/sync_shim.c /tmp/build/app/src/main/jni/sync_shim.c
           rm -rf /tmp/build/app/src/main/res
