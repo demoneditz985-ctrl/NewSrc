@@ -69,6 +69,10 @@ jobs:
           cp    ShadowModz/settings.gradle /tmp/build/settings.gradle
           cp    ShadowModz/build.gradle     /tmp/build/build.gradle
 
+          # Repair the case-only #include mismatches this tree carries from a
+          # case-insensitive filesystem (dobby/Dobby, Il2cpp/Il2Cpp, ...).
+          python3 ci/fix-include-case.py /tmp/build/app/src/main/jni | tail -40
+
           # Case-sensitivity shim: this tree was authored on a case-insensitive
           # filesystem, so ur_nikuu/IL2CppSDKGenerator/Il2Cpp.cpp does
           # #include "Il2cpp.h" while the header on disk is Unity/Il2Cpp.h.
