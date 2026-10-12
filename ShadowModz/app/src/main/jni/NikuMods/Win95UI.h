@@ -1,19 +1,24 @@
 #pragma once
 /* ===========================================================================
- * SHADOW MODZ shell  (Windows-XP chrome, dark black + violet skin)
+ * SHADOW MODZ shell  (floating glass panel, dark black + violet skin)
  * ---------------------------------------------------------------------------
- *   font: NikuMods/Win95Assets/MicrosFont.hpp   (MS Sans Serif, 16px)
- *   ico : NikuMods/Win95Assets/Win95Icon.hpp    (SHADOW MODZ title-bar icon)
- *   brand: NikuMods/ShadowBrand.h               (every string + colour)
+ *   font   : NikuMods/Win95Assets/MicrosFont.hpp   (MS Sans Serif, 16px)
+ *   ico    : NikuMods/Win95Assets/Win95Icon.hpp    (SHADOW MODZ brand icon)
+ *   brand  : NikuMods/ShadowBrand.h                (every string + colour)
  *
- * Original upstream Win95 desktop shell, rebranded and reskinned:
- *   - HostMode::Standalone / HWND / win32 SetWindowPos removed. The window is
- *     always embedded, so dragging uses ImGui::SetWindowPos("##win95") and
- *     resizing ImGui::SetWindowSize("##win95"), which is exactly what the
- *     upstream HostMode::Embedded path already did.
+ * The upstream Windows-XP desktop shell has been replaced by a modern floating
+ * panel - no title bar, no min/max/close row, no menu bar, no toolbar, no tab
+ * strip, no status bar, no resize grip:
+ *   - BeginPanel()/EndPanel() draw one rounded glass card that is dragged by
+ *     its header and dismissed with the round close button (back to the
+ *     floating icon).
+ *   - BeginGroup()/EndGroup() are section headers, so every feature page is
+ *     stacked in a single scrolling column instead of hidden behind tabs.
+ *   - HostMode::Standalone / HWND / win32 SetWindowPos removed. Dragging uses
+ *     ImGui::SetWindowPos("##shadowmodz"), the embedded path upstream used.
  *   - ShellExecuteA replaced by an OpenUrl() no-op (no browser on device).
  *   - WIC/D3D11 icon upload replaced by stb_image + a GLES3 texture.
- *   - Palette: dark black surfaces, violet accents, bevelled XP frames kept.
+ *   - Palette: dark black surfaces, violet accents.
  *   - Telegram: COMING SOON (see ShadowBrand::TelegramUrl).
  * =========================================================================== */
 
@@ -156,6 +161,16 @@ constexpr float TickH          = 3. * S;
 constexpr float ComboH         = 20. * S;
 constexpr float ButtonH        = 23. * S;
 
+/* SHADOW MODZ floating-panel metrics (no window chrome any more) */
+constexpr float PanelW        = 340.f * S;
+constexpr float PanelH        = 470.f * S;
+constexpr float PanelRadius   = 18.f * S;
+constexpr float HeaderH       = 44.f * S;   // logo + name + close, drag handle
+constexpr float FooterH       = 28.f * S;   // live dot + uid
+constexpr float SectionHeadH  = 26.f * S;   // feature section title
+constexpr float SwitchW       = 34.f * S;   // pill switch
+constexpr float SwitchH       = 18.f * S;
+
 inline void FillFace(ImDrawList* dl, const ImVec2& a, const ImVec2& b)
 {
     dl->AddRectFilled(a, b, Face);
@@ -251,6 +266,19 @@ inline float Pulse(float speed = 1.6f)
     const float f = t - std::floor(t);
     return (f < 0.5f) ? (f * 2.f) : ((1.f - f) * 2.f);
 }
+
+// Halo that follows a rounded rect - used by the panel, switches and pills.
+inline void GlowRound(ImDrawList* dl, const ImVec2& a, const ImVec2& b, float r, float strength)
+{
+    for (int i = 5; i >= 1; --i)
+    {
+        const float o = (float)i * 2.5f;
+        dl->AddRect(ImVec2(a.x - o, a.y - o), ImVec2(b.x + o, b.y + o),
+                    IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b,
+                             (int)(11.f * strength)),
+                    r + o, 0, 1.5f);
+    }
+}
 }
 /* ---------------------------------------------------------------------------
  * shell.cpp - window frame, tab bar, groups, scrollbar, status bar
@@ -289,10 +317,6 @@ inline ImVec2 s_lastItemMin = ImVec2(0.f, 0.f);
 inline ImVec2 s_lastItemMax = ImVec2(0.f, 0.f);
 
 inline float  s_tabX   = 0.f;
-inline float  s_tabY   = 0.f;
-inline float  s_bodyTop = 0.f;
-inline float  s_menuBarY = 0.f;
-inline float  s_toolbarY = 0.f;
 inline bool   s_toolbarVisible = true;
 inline int    s_currentTab = 0;
 
@@ -344,24 +368,16 @@ inline void CopyStr(char* dst, const char* src, size_t cap)
 
 inline void SetupColumns()
 {
-    const float totalW = s_contentMax.x - s_contentMin.x;
-    const float gw = (totalW - style::ColumnGutter * (s_columns - 1)) / (float)s_columns;
-    for (int i = 0; i < s_columns; ++i)
-    {
-        s_colX[i] = s_contentMin.x + (float)i * (gw + style::ColumnGutter);
-        s_colW[i] = gw;
-        s_colY[i] = s_contentMin.y + 4.f - s_scrollY;
-    }
+    // Single scrolling column - the floating panel stacks its sections.
+    s_colX[0] = s_contentMin.x;
+    s_colW[0] = s_contentMax.x - s_contentMin.x;
+    s_colY[0] = s_contentMin.y - s_scrollY;
 }
-
 inline void SetColumns(int count)
 {
-    if (count < 1) { count = 1; }
-    if (count > 4) { count = 4; }
-    s_columns = count;
-    SetupColumns();
+    (void)count;
+    // Everything is one column now; kept so the pages stay untouched.
 }
-
 inline int& CurrentTab() { return s_currentTab; }
 
 inline void DrawTitleGlyph(const ImVec2& c, int glyph, ImU32 col)
@@ -385,30 +401,6 @@ inline void DrawTitleGlyph(const ImVec2& c, int glyph, ImU32 col)
     }
 }
 
-inline bool TitleButton(const ImVec2& a, const ImVec2& b, int glyph, bool enabled = true)
-{
-    const bool hovered = enabled && ImGui::IsMouseHoveringRect(a, b);
-    const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
-
-    style::FillFace(s_dl, a, b);
-    if (held) { style::Pressed(s_dl, a, b); }
-    else      { style::Raised(s_dl, a, b); }
-
-    const float push = held ? 1.f : 0.f;
-    const ImVec2 c((a.x + b.x) * 0.5f + push, (a.y + b.y) * 0.5f + push);
-
-    if (enabled)
-    {
-        DrawTitleGlyph(c, glyph, style::Text);
-    }
-    else
-    {
-        DrawTitleGlyph(ImVec2(c.x + 1.f, c.y + 1.f), glyph, style::Highlight);
-        DrawTitleGlyph(c, glyph, style::Shadow);
-    }
-
-    return enabled && hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left);
-}
 
 inline void UpdateDrag(const ImVec2& captionMin, const ImVec2& captionMax)
 {
@@ -420,7 +412,7 @@ inline void UpdateDrag(const ImVec2& captionMin, const ImVec2& captionMax)
             return;
         }
         const ImVec2 m = ImGui::GetMousePos();
-        ImGui::SetWindowPos("##win95", ImVec2(m.x - s_dragOffset.x, m.y - s_dragOffset.y));
+        ImGui::SetWindowPos("##shadowmodz", ImVec2(m.x - s_dragOffset.x, m.y - s_dragOffset.y));
         return;
     }
 
@@ -432,244 +424,156 @@ inline void UpdateDrag(const ImVec2& captionMin, const ImVec2& captionMax)
     }
 }
 
-inline void UpdateResize(const ImVec2& gripMin, const ImVec2& gripMax)
-{
-    if (s_resizing)
-    {
-        if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
-        {
-            s_resizing = false;
-            return;
-        }
-        const ImVec2 m = ImGui::GetMousePos();
-        float w = m.x - s_winMin.x;
-        float h = m.y - s_winMin.y;
-        if (w < (float)kMinWidth)  { w = (float)kMinWidth; }
-        if (h < (float)kMinHeight) { h = (float)kMinHeight; }
-        ImGui::SetWindowSize("##win95", ImVec2(w, h));
-        return;
-    }
 
-    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::IsMouseHoveringRect(gripMin, gripMax))
-    {
-        s_resizing = true;
-    }
-}
-
-inline void BeginMain(const char* title)
+/* SHADOW MODZ floating panel: a rounded glass card with no window chrome.
+ * Drag it by the header, close it with the round button (back to the floating
+ * icon). Every feature lives in the scrolling section list below. */
+inline void BeginPanel()
 {
     const ImVec2 size = ImGui::GetIO().DisplaySize;
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, style::Face);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.f, 0.f, 0.f, 0.f));
 
-    ImGuiWindowFlags flags =
-        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoSavedSettings;
-
-    // Never let the frame grow past the viewport: on small screens the window
-    // would otherwise hang off the edge and take its caption buttons with it.
-    ImVec2 def(kDefaultW, kDefaultH);
-    if (def.x > size.x) { def.x = size.x; }
-    if (def.y > size.y) { def.y = size.y; }
-    if (def.x < (float)kMinWidth)  { def.x = (float)kMinWidth; }
-    if (def.y < (float)kMinHeight) { def.y = (float)kMinHeight; }
+    float w = style::PanelW;
+    float h = style::PanelH;
+    if (w > size.x - 24.f) { w = size.x - 24.f; }
+    if (h > size.y - 40.f) { h = size.y - 40.f; }
 
     const ImGuiCond cond = s_forcePlace ? ImGuiCond_Always : ImGuiCond_FirstUseEver;
-    ImVec2 pos((size.x - def.x) * 0.5f, (size.y - def.y) * 0.5f);
-    // On a display narrower/shorter than the window minimum the centred
-    // position goes negative and pushes the caption off-screen, so keep the
-    // top-left corner on-screen instead.
-    if (pos.x < 0.f) { pos.x = 0.f; }
-    if (pos.y < 0.f) { pos.y = 0.f; }
+    ImVec2 pos((size.x - w) * 0.5f, (size.y - h) * 0.5f);
+    if (pos.x < 12.f) { pos.x = 12.f; }
+    if (pos.y < 12.f) { pos.y = 12.f; }
     ImGui::SetNextWindowPos(pos, cond);
-    ImGui::SetNextWindowSize(def, cond);
-    ImGui::SetNextWindowSizeConstraints(ImVec2((float)kMinWidth, (float)kMinHeight), size);
+    ImGui::SetNextWindowSize(ImVec2(w, h), cond);
     s_forcePlace = false;
 
-    ImGui::Begin("##win95", nullptr, flags);
+    ImGui::Begin("##shadowmodz", nullptr,
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings);
+
     s_dl     = ImGui::GetWindowDrawList();
     s_winMin = ImGui::GetWindowPos();
     const ImVec2 winSize = ImGui::GetWindowSize();
     s_winMax = ImVec2(s_winMin.x + winSize.x, s_winMin.y + winSize.y);
 
-    // SHADOW MODZ: window body fades from panel violet-black down to near-black.
-    style::FillGradientV(s_dl, s_winMin, s_winMax, style::Face, style::BgDeep);
-    style::Raised(s_dl, s_winMin, s_winMax);
-    style::AccentEdge(s_dl, s_winMin, s_winMax, style::AccentDeep);
+    const float r = style::PanelRadius;
 
-    const float  inset = style::FrameBorder;
-    const ImVec2 titleMin(s_winMin.x + inset, s_winMin.y + inset);
-    const ImVec2 titleMax(s_winMax.x - inset, titleMin.y + style::TitleBarH);
+    // ---- glass card ------------------------------------------------------
+    style::GlowRound(s_dl, s_winMin, s_winMax, r, 0.9f);
+    s_dl->AddRectFilledMultiColorRounded(s_winMin, s_winMax, style::BgDeep,
+                                         style::Face, style::Face, style::BgDeep, style::BgDeep, r, 0);
+    s_dl->AddRect(s_winMin, s_winMax, style::AccentDeep, r, 0, 2.f);
+    s_dl->AddRect(ImVec2(s_winMin.x + 1.f, s_winMin.y + 1.f),
+                  ImVec2(s_winMax.x - 1.f, s_winMax.y - 1.f),
+                  IM_COL32(ShadowBrand::AccentGlow.r, ShadowBrand::AccentGlow.g,
+                           ShadowBrand::AccentGlow.b, 34), r - 1.f, 0, 1.f);
 
-    // Title bar: violet XP gradient + glow seam where the body starts.
-    style::FillGradientV(s_dl, titleMin, titleMax, AccentColor(), style::TitleRight);
-    s_dl->AddRectFilled(ImVec2(titleMin.x, titleMax.y - 1.f),
-                        ImVec2(titleMax.x, titleMax.y), style::AccentGlow);
-    style::Glow(s_dl, titleMin, titleMax, 0.35f);
+    // ---- header ----------------------------------------------------------
+    const float  hh   = style::HeaderH;
+    const ImVec2 hMin(s_winMin.x + 10.f, s_winMin.y + 10.f);
+    const ImVec2 hMax(s_winMax.x - 10.f, s_winMin.y + 10.f + hh);
 
-    const float  icoSize = style::TitleBarH - 4.f;
-    const ImVec2 icoMin(titleMin.x + 3.f, titleMin.y + (style::TitleBarH - icoSize) * 0.5f);
-    const ImVec2 icoMax(icoMin.x + icoSize, icoMin.y + icoSize);
+    style::GlowRound(s_dl, hMin, hMax, 12.f, 0.35f);
+    s_dl->AddRectFilledMultiColorRounded(hMin, hMax, style::AccentDeep,
+                                         style::AccentDeep, style::Accent, style::Accent, style::AccentDeep,
+                                         12.f, 0);
+    s_dl->AddRect(hMin, hMax,
+                  IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 90),
+                  12.f, 0, 1.f);
+
+    // logo disc
+    const float  lr = (hh - 10.f) * 0.5f;
+    const ImVec2 lc(hMin.x + 8.f + lr, (hMin.y + hMax.y) * 0.5f);
+    s_dl->AddCircleFilled(lc, lr, style::BgDeep, 24);
+    s_dl->AddCircle(lc, lr, style::AccentGlow, 24, 2.f);
     if (IconTex() != 0)
     {
-        s_dl->AddImage(IconTex(), icoMin, icoMax);
-    }
-    else
-    {
-        style::FillFace(s_dl, icoMin, icoMax);
-        style::Raised(s_dl, icoMin, icoMax);
+        const float ir = lr - 4.f;
+        s_dl->AddImage(IconTex(), ImVec2(lc.x - ir, lc.y - ir), ImVec2(lc.x + ir, lc.y + ir));
     }
 
-    const float textY = titleMin.y + (style::TitleBarH - ImGui::GetTextLineHeight()) * 0.5f;
-    s_dl->AddText(ImVec2(icoMax.x + 5.f, textY + 1.f), IM_COL32(0, 0, 0, 160), title);
-    s_dl->AddText(ImVec2(icoMax.x + 4.f, textY), style::TitleText, title);
+    // name + version chip
+    const float  tx = lc.x + lr + 10.f;
+    const float  ty = (hMin.y + hMax.y) * 0.5f - ImGui::GetTextLineHeight() * 0.5f;
+    const ImVec2 ns = ImGui::CalcTextSize(ShadowBrand::BrandName);
+    s_dl->AddText(ImVec2(tx + 1.f, ty + 1.f), IM_COL32(0, 0, 0, 170), ShadowBrand::BrandName);
+    s_dl->AddText(ImVec2(tx, ty), style::TitleText, ShadowBrand::BrandName);
 
-    const float btnY   = titleMin.y + (style::TitleBarH - style::TitleBtnH) * 0.5f;
-    const float closeX = titleMax.x - style::TitleBtnW - 1.f;
-    const float maxX   = closeX - style::TitleBtnW;
-    const float minX   = maxX - style::TitleBtnW - 1.f;
+    const ImVec2 vs = ImGui::CalcTextSize(ShadowBrand::Version);
+    const ImVec2 cMin(tx + ns.x + 8.f, ty + 1.f);
+    const ImVec2 cMax(cMin.x + vs.x + 12.f, cMin.y + vs.y + 4.f);
+    s_dl->AddRectFilled(cMin, cMax, IM_COL32(255, 255, 255, 40), (cMax.y - cMin.y) * 0.5f);
+    s_dl->AddText(ImVec2(cMin.x + 6.f, ty), style::TitleText, ShadowBrand::Version);
 
-    if (TitleButton(ImVec2(closeX, btnY), ImVec2(closeX + style::TitleBtnW, btnY + style::TitleBtnH), 2))
-    {
-        s_closeRequested = true;
-    }
-    TitleButton(ImVec2(maxX, btnY), ImVec2(maxX + style::TitleBtnW, btnY + style::TitleBtnH), 1, false);
-    if (TitleButton(ImVec2(minX, btnY), ImVec2(minX + style::TitleBtnW, btnY + style::TitleBtnH), 0))
-    {
-        s_closeRequested = true;
-    }
+    // round close button
+    const float  br     = 11.f * style::S;
+    const ImVec2 bc(hMax.x - 8.f - br, (hMin.y + hMax.y) * 0.5f);
+    const bool   bHover = ImGui::IsMouseHoveringRect(ImVec2(bc.x - br, bc.y - br),
+                                                     ImVec2(bc.x + br, bc.y + br));
+    s_dl->AddCircleFilled(bc, br, bHover ? IM_COL32(196, 62, 88, 255) : IM_COL32(38, 27, 60, 255), 20);
+    s_dl->AddCircle(bc, br, bHover ? style::AccentGlow : style::Light, 20, 1.5f);
+    s_dl->AddLine(ImVec2(bc.x - 4.f, bc.y - 4.f), ImVec2(bc.x + 4.f, bc.y + 4.f), style::Text, 2.f);
+    s_dl->AddLine(ImVec2(bc.x + 4.f, bc.y - 4.f), ImVec2(bc.x - 4.f, bc.y + 4.f), style::Text, 2.f);
+    if (bHover && ImGui::IsMouseReleased(ImGuiMouseButton_Left)) { s_closeRequested = true; }
 
-    UpdateDrag(titleMin, ImVec2(minX, titleMax.y));
+    UpdateDrag(hMin, ImVec2(bc.x - br - 6.f, hMax.y));
 
-    s_menuBarY = titleMax.y;
-    s_toolbarY = s_menuBarY + style::MenuBarH;
+    // ---- body ------------------------------------------------------------
+    s_bodyMin = ImVec2(s_winMin.x + 12.f, hMax.y + 8.f);
+    s_bodyMax = ImVec2(s_winMax.x - 12.f, s_winMax.y - style::FooterH);
+    s_contentMin = ImVec2(s_bodyMin.x + 6.f, s_bodyMin.y + 4.f);
+    s_contentMax = ImVec2(s_bodyMax.x - 6.f, s_bodyMax.y - 4.f);
 
-    s_tabY    = s_toolbarY + (s_toolbarVisible ? style::ToolbarH : 0.f) + 2.f;
-    s_bodyTop = s_tabY + style::TabBarH;
-    // A short window cannot afford the toolbar; drop it so pages keep their
-    // rows instead of being pushed out of a scrolling body.
-    if (winSize.y < 340.f * style::S) { s_toolbarVisible = false; }
-
-    s_tabX    = s_winMin.x + inset + 4.f;
-
-    const ImVec2 bodyMin(s_winMin.x + inset, s_bodyTop);
-    const ImVec2 bodyMax(s_winMax.x - inset, s_winMax.y - inset - style::StatusBarH - 2.f);
-    style::Raised(s_dl, bodyMin, bodyMax);
-    s_bodyMin = bodyMin;
-    s_bodyMax = bodyMax;
-
-    s_contentMin = ImVec2(bodyMin.x + style::ContentPad, bodyMin.y + style::ContentPad);
-    s_contentMax = ImVec2(bodyMax.x - style::ContentPad, bodyMax.y - style::ContentPad);
-    if (s_needScrollbar)
-    {
-        s_contentMax.x -= style::ScrollbarW;
-    }
-    SetupColumns();
-
-    s_maxColBottom     = s_contentMin.y - s_scrollY;
-    s_contentClipped   = false;
+    s_panelX        = s_contentMin.x;
+    s_panelW        = s_contentMax.x - s_contentMin.x;
+    s_cursor        = ImVec2(s_panelX, s_contentMin.y - s_scrollY);
+    s_maxColBottom  = s_contentMin.y - s_scrollY;
+    s_contentClipped = false;
     s_popupBlockClicks = (s_popup[0] != '\0') || MenuIsOpen();
-}
-
-inline bool TabButton(const char* label, int index)
-{
-    const bool  active = (s_currentTab == index);
-    const ImVec2 ts     = ImGui::CalcTextSize(label);
-    const float  w      = ts.x + style::TabPadX * 2.f;
-
-    const float  top     = active ? s_tabY : s_tabY + 2.f;
-    const ImVec2 a(s_tabX, top);
-    const ImVec2 b(s_tabX + w, s_bodyTop + (active ? 1.f : -1.f));
-    const bool   hovered = PopUpsAreClosed() && ImGui::IsMouseHoveringRect(a, b);
-
-    // SHADOW MODZ tabs: violet when selected, dark bevelled when not.
-    if (active)
-    {
-        style::FillGradientV(s_dl, a, b, style::BtnTopHover, style::BtnBotHover);
-        style::Glow(s_dl, a, b, 0.55f);
-        s_dl->AddRectFilled(ImVec2(a.x, b.y - 2.f), ImVec2(b.x, b.y), style::Accent);
-    }
-    else
-    {
-        style::FillGradientV(s_dl, a, b, style::Light, style::Face);
-        if (hovered) { style::Glow(s_dl, a, b, 0.35f); }
-    }
-
-    style::Edge(s_dl, a, b, style::Highlight, style::Shadow);
-    s_dl->AddRectFilled(ImVec2(b.x - 1.f, a.y), ImVec2(b.x, b.y), style::DarkShadow);
-
-    if (active)
-    {
-        s_dl->AddRectFilled(ImVec2(a.x + 1.f, s_bodyTop - 1.f), ImVec2(b.x - 1.f, s_bodyTop + 2.f), style::Face);
-    }
-
-    const ImVec2 tp(a.x + style::TabPadX, (a.y + b.y) * 0.5f - ts.y * 0.5f);
-    s_dl->AddText(ImVec2(tp.x + 1.f, tp.y + 1.f), IM_COL32(0, 0, 0, 150), label);
-    s_dl->AddText(tp, active ? style::AccentGlow : style::Text, label);
-
-    bool clicked = false;
-    if (ImGui::IsMouseHoveringRect(a, b) && ImGui::IsMouseReleased(ImGuiMouseButton_Left) && PopUpsAreClosed())
-    {
-        if (s_currentTab != index) { s_scrollY = 0.f; }
-        s_currentTab = index;
-        clicked = true;
-    }
-
-    s_tabX = b.x + 2.f;
-    return clicked;
 }
 
 inline bool BeginGroup(const char* label, int column)
 {
-    if (column < 0) { column = 0; }
-    if (column >= s_columns) { column = s_columns - 1; }
+    (void)column;
 
+    // Clip the whole panel body once, so long feature lists scroll cleanly.
     if (!s_contentClipped)
     {
-        s_dl->PushClipRect(ImVec2(s_bodyMin.x + 1.f, s_bodyTop + 1.f),
-                           ImVec2(s_bodyMax.x - 1.f, s_bodyMax.y - 1.f), true);
+        s_dl->PushClipRect(s_bodyMin, s_bodyMax, true);
         s_contentClipped = true;
     }
 
-    s_curCol      = column;
-    s_panelX      = s_colX[column];
-    s_panelW      = s_colW[column];
-    s_groupStartY = s_colY[column];
-    s_cursor      = ImVec2(s_panelX + style::GroupInnerX, s_groupStartY + style::GroupTopPad);
+    s_curCol      = 0;
+    s_panelX      = s_contentMin.x;
+    s_panelW      = s_contentMax.x - s_contentMin.x;
+    s_groupStartY = s_maxColBottom;
+    s_cursor      = ImVec2(s_panelX, s_groupStartY + style::SectionHeadH);
     s_indent      = 0.f;
-
     CopyStr(s_groupLabel, label, sizeof(s_groupLabel));
+
+    // Section head: violet accent bar + uppercase title + hairline divider.
+    char up[64];
+    CopyStr(up, label, sizeof(up));
+    for (char* p = up; *p; ++p) { *p = (char)std::toupper((unsigned char)*p); }
+
+    const float y  = s_groupStartY;
+    const float hh = style::SectionHeadH;
+    s_dl->AddRectFilled(ImVec2(s_panelX, y + hh * 0.25f),
+                        ImVec2(s_panelX + 3.f, y + hh * 0.75f), style::Accent, 1.5f);
+    s_dl->AddText(ImVec2(s_panelX + 12.f, y + (hh - ImGui::GetTextLineHeight()) * 0.5f),
+                  style::AccentGlow, up);
+    s_dl->AddLine(ImVec2(s_panelX + 12.f, y + hh - 3.f),
+                  ImVec2(s_panelX + s_panelW, y + hh - 3.f),
+                  IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 45));
     return true;
 }
-
 inline void EndGroup()
 {
-    const float bottom = s_cursor.y - style::RowSpacing + style::GroupBottomPad;
-    const float h      = bottom - s_groupStartY;
-    const ImVec2 a(s_panelX, s_groupStartY);
-    const ImVec2 b(s_panelX + s_panelW, s_groupStartY + h);
-
-    // SHADOW MODZ group box: near-black fill, etched violet frame, glowing title.
-    s_dl->AddRectFilled(a, b, style::GroupBg);
-    style::Etched(s_dl, a, b);
-    style::AccentEdge(s_dl, ImVec2(a.x + 1.f, a.y + 1.f), ImVec2(b.x - 1.f, b.y - 1.f),
-                      IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 55));
-
-    const ImVec2 ts = ImGui::CalcTextSize(s_groupLabel);
-    const float  lx = a.x + 7.f;
-    s_dl->AddRectFilled(ImVec2(lx - 2.f, a.y - 1.f), ImVec2(lx + ts.x + 2.f, a.y + 2.f), style::GroupBg);
-    s_dl->AddText(ImVec2(lx, a.y - ts.y * 0.5f + 1.f), style::AccentGlow, s_groupLabel);
-
-    s_colY[s_curCol] = s_groupStartY + h + style::GroupGap;
-    if (s_colY[s_curCol] > s_maxColBottom)
-    {
-        s_maxColBottom = s_colY[s_curCol];
-    }
+    // No box to close: sections are separated by their header + divider.
+    s_maxColBottom = s_cursor.y + style::GroupGap + 6.f;
 }
-
 inline ImVec2 CursorPos() { return s_cursor; }
 
 inline void AddItem(const ImVec2& size)
@@ -686,12 +590,9 @@ inline float ContentWidth() { return s_panelW - style::GroupInnerX * 2.f - s_ind
 inline float PanelLeftX()   { return s_panelX + style::GroupInnerX; }
 inline float PanelRightX()  { return s_panelX + s_panelW - style::GroupInnerX; }
 
-inline float BodyTop()    { return s_bodyTop; }
 inline float BodyBottom() { return s_bodyMax.y; }
 inline float BodyLeft()   { return s_bodyMin.x; }
 inline float BodyRight()  { return s_bodyMax.x; }
-inline float MenuBarTop() { return s_menuBarY; }
-inline float ToolbarTop() { return s_toolbarY; }
 inline void  SetToolbarVisible(bool visible) { s_toolbarVisible = visible; }
 
 inline void SetAccent(const float col[4], bool enabled)
@@ -724,17 +625,6 @@ inline bool CloseRequested()
     return r;
 }
 
-inline void DrawGrip(const ImVec2& corner)
-{
-    for (int i = 0; i < 3; ++i)
-    {
-        const float  o = (float)(i * 4);
-        const ImVec2 a(corner.x - 2.f - o, corner.y - 2.f);
-        const ImVec2 b(corner.x - 2.f, corner.y - 2.f - o);
-        s_dl->AddLine(ImVec2(a.x, a.y + 1.f), ImVec2(b.x + 1.f, b.y + 1.f), style::Highlight, 1.f);
-        s_dl->AddLine(a, b, style::Shadow, 1.f);
-    }
-}
 
 inline void ScrollArrow(const ImVec2& a, const ImVec2& b, bool up)
 {
@@ -755,87 +645,8 @@ inline void ScrollArrow(const ImVec2& a, const ImVec2& b, bool up)
     }
 }
 
-inline void DrawScrollbar(float availH, float contentHeight, float maxScroll)
-{
-    const ImVec2 sbMin(s_bodyMax.x - 2.f - style::ScrollbarW, s_bodyTop + 2.f);
-    const ImVec2 sbMax(s_bodyMax.x - 2.f, s_bodyMax.y - 2.f);
 
-    const ImVec2 upMin(sbMin.x, sbMin.y);
-    const ImVec2 upMax(sbMax.x, sbMin.y + style::ScrollArrowBtn);
-    const ImVec2 dnMin(sbMin.x, sbMax.y - style::ScrollArrowBtn);
-    const ImVec2 dnMax(sbMax.x, sbMax.y);
-    const ImVec2 trMin(sbMin.x, upMax.y);
-    const ImVec2 trMax(sbMax.x, dnMin.y);
-
-    style::Stipple(s_dl, trMin, trMax, style::Highlight, style::Face);
-    ScrollArrow(upMin, upMax, true);
-    ScrollArrow(dnMin, dnMax, false);
-
-    const float trackH = trMax.y - trMin.y;
-    float thumbH = (contentHeight > 0.f) ? trackH * availH / contentHeight : trackH;
-    if (thumbH < style::ScrollMinThumb) { thumbH = style::ScrollMinThumb; }
-    if (thumbH > trackH)               { thumbH = trackH; }
-    const float thumbRange = trackH - thumbH;
-    const float frac = (maxScroll > 0.f) ? (s_scrollY / maxScroll) : 0.f;
-    const float thumbY = trMin.y + thumbRange * frac;
-    const ImVec2 thMin(trMin.x, thumbY);
-    const ImVec2 thMax(trMax.x, thumbY + thumbH);
-    style::FillFace(s_dl, thMin, thMax);
-    style::Raised(s_dl, thMin, thMax);
-
-    if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && !s_scrollDrag && PopUpsAreClosed() &&
-        ImGui::IsMouseHoveringRect(trMin, trMax))
-    {
-        const float my = ImGui::GetMousePos().y;
-        if (my < thumbY)
-        {
-            style::Stipple(s_dl, trMin, ImVec2(trMax.x, thumbY), style::Face, style::Shadow);
-        }
-        else if (my > thumbY + thumbH)
-        {
-            style::Stipple(s_dl, ImVec2(trMin.x, thumbY + thumbH), trMax, style::Face, style::Shadow);
-        }
-    }
-
-    if (s_scrollDrag)
-    {
-        if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
-        {
-            s_scrollDrag = false;
-        }
-        else if (thumbRange > 0.f)
-        {
-            const float my = ImGui::GetMousePos().y;
-            float f = ((my - s_scrollGrab) - trMin.y) / thumbRange;
-            if (f < 0.f) { f = 0.f; }
-            if (f > 1.f) { f = 1.f; }
-            s_scrollY = f * maxScroll;
-        }
-        return;
-    }
-
-    if (!PopUpsAreClosed()) { return; }
-
-    if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
-    {
-        if (ImGui::IsMouseHoveringRect(upMin, upMax)) { s_scrollY -= 4.f; }
-        else if (ImGui::IsMouseHoveringRect(dnMin, dnMax)) { s_scrollY += 4.f; }
-    }
-
-    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::IsMouseHoveringRect(thMin, thMax))
-    {
-        s_scrollDrag = true;
-        s_scrollGrab = ImGui::GetMousePos().y - thumbY;
-    }
-    else if (ImGui::IsMouseHoveringRect(trMin, trMax) && ImGui::IsMouseClicked(ImGuiMouseButton_Left, true))
-    {
-        const float my = ImGui::GetMousePos().y;
-        if (my < thumbY) { s_scrollY -= availH * 0.9f; }
-        else if (my > thumbY + thumbH) { s_scrollY += availH * 0.9f; }
-    }
-}
-
-inline void EndMain()
+inline void EndPanel()
 {
     if (s_contentClipped)
     {
@@ -857,43 +668,44 @@ inline void EndMain()
         }
         if (s_scrollY < 0.f) { s_scrollY = 0.f; }
         if (s_scrollY > maxScroll) { s_scrollY = maxScroll; }
-        DrawScrollbar(availH, contentHeight, maxScroll);
+
+        // slim scrollbar hugging the right edge of the card
+        const float trackH = s_bodyMax.y - s_bodyMin.y;
+        float thumbH = trackH * (availH / contentHeight);
+        if (thumbH < 30.f) { thumbH = 30.f; }
+        const float ty     = s_bodyMin.y + (trackH - thumbH) *
+                             (maxScroll > 0.f ? (s_scrollY / maxScroll) : 0.f);
+        s_dl->AddRectFilled(ImVec2(s_bodyMax.x - 3.f, s_bodyMin.y),
+                            ImVec2(s_bodyMax.x, s_bodyMax.y), IM_COL32(255, 255, 255, 16), 1.5f);
+        s_dl->AddRectFilled(ImVec2(s_bodyMax.x - 3.f, ty),
+                            ImVec2(s_bodyMax.x, ty + thumbH), style::Accent, 1.5f);
     }
     else
     {
         s_scrollY = 0.f;
     }
 
-    if (s_scrollY < 0.f) { s_scrollY = 0.f; }
-    if (s_scrollY > maxScroll) { s_scrollY = maxScroll; }
+    // ---- footer: live dot + uid -----------------------------------------
+    const ImVec2 fMin(s_winMin.x + 14.f, s_winMax.y - style::FooterH);
+    const ImVec2 fMax(s_winMax.x - 14.f, s_winMax.y - 10.f);
+    s_dl->AddLine(ImVec2(fMin.x, fMin.y), ImVec2(fMax.x, fMin.y),
+                  IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 70));
 
-    const float  inset = style::FrameBorder;
-    const ImVec2 statusMin(s_winMin.x + inset, s_winMax.y - inset - style::StatusBarH);
-    const ImVec2 statusMax(s_winMax.x - inset, s_winMax.y - inset);
+    const float dy = (fMin.y + fMax.y) * 0.5f;
+    s_dl->AddCircleFilled(ImVec2(fMin.x + 6.f, dy), 3.5f * style::S, IM_COL32(74, 222, 128, 255), 12);
+    s_dl->AddCircle(ImVec2(fMin.x + 6.f, dy), 3.5f * style::S, IM_COL32(74, 222, 128, 90), 12, 3.f);
+    s_dl->AddText(ImVec2(fMin.x + 18.f, dy - ImGui::GetTextLineHeight() * 0.5f),
+                  style::AccentGlow, ShadowBrand::StatusUser);
 
-    const ImVec2 cellMax(statusMax.x - 16.f, statusMax.y);
-
-    // SHADOW MODZ status bar: dark strip with a violet seam on top.
-    s_dl->AddRectFilled(statusMin, cellMax, style::StatusBg);
-    s_dl->AddRectFilled(ImVec2(statusMin.x, statusMin.y - 1.f),
-                        ImVec2(cellMax.x, statusMin.y),
-                        IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 120));
-    style::Sunken(s_dl, statusMin, cellMax);
-
-    const float ty = statusMin.y + (style::StatusBarH - ImGui::GetTextLineHeight()) * 0.5f;
-    s_dl->AddText(ImVec2(statusMin.x + 5.f, ty), style::AccentGlow, ShadowBrand::StatusUser);
     const char*  uid = ShadowBrand::StatusUid;
-    const ImVec2 uidSize = ImGui::CalcTextSize(uid);
-    s_dl->AddText(ImVec2(cellMax.x - uidSize.x - 5.f, ty), style::TextDisabled, uid);
-
-    DrawGrip(ImVec2(statusMax.x, statusMax.y));
-    UpdateResize(ImVec2(statusMax.x - style::GripSize, statusMax.y - style::GripSize), statusMax);
+    const ImVec2 us  = ImGui::CalcTextSize(uid);
+    s_dl->AddText(ImVec2(fMax.x - us.x, dy - ImGui::GetTextLineHeight() * 0.5f),
+                  style::TextDisabled, uid);
 
     ImGui::End();
     ImGui::PopStyleColor();
     ImGui::PopStyleVar(2);
-}
-/* ---------------------------------------------------------------------------
+}/* ---------------------------------------------------------------------------
  * widgets.cpp - checkbox, button, label, progress, radio, separator, tree
  * ------------------------------------------------------------------------ */
 inline ImVec2 InsetMin(const ImVec2& a, float e) { return ImVec2(a.x + e, a.y + e); }
@@ -922,37 +734,24 @@ inline bool Checkbox(const char* label, bool* value)
     const float  th = ImGui::GetTextLineHeight();
     const float  ty = s_cursor.y + (style::RowHeight - th) * 0.5f;
 
-    const ImVec2 boxA(s_cursor.x, s_cursor.y + (style::RowHeight - style::CheckboxSize) * 0.5f);
-    const ImVec2 boxB(boxA.x + style::CheckboxSize, boxA.y + style::CheckboxSize);
+    const ImVec2 boxA(s_cursor.x, s_cursor.y + (style::RowHeight - style::SwitchH) * 0.5f);
+    const ImVec2 boxB(boxA.x + style::SwitchW, boxA.y + style::SwitchH);
+    const float  rad = style::SwitchH * 0.5f;
 
     const bool enabled = PopUpsAreClosed();
     const bool hovered = enabled && ImGui::IsMouseHoveringRect(boxA, boxB);
 
-    // SHADOW MODZ checkbox: sunken dark field, violet tick, halo when live.
-    style::FillGradientV(s_dl, boxA, boxB, style::Field, style::Face);
-    if (*value) { style::Sunken(s_dl, boxA, boxB); }
-    else        { style::Raised(s_dl, boxA, boxB); }
+    // SHADOW MODZ pill switch: sliding knob, violet halo while on.
+    if (*value) { style::GlowRound(s_dl, boxA, boxB, rad, 0.75f); }
 
-    if (*value)
-    {
-        style::Glow(s_dl, boxA, boxB, 0.5f);
-        s_dl->AddRectFilled(InsetMin(boxA, 2.f), InsetMax(boxB, 2.f),
-                            IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 38));
+    s_dl->AddRectFilled(boxA, boxB, *value ? style::AccentDeep : style::Field, rad);
+    s_dl->AddRect(boxA, boxB, *value ? style::Accent : style::Light, rad, 0, 1.f);
 
-        const ImVec2 ca(boxA.x + 3.f, boxA.y + 3.f);
-        const ImVec2 cb(boxB.x - 3.f, boxB.y - 3.f);
-        s_dl->AddLine(ImVec2(ca.x - 0.5f, (ca.y + cb.y) * 0.5f),
-                      ImVec2(ca.x + (cb.x - ca.x) * 0.35f, cb.y), AccentColor(), 2.0f);
-        s_dl->AddLine(ImVec2(ca.x + (cb.x - ca.x) * 0.35f, cb.y), ImVec2(cb.x, ca.y - 0.5f), AccentColor(), 2.0f);
-    }
+    const float kx = *value ? (boxB.x - rad) : (boxA.x + rad);
+    s_dl->AddCircleFilled(ImVec2(kx, (boxA.y + boxB.y) * 0.5f), rad - 3.f,
+                          *value ? style::AccentGlow : style::TextDisabled, 16);
 
-    if (hovered)
-    {
-        style::Glow(s_dl, boxA, boxB, 0.6f);
-        s_dl->AddRect(InsetMin(boxA, 1.f), InsetMax(boxB, 1.f), style::AccentGlow, 1.f, 0, 1.f);
-    }
-
-    s_dl->AddText(ImVec2(boxB.x + 5.f, ty), style::Text, label);
+    s_dl->AddText(ImVec2(boxB.x + 8.f, ty), *value ? style::Text : style::TextDisabled, label);
 #ifdef NIKU_HARNESS
     DbgRecord(boxA, boxB);
 #endif
@@ -964,10 +763,9 @@ inline bool Checkbox(const char* label, bool* value)
         changed = true;
     }
 
-    AddItem(ImVec2(style::CheckboxSize + 5.f + ts.x, style::RowHeight));
+    AddItem(ImVec2(style::SwitchW + 8.f + ts.x, style::RowHeight));
     return changed;
 }
-
 inline void Label(const char* text)
 {
     const ImVec2 ts = ImGui::CalcTextSize(text);
@@ -979,23 +777,23 @@ inline bool Button(const char* label, const ImVec2& size)
 {
     const ImVec2 a = s_cursor;
     const ImVec2 b(s_cursor.x + size.x, s_cursor.y + size.y);
+    const float  r = size.y * 0.5f;
 
     const bool enabled = PopUpsAreClosed();
     const bool hovered = enabled && ImGui::IsMouseHoveringRect(a, b);
     const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
 
-    // SHADOW MODZ button: violet gradient face, XP bevel, halo on hover.
-    if (hovered) { style::Glow(s_dl, a, b, held ? 1.0f : 0.8f); }
+    // SHADOW MODZ pill button: rounded gradient face + violet halo.
+    if (hovered) { style::GlowRound(s_dl, a, b, r, held ? 1.0f : 0.75f); }
 
-    style::FillGradientV(s_dl, a, b,
-                         hovered ? style::BtnTopHover : style::BtnTop,
-                         hovered ? style::BtnBotHover : style::BtnBot);
-
-    if (held) { style::Pressed(s_dl, a, b); }
-    else      { style::Raised(s_dl, a, b); }
-
-    style::AccentEdge(s_dl, a, b, hovered ? style::AccentGlow : style::AccentDeep);
-    style::Gloss(s_dl, a, b, hovered ? 48 : 20);
+    s_dl->AddRectFilledMultiColorRounded(a, b, style::BtnBot,
+                                         hovered ? style::BtnTopHover : style::BtnTop,
+                                         hovered ? style::BtnTopHover : style::BtnTop,
+                                         hovered ? style::BtnBotHover : style::BtnBot,
+                                         hovered ? style::BtnBotHover : style::BtnBot, r, 0);
+    s_dl->AddRect(a, b, hovered ? style::AccentGlow : style::AccentDeep, r, 0, 1.5f);
+    s_dl->AddRectFilled(ImVec2(a.x + 6.f, a.y + 2.f), ImVec2(b.x - 6.f, a.y + 3.f),
+                        IM_COL32(255, 255, 255, hovered ? 56 : 26));
 
     const float  push = held ? 1.f : 0.f;
     const ImVec2 ts   = ImGui::CalcTextSize(label);
@@ -1006,35 +804,35 @@ inline bool Button(const char* label, const ImVec2& size)
     AddItem(size);
     return hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left);
 }
-
 // Full-violet variant for the primary action of a page (Telegram, Save, ...).
 inline bool AccentButton(const char* label, const ImVec2& size, bool enabled = true)
 {
     const ImVec2 a = s_cursor;
     const ImVec2 b(s_cursor.x + size.x, s_cursor.y + size.y);
+    const float  r = size.y * 0.5f;
 
     const bool live    = enabled && PopUpsAreClosed();
     const bool hovered = live && ImGui::IsMouseHoveringRect(a, b);
     const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
 
-    if (hovered) { style::Glow(s_dl, a, b, 1.0f); }
+    if (hovered) { style::GlowRound(s_dl, a, b, r, 1.0f); }
 
     if (!enabled)
     {
-        style::FillGradientV(s_dl, a, b, style::BtnBot, style::BgDeep);
-        style::AccentEdge(s_dl, a, b, style::Light);
+        s_dl->AddRectFilled(a, b, style::BtnBot, r);
+        s_dl->AddRect(a, b, style::Light, r, 0, 1.f);
     }
     else
     {
-        style::FillGradientV(s_dl, a, b,
-                             hovered ? style::AccentGlow : style::Accent,
-                             hovered ? style::Accent : style::AccentDeep);
-        style::AccentEdge(s_dl, a, b, hovered ? style::AccentGlow : style::AccentDeep);
+        s_dl->AddRectFilledMultiColorRounded(a, b, style::AccentDeep,
+                                             hovered ? style::AccentGlow : style::Accent,
+                                             hovered ? style::AccentGlow : style::Accent,
+                                             hovered ? style::Accent : style::AccentDeep,
+                                             hovered ? style::Accent : style::AccentDeep, r, 0);
+        s_dl->AddRect(a, b, hovered ? style::AccentGlow : style::AccentDeep, r, 0, 1.5f);
     }
-
-    if (held) { style::Pressed(s_dl, a, b); }
-    else      { style::Raised(s_dl, a, b); }
-    style::Gloss(s_dl, a, b, enabled ? (hovered ? 70 : 40) : 14);
+    s_dl->AddRectFilled(ImVec2(a.x + 6.f, a.y + 2.f), ImVec2(b.x - 6.f, a.y + 3.f),
+                        IM_COL32(255, 255, 255, enabled ? (hovered ? 80 : 46) : 14));
 
     const float  push = held ? 1.f : 0.f;
     const ImVec2 ts   = ImGui::CalcTextSize(label);
@@ -1045,7 +843,6 @@ inline bool AccentButton(const char* label, const ImVec2& size, bool enabled = t
     AddItem(size);
     return hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left);
 }
-
 inline bool Button(const char* label)
 {
     const ImVec2 ts = ImGui::CalcTextSize(label);
@@ -1207,91 +1004,54 @@ inline void SameLine(float spacing)
  * ------------------------------------------------------------------------ */
 inline float Slider(const char* label, float value, float vmin, float vmax, const char* fmt)
 {
-    const ImVec2 ts = ImGui::CalcTextSize(label);
-    const float  lh = ImGui::GetTextLineHeight();
-    const float  h  = style::SliderTrackH;
+    char buf[32];
+    std::snprintf(buf, sizeof(buf), fmt ? fmt : "%.2f", value);
 
-    s_dl->AddText(s_cursor, style::Text, label);
+    const float w  = ContentWidth();
+    const float hh = style::RowHeight;
 
-    const ImVec2 barA(s_cursor.x + ts.x + 8.f, s_cursor.y + 2.f);
-    const ImVec2 barB(s_cursor.x + ContentWidth(), s_cursor.y + h - 2.f);
+    s_dl->AddText(ImVec2(s_cursor.x, s_cursor.y), style::Text, label);
+    const ImVec2 vs = ImGui::CalcTextSize(buf);
+    s_dl->AddText(ImVec2(s_cursor.x + w - vs.x, s_cursor.y), style::AccentGlow, buf);
 
-    style::FillFace(s_dl, barA, barB);
-    style::Sunken(s_dl, barA, barB);
+    const float  cy = s_cursor.y + hh + 4.f;
+    const ImVec2 tA(s_cursor.x, cy - 3.f);
+    const ImVec2 tB(s_cursor.x + w, cy + 3.f);
+
+    s_dl->AddRectFilled(tA, tB, style::Field, 3.f);
+    s_dl->AddRect(tA, tB, style::Light, 3.f, 0, 1.f);
 
     if (vmax <= vmin) { vmax = vmin + 1e-4f; }
     float frac = (value - vmin) / (vmax - vmin);
     if (frac < 0.f) { frac = 0.f; }
     if (frac > 1.f) { frac = 1.f; }
 
-    const float trackX0 = barA.x + 2.f;
-    const float trackX1 = barB.x - 2.f;
-    const float travel  = trackX1 - trackX0 - style::ThumbW;
+    const float kx = tA.x + (tB.x - tA.x) * frac;
+    s_dl->AddRectFilled(ImVec2(tA.x, tA.y), ImVec2(kx, tB.y), style::Accent, 3.f);
 
-    for (int i = 0; i <= 4; ++i)
-    {
-        const float tx = trackX0 + travel * ((float)i / 4.f);
-        s_dl->AddRectFilled(ImVec2(tx, barB.y - 2.f - style::TickH), ImVec2(tx + 1.f, barB.y - 2.f),
-                            i <= (int)(frac * 4.f + 0.5f) ? style::Highlight : style::Shadow);
-    }
-
-    const float tx0 = trackX0 + travel * frac;
-    const ImVec2 thMin(tx0, barA.y + 2.f);
-    const ImVec2 thMax(tx0 + style::ThumbW, barB.y - 2.f - style::ThumbPointH);
-
-#ifdef NIKU_HARNESS
-    if (s_dbgSliderFrame != ImGui::GetFrameCount()) {
-        s_dbgSliderFrame = ImGui::GetFrameCount();
-        s_dbgSliderA = ImVec2(s_cursor.x, s_cursor.y);
-        s_dbgSliderB = ImVec2(barB.x, s_cursor.y + h);
-    }
-#endif
     const bool enabled = PopUpsAreClosed();
-    const bool hovered = enabled && ImGui::IsMouseHoveringRect(ImVec2(s_cursor.x, s_cursor.y),
-                                                                ImVec2(barB.x, s_cursor.y + h));
-    const bool held = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
+    const bool hovered = enabled && ImGui::IsMouseHoveringRect(
+        ImVec2(tA.x - 8.f, tA.y - 10.f), ImVec2(tB.x + 8.f, tB.y + 10.f));
+    const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
+
+    if (hovered || held)
+    {
+        style::GlowRound(s_dl, ImVec2(tA.x, cy - 8.f), ImVec2(tB.x, cy + 8.f), 8.f, 0.5f);
+    }
+    s_dl->AddCircleFilled(ImVec2(kx, cy), held ? 9.f : 7.f, style::AccentGlow, 16);
+    s_dl->AddCircle(ImVec2(kx, cy), held ? 9.f : 7.f, style::AccentDeep, 16, 1.5f);
 
     if (held)
     {
-        style::Pressed(s_dl, thMin, thMax);
-    }
-    else if (hovered)
-    {
-        style::Raised(s_dl, thMin, thMax);
-    }
-    else
-    {
-        style::Raised(s_dl, thMin, thMax);
-    }
-
-    s_dl->AddRectFilled(ImVec2(thMin.x + 2.f, thMin.y + 1.f), ImVec2(thMax.x - 2.f, thMin.y + 2.f), style::Light);
-
-    bool changed = false;
-    if (held)
-    {
-        const float mx  = ImGui::GetMousePos().x;
-        float       nf  = (mx - trackX0 - style::ThumbW * 0.5f) / travel;
+        float nf = (ImGui::GetMousePos().x - tA.x) / (tB.x - tA.x);
         if (nf < 0.f) { nf = 0.f; }
         if (nf > 1.f) { nf = 1.f; }
-        const float nv = vmin + nf * (vmax - vmin);
-        if (nv != value) { value = nv; changed = true; }
+        value = vmin + nf * (vmax - vmin);
     }
 
-    if (ImGui::IsMouseHoveringRect(thMin, thMax) && enabled)
-    {
-        char tip[64];
-        snprintf(tip, sizeof(tip), fmt ? fmt : "%.2f", value);
-        const ImVec2 tt = ImGui::CalcTextSize(tip);
-        const ImVec2 boxA(thMin.x + style::ThumbW * 0.5f - tt.x * 0.5f - 4.f, s_cursor.y + h + 1.f);
-        const ImVec2 boxB(boxA.x + tt.x + 8.f, boxA.y + ImGui::GetTextLineHeight() + 4.f);
-        s_dl->AddRectFilled(boxA, boxB, style::Text);
-        s_dl->AddText(ImVec2(boxA.x + 4.f, boxA.y + 2.f), style::Highlight, tip);
-    }
-
-    AddItem(ImVec2(ContentWidth(), h));
+    AddItem(ImVec2(w, hh + 16.f));
     return value;
 }
-
 inline const char* KeyName(int key)
 {
     const char* n = ImGui::GetKeyName((ImGuiKey)key);
@@ -1583,11 +1343,11 @@ inline const char* Combo(const char* label, int selected, const char* items, int
     const bool hovered = enabled && ImGui::IsMouseHoveringRect(a, b);
     const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
 
-    style::FillFace(s_dl, a, b);
-    if (held) { style::Pressed(s_dl, a, b); }
-    else      { style::Raised(s_dl, a, b); }
+    // SHADOW MODZ combo: rounded field with a violet edge, no bevel.
+    s_dl->AddRectFilled(a, b, hovered ? style::Field : style::BgDeep, style::ComboH * 0.5f);
+    s_dl->AddRect(a, b, hovered ? style::Accent : style::AccentDeep, style::ComboH * 0.5f, 0, 1.5f);
 
-    s_dl->AddText(ImVec2(a.x + 5.f, a.y + (style::ComboH - ImGui::GetTextLineHeight()) * 0.5f),
+    s_dl->AddText(ImVec2(a.x + 10.f, a.y + (style::ComboH - ImGui::GetTextLineHeight()) * 0.5f),
                   style::Text, preview);
     DropDownArrows(a, b);
 
@@ -1609,8 +1369,10 @@ inline const char* Combo(const char* label, int selected, const char* items, int
         ImGui::Begin("##combo", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove |
                                        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
         s_dl = ImGui::GetWindowDrawList();
-        style::Sunken(s_dl, ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + listW,
-                                                          ImGui::GetWindowPos().y + maxListH + 4.f));
+        const ImVec2 lp = ImGui::GetWindowPos();
+        style::GlowRound(s_dl, lp, ImVec2(lp.x + listW, lp.y + maxListH + 4.f), 10.f, 0.6f);
+        s_dl->AddRectFilled(lp, ImVec2(lp.x + listW, lp.y + maxListH + 4.f), style::Face, 10.f);
+        s_dl->AddRect(lp, ImVec2(lp.x + listW, lp.y + maxListH + 4.f), style::AccentDeep, 10.f, 0, 1.5f);
         ImGui::End();
 
         float iy = listA.y + 2.f;
@@ -1811,7 +1573,8 @@ inline void MsgBoxButton(const char* label, int result, bool defaultBtn)
 
     if (defaultBtn && !ImGui::IsAnyItemHovered())
     {
-        s_dl->AddRect(ImVec2(a.x + 1.f, a.y + 1.f), ImVec2(b.x - 1.f, b.y - 1.f), AccentColor(), 1.f, 0, 1.f);
+        s_dl->AddRect(ImVec2(a.x + 1.f, a.y + 1.f), ImVec2(b.x - 1.f, b.y - 1.f), AccentColor(),
+                      (b.y - a.y) * 0.5f, 0, 1.f);
     }
 }
 
@@ -1841,22 +1604,21 @@ inline void DrawMsgBox()
     const ImVec2 wsz = ImGui::GetWindowSize();
     s_msgMax = ImVec2(s_msgMin.x + wsz.x, s_msgMin.y + wsz.y);
 
-    style::Raised(s_dl, s_msgMin, s_msgMax);
+    // rounded glass card - no window frame, just a violet accent strip
+    const float r = 16.f * style::S;
+    style::GlowRound(s_dl, s_msgMin, s_msgMax, r, 0.8f);
+    s_dl->AddRectFilledMultiColorRounded(s_msgMin, s_msgMax, style::BgDeep,
+                                         style::Face, style::Face, style::BgDeep, style::BgDeep, r, 0);
+    s_dl->AddRect(s_msgMin, s_msgMax, style::AccentDeep, r, 0, 2.f);
 
-    const ImVec2 tMin(s_msgMin.x + 3.f, s_msgMin.y + 3.f);
-    const ImVec2 tMax(s_msgMax.x - 3.f, tMin.y + style::TitleBarH);
-    s_dl->AddRectFilled(tMin, tMax, AccentColor());
-    s_dl->AddText(ImVec2(tMin.x + 6.f, tMin.y + (style::TitleBarH - ImGui::GetTextLineHeight()) * 0.5f),
-                  style::TitleText, s_msgTitle);
+    s_dl->AddRectFilled(ImVec2(s_msgMin.x + 14.f, s_msgMin.y + 9.f),
+                        ImVec2(s_msgMax.x - 14.f, s_msgMin.y + 10.f), style::Accent);
+    s_dl->AddText(ImVec2(s_msgMin.x + 14.f, s_msgMin.y + 14.f), style::AccentGlow, s_msgTitle);
 
-    const float cbx = tMax.x - style::TitleBtnW - 1.f;
-    const float cby = tMin.y + (style::TitleBarH - style::TitleBtnH) * 0.5f;
-    TitleButton(ImVec2(cbx, cby), ImVec2(cbx + style::TitleBtnW, cby + style::TitleBtnH), 2);
-
-    const ImVec2 iconC(s_msgMin.x + 28.f, s_msgMin.y + style::TitleBarH + 22.f);
+    const ImVec2 iconC(s_msgMin.x + 28.f, s_msgMin.y + 54.f);
     MsgBoxIcon(s_msgType, iconC);
 
-    s_dl->AddText(ImVec2(s_msgMin.x + 52.f, s_msgMin.y + style::TitleBarH + 8.f), style::Text, s_msgText);
+    s_dl->AddText(ImVec2(s_msgMin.x + 52.f, s_msgMin.y + 46.f), style::Text, s_msgText);
 
     const float btns = (s_msgType == kMsgYesNo || s_msgType == kMsgOkCancel)
                            ? ((s_msgType == kMsgYesNo) ? 2.f : 1.f)
@@ -1967,19 +1729,6 @@ inline bool MenuIsOpen() { return s_openMenu >= 0 || s_ctxOpen; }
 
 inline bool MenuItemClicked() { return s_menuPressed; }
 
-inline bool BeginMenuBar()
-{
-    const ImVec2 barA(s_winMin.x + style::FrameBorder, s_menuBarY);
-    const ImVec2 barB(s_winMax.x - style::FrameBorder, s_menuBarY + style::MenuBarH);
-    style::FillGradientV(s_dl, barA, barB, style::Face, style::GroupBg);
-    s_dl->AddLine(ImVec2(barA.x, barB.y), ImVec2(barB.x, barB.y), style::Shadow);
-    s_dl->AddLine(ImVec2(barA.x, barB.y - 1.f), ImVec2(barB.x, barB.y - 1.f),
-                  IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 90));
-    s_mouseReleased = false;
-    s_menuPressed   = false;
-    s_cursor        = ImVec2(s_winMin.x + style::FrameBorder + 4.f, s_menuBarY);
-    return true;
-}
 
 inline void MenuBarItem(const char* label)
 {
@@ -2032,7 +1781,6 @@ inline void MenuBarItem(const char* label)
     (void)opened;
 }
 
-inline void EndMenuBar() { }
 
 inline void DropDownItem(const char* label, int id, bool checkable = false, bool checked = false,
                          bool separator = false, int sub = -1, bool enabled = true)
@@ -2105,9 +1853,11 @@ inline void EndDropDown()
 {
     const ImVec2 a(s_menuOpenX, s_menuOpenY);
     const ImVec2 b(s_menuOpenX + (s_ctxOpen ? 110.f : 150.f), s_cursor.y);
-    style::Sunken(s_dl, a, b);
-    s_cursor.y = s_menuBarY + style::MenuBarH;
-    s_cursor.x = s_winMin.x + style::FrameBorder + 4.f;
+    // Items are already drawn, so only the rounded frame goes on top.
+    style::GlowRound(s_dl, a, b, 10.f, 0.55f);
+    s_dl->AddRect(a, b, style::AccentDeep, 10.f, 0, 1.5f);
+    s_cursor.y = s_winMin.y + style::HeaderH + 20.f;
+    s_cursor.x = s_contentMin.x;
 }
 
 inline void EndDropDownAuto()
@@ -2167,63 +1917,9 @@ inline bool WasMenuItemClicked() { return s_menuPressed; }
 /* ---------------------------------------------------------------------------
  * toolbar.cpp
  * ------------------------------------------------------------------------ */
-inline bool ToolbarButton(const char* id, int glyph, const char* tip, bool toggle, bool* on)
-{
-    const ImVec2 a(s_cursor.x, s_toolbarY + 2.f);
-    const ImVec2 b(a.x + style::ToolbarH - 2.f, s_toolbarY + style::ToolbarH - 2.f);
 
-    const bool enabled = PopUpsAreClosed();
-    const bool hovered = enabled && ImGui::IsMouseHoveringRect(a, b);
-    const bool held    = hovered && ImGui::IsMouseDown(ImGuiMouseButton_Left);
 
-    const bool active = toggle && *on;
 
-    // SHADOW MODZ toolbar: violet-lit when toggled on, haloed on hover.
-    if (hovered || active) { style::Glow(s_dl, a, b, active ? 0.7f : 0.5f); }
-
-    if (active)      { style::FillGradientV(s_dl, a, b, style::Accent, style::AccentDeep); }
-    else if (hovered){ style::FillGradientV(s_dl, a, b, style::BtnTopHover, style::BtnBotHover); }
-    else             { style::FillGradientV(s_dl, a, b, style::BtnTop, style::BtnBot); }
-
-    if (held)                 { style::Pressed(s_dl, a, b); }
-    else if (active)          { style::Pressed(s_dl, a, b); }
-    else if (hovered)         { style::Raised(s_dl, a, b); }
-    else                      { style::Raised(s_dl, a, b); }
-
-    style::AccentEdge(s_dl, a, b, active ? style::AccentGlow : style::AccentDeep);
-
-    ToolGlyph(s_dl, ImVec2((a.x + b.x) * 0.5f, (a.y + b.y) * 0.5f), glyph,
-              active ? style::TitleText : (hovered ? style::AccentGlow : style::Text));
-
-    s_lastItemMin = a;
-    s_lastItemMax = b;
-
-    if (toggle && hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-    {
-        *on = !*on;
-    }
-    if (!toggle && hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-    {
-        s_menuPressed = true;
-        CopyStr(s_mouseOwner, id, sizeof(s_mouseOwner));
-    }
-
-    ToolTip(tip);
-    return (toggle && hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left));
-}
-
-inline void BeginToolBar() { }
-
-inline void SeparatorToolBar()
-{
-    const float x = s_cursor.x + 5.f;
-    s_dl->AddRectFilled(ImVec2(x, s_toolbarY + 4.f), ImVec2(x + 2.f, s_toolbarY + style::ToolbarH - 4.f), style::Shadow);
-    s_dl->AddRectFilled(ImVec2(x + 2.f, s_toolbarY + 4.f), ImVec2(x + 3.f, s_toolbarY + style::ToolbarH - 4.f),
-                        style::Highlight);
-    s_cursor.x = x + 8.f;
-}
-
-inline void EndToolBar() { }
 
 inline void EndWindow() { }
 
@@ -2782,31 +2478,9 @@ inline void PageConfig()
 /* ---------------------------------------------------------------------------
  * tabs.cpp / gui.cpp - top level
  * ------------------------------------------------------------------------ */
-inline const char* kTabLabels[] =
-{
-    "Aimbot", "Visuals", "World", "Skins", "Players", "Misc", "Config",
-};
-inline constexpr int kTabCount = 7;
-
-inline void RunPage(int index)
-{
-    switch (index)
-    {
-    case 0: PageAimbot();     break;
-    case 1: PageVisuals();    break;
-    case 2: PageWorld();      break;
-    case 3: PageSkins();      break;
-    case 4: PagePlayers();    break;
-    case 5: PageMisc();       break;
-    case 6: PageConfig();     break;
-    default: break;
-    }
-}
-
 inline void Render()
 {
-    // Upstream binds Insert to show/hide the window; on device there is no
-    // window manager, so this is the only keyboard way back into the launcher.
+    // Insert is the keyboard way back to the floating icon.
     if (ImGui::IsKeyPressed(ImGuiKey_Insert, true))
     {
         ToggleLauncher();
@@ -2829,32 +2503,18 @@ inline void Render()
         PushModal();
     }
 
-    BeginMain(ShadowBrand::WindowTitle);
+    // One floating panel, every feature stacked in scrollable sections.
+    BeginPanel();
 
-    BeginMenuBar();
-    MenuBarItem("File");
-    MenuBarItem("Settings");
-    MenuBarItem("Skins");
-    MenuBarItem("Help");
-    EndMenuBar();
+    PageAimbot();
+    PageVisuals();
+    PageWorld();
+    PageSkins();
+    PagePlayers();
+    PageMisc();
+    PageConfig();
 
-    BeginToolBar();
-    ToolbarButton("tb_esp", 0, "Toggle ESP", true, &esp);
-    SeparatorToolBar();
-    ToolbarButton("tb_aim", 1, "Toggle Aimbot", true, &Aimbot);
-    ToolbarButton("tb_acc", 2, "Accent", false, nullptr);
-    ToolbarButton("tb_menu", 3, "Menu options", false, nullptr);
-    ToolbarButton("tb_help", 4, "Help", false, nullptr);
-    EndToolBar();
-
-    for (int i = 0; i < kTabCount; ++i)
-    {
-        TabButton(kTabLabels[i], i);
-    }
-
-    RunPage(s_currentTab);
-
-    EndMain();
+    EndPanel();
 
     MenuEnd();
 
@@ -2867,7 +2527,6 @@ inline void Render()
 
     PopFont();
 }
-
 /* ---------------------------------------------------------------------------
  * public entry points (called from Main.cpp / Gui.hpp)
  * ------------------------------------------------------------------------ */

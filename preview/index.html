@@ -3,187 +3,157 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SHADOW MODZ — UI preview</title>
+<title>SHADOW MODZ — floating panel preview</title>
 <style>
 /* ---------------------------------------------------------------------------
-   SHADOW MODZ - dark XP shell preview.
-   Every value below mirrors ShadowBrand.h / W95::style in Win95UI.h, so what
-   you see here is what the menu draws on device.
+   SHADOW MODZ - floating glass panel preview.
+   Every colour below mirrors ShadowModz/app/src/main/jni/NikuMods/ShadowBrand.h
+   and the metrics in Win95UI.h, so what you see here is what the menu draws on
+   device. No window chrome: no title bar, min/max/close row, menu bar, toolbar,
+   tab strip, status bar or resize grip.
    ---------------------------------------------------------------------------*/
 :root{
   --bg-deep:#0A0710; --face:#1A1526; --light:#2B2340; --highlight:#3C3159;
   --shadow:#07050C; --dark:#000; --field:#0B0812;
   --text:#F3EFFF; --text-dim:#6E6685;
   --accent:#A855F7; --accent-deep:#4C1D95; --accent-glow:#D8B4FE;
-  --title-l:#5B21B6; --title-r:#A855F7; --selection:#7C3AED;
   --btn-top:#3A2A5C; --btn-bot:#150F24; --btn-top-h:#6D28D9; --btn-bot-h:#2A1650;
-  --group:#120E1C; --status:#0D0A15;
-  --s:1.25; /* style::S */
+  --live:#4ADE80;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0; background:
-    radial-gradient(1200px 700px at 50% -10%, #1b1230 0%, #08060E 55%, #040308 100%);
+  margin:0;
+  background:radial-gradient(1200px 700px at 50% -10%, #1b1230 0%, #08060E 55%, #040308 100%);
   color:var(--text);
-  font:14px/1.35 Tahoma,"MS Sans Serif","Segoe UI",Verdana,sans-serif;
+  font:14px/1.35 "Segoe UI",Tahoma,Verdana,sans-serif;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:18px; padding:24px; -webkit-font-smoothing:antialiased;
+  gap:16px; padding:24px; -webkit-font-smoothing:antialiased;
 }
-.stage{position:relative; width:640px; height:520px; max-width:100%;
-  border-radius:10px; overflow:hidden;
-  background:
-    linear-gradient(180deg,#12101c 0%, #0b0913 100%);
-  box-shadow:0 30px 80px rgba(0,0,0,.7), 0 0 0 1px #241d38, inset 0 0 60px rgba(124,58,237,.06);
-}
-.stage-hint{position:absolute; left:0; right:0; bottom:6px; text-align:center;
+.stage{position:relative; width:520px; height:600px; max-width:100%; overflow:hidden;
+  border-radius:16px;
+  background:linear-gradient(180deg,#141024 0%, #0A0710 100%);
+  box-shadow:0 30px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(168,85,247,.18);}
+.stage-hint{position:absolute; left:0; right:0; bottom:8px; text-align:center;
   font-size:11px; color:#5b5175;}
 
-/* ---- window frame ------------------------------------------------------- */
-.win{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  width:560px; height:474px; padding:3px;
-  background:linear-gradient(180deg,var(--face),var(--bg-deep));
-  box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset,
-             0 0 0 1px var(--accent-deep), 0 24px 60px rgba(0,0,0,.65);
-  display:flex; flex-direction:column; transition:opacity .18s ease, transform .18s ease;}
-.win.hidden{opacity:0; transform:translate(-50%,-50%) scale(.97); pointer-events:none;}
+/* ---- the floating panel -------------------------------------------------- */
+.card{position:absolute; left:50%; top:46px; transform:translateX(-50%);
+  width:420px; height:500px; padding:10px; border-radius:18px;
+  background:linear-gradient(180deg,var(--face) 0%, var(--bg-deep) 100%);
+  border:2px solid var(--accent-deep);
+  box-shadow:0 0 0 1px rgba(216,180,254,.14), 0 22px 60px rgba(0,0,0,.7),
+             0 0 34px rgba(168,85,247,.22);
+  display:flex; flex-direction:column;
+  transition:opacity .18s ease, transform .18s ease;}
+.card.hidden{opacity:0; transform:translateX(-50%) scale(.97); pointer-events:none;}
 
-/* ---- title bar ---------------------------------------------------------- */
-.title{height:22px; display:flex; align-items:center; gap:5px; padding:0 2px;
-  background:linear-gradient(90deg,var(--title-l),var(--title-r));
-  box-shadow:0 1px 0 var(--accent-glow), 0 0 14px rgba(168,85,247,.35);
-  font-weight:700; font-size:13px; color:#fff; text-shadow:0 1px 1px rgba(0,0,0,.75);}
-.title img{width:15px; height:15px; image-rendering:auto}
-.title .t{flex:1; overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
-.tbtn{width:16px; height:14px; display:grid; place-items:center; font-size:10px; font-weight:700;
-  color:#0b0714; background:linear-gradient(180deg,var(--light),var(--face));
-  box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset,
-             0 0 0 1px rgba(0,0,0,.6); cursor:pointer; user-select:none;}
-.tbtn:active{box-shadow:-1px -1px 0 var(--highlight) inset,1px 1px 0 var(--dark) inset}
-.tbtn.close{color:#2a0b12}
+/* header = logo + name + version + round close. Also the drag handle. */
+.head{height:44px; flex:0 0 44px; border-radius:12px; cursor:grab;
+  display:flex; align-items:center; gap:10px; padding:0 10px;
+  background:linear-gradient(90deg,var(--accent-deep),var(--accent));
+  border:1px solid rgba(168,85,247,.35);
+  box-shadow:0 0 18px rgba(168,85,247,.28);}
+.head:active{cursor:grabbing}
+.head .logo{width:26px; height:26px; border-radius:50%;
+  box-shadow:0 0 0 2px var(--accent-glow), 0 0 10px rgba(168,85,247,.6)}
+.head .name{font-weight:700; font-size:16px; letter-spacing:.3px; color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.head .chip{margin-left:2px; padding:2px 8px; border-radius:9px; font-size:11px; font-weight:700;
+  color:#fff; background:rgba(255,255,255,.16)}
+.head .x{margin-left:auto; width:22px; height:22px; border-radius:50%; border:0; cursor:pointer;
+  display:grid; place-items:center; color:var(--text); font-size:12px; line-height:1;
+  background:#261B3C; box-shadow:0 0 0 1px var(--light)}
+.head .x:hover{background:#C43E58; box-shadow:0 0 0 1px var(--accent-glow), 0 0 12px rgba(196,62,88,.6)}
 
-/* ---- menu bar / toolbar ------------------------------------------------- */
-.menubar{height:22px; display:flex; align-items:center; gap:0; padding:0 2px;
-  background:linear-gradient(180deg,var(--face),var(--group));
-  box-shadow:0 1px 0 var(--shadow), inset 0 -1px 0 rgba(168,85,247,.35);}
-.menubar span{padding:3px 8px; font-size:12px; color:var(--text)}
-.menubar span:hover{background:var(--selection); color:#fff}
+/* body: one scrolling column of feature sections */
+.body{flex:1; margin:8px 2px 0; padding:0 6px; overflow-y:auto; overflow-x:hidden;}
+.body::-webkit-scrollbar{width:4px}
+.body::-webkit-scrollbar-thumb{background:var(--accent); border-radius:2px}
+.body::-webkit-scrollbar-track{background:rgba(255,255,255,.06); border-radius:2px}
 
-.toolbar{height:26px; display:flex; align-items:center; gap:4px; padding:3px 4px;
-  background:linear-gradient(180deg,var(--face),var(--group));}
-.tb{width:22px; height:22px; display:grid; place-items:center; font-size:11px; font-weight:700;
-  color:var(--text); cursor:pointer;
+/* footer: live dot + uid */
+.foot{flex:0 0 26px; display:flex; align-items:center; gap:8px; padding:0 6px;
+  border-top:1px solid rgba(168,85,247,.28); margin-top:6px}
+.foot .dot{width:8px; height:8px; border-radius:50%; background:var(--live);
+  box-shadow:0 0 0 3px rgba(74,222,128,.35)}
+.foot .user{font-size:11px; font-weight:700; letter-spacing:.6px; color:var(--accent-glow)}
+.foot .uid{margin-left:auto; font-size:11px; color:var(--text-dim)}
+
+/* ---- sections ------------------------------------------------------------ */
+.sect{margin-top:8px}
+.sect .sh{display:flex; align-items:center; gap:10px; height:24px}
+.sect .sh i{width:3px; height:12px; border-radius:2px; background:var(--accent);
+  box-shadow:0 0 8px rgba(168,85,247,.8)}
+.sect .sh h4{margin:0; font-size:11px; font-weight:700; letter-spacing:1.2px;
+  color:var(--accent-glow); text-shadow:0 0 8px rgba(168,85,247,.45)}
+.sect .sh hr{flex:1; border:0; height:1px; margin:0; background:rgba(168,85,247,.18)}
+
+/* ---- pill switch (Checkbox) ---------------------------------------------- */
+.row{display:flex; align-items:center; gap:10px; height:26px; cursor:pointer; user-select:none}
+.sw{position:relative; width:38px; height:20px; flex:0 0 38px; border-radius:10px;
+  background:var(--field); box-shadow:0 0 0 1px var(--light); transition:.15s}
+.sw i{position:absolute; top:3px; left:3px; width:14px; height:14px; border-radius:50%;
+  background:var(--text-dim); transition:.15s}
+.row.on .sw{background:var(--accent-deep); box-shadow:0 0 0 1px var(--accent),
+  0 0 12px rgba(168,85,247,.5)}
+.row.on .sw i{left:21px; background:var(--accent-glow); box-shadow:0 0 10px rgba(216,180,254,.8)}
+.row span.lbl{font-size:12.5px; color:var(--text-dim)}
+.row.on span.lbl{color:var(--text)}
+
+/* ---- slim slider (Slider) ------------------------------------------------ */
+.sl{padding:5px 0 9px; user-select:none}
+.sl .top{display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:7px}
+.sl .top b{color:var(--accent-glow); font-weight:600}
+.sl .track{position:relative; height:6px; border-radius:3px; background:var(--field);
+  box-shadow:0 0 0 1px var(--light); cursor:pointer}
+.sl .fill{position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--accent)}
+.sl .knob{position:absolute; top:-5px; width:16px; height:16px; margin-left:-8px; border-radius:50%;
+  background:var(--accent-glow); box-shadow:0 0 0 1.5px var(--accent-deep),
+             0 0 12px rgba(168,85,247,.7)}
+
+/* ---- pill buttons -------------------------------------------------------- */
+.btns{display:flex; gap:10px; margin:6px 0 2px}
+.btn{flex:1; padding:8px 10px; border:0; border-radius:999px; cursor:pointer;
+  font-size:12px; font-weight:700; color:var(--text); text-align:center; user-select:none;
   background:linear-gradient(180deg,var(--btn-top),var(--btn-bot));
-  box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset,
-             0 0 0 1px var(--accent-deep);}
-.tb:hover{background:linear-gradient(180deg,var(--btn-top-h),var(--btn-bot-h));
-  color:var(--accent-glow); box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset,
-             0 0 0 1px var(--accent-glow), 0 0 12px rgba(168,85,247,.45);}
-.tb.on{background:linear-gradient(180deg,var(--accent),var(--accent-deep)); color:#fff;
-  box-shadow:-1px -1px 0 var(--shadow) inset,1px 1px 0 var(--highlight) inset,0 0 0 1px var(--accent-glow);}
-.tsep{width:1px; height:18px; background:var(--shadow); box-shadow:1px 0 0 var(--highlight)}
-
-/* ---- tabs --------------------------------------------------------------- */
-.tabs{display:flex; gap:2px; padding:2px 4px 0; position:relative; z-index:2}
-.tab{padding:3px 10px 4px; font-size:12px; color:var(--text); cursor:pointer;
-  background:linear-gradient(180deg,var(--light),var(--face));
-  box-shadow:1px 1px 0 var(--highlight) inset,-1px 0 0 var(--dark);
-  border-radius:2px 2px 0 0; text-shadow:0 1px 1px rgba(0,0,0,.6);}
-.tab:hover{box-shadow:1px 1px 0 var(--highlight) inset,-1px 0 0 var(--dark),0 0 12px rgba(168,85,247,.4)}
-.tab.on{background:linear-gradient(180deg,var(--btn-top-h),var(--btn-bot-h)); color:var(--accent-glow);
-  font-weight:700; box-shadow:1px 1px 0 var(--highlight) inset,-1px 0 0 var(--dark),
-  0 2px 0 var(--accent), 0 0 18px rgba(168,85,247,.5);}
-
-/* ---- body --------------------------------------------------------------- */
-.body{flex:1; margin:0 2px; padding:8px; overflow:auto;
-  background:linear-gradient(180deg,var(--face),var(--bg-deep));
-  box-shadow:1px 1px 0 var(--shadow) inset,-1px -1px 0 var(--highlight) inset;}
-.cols{display:grid; grid-template-columns:1fr 1fr; gap:8px 8px; align-items:start}
-
-/* ---- group box ---------------------------------------------------------- */
-.group{position:relative; margin-top:9px; padding:12px 8px 9px; background:var(--group);
-  box-shadow:1px 1px 0 var(--shadow) inset,-1px -1px 0 var(--highlight) inset,
-             0 0 0 1px rgba(168,85,247,.22);}
-.group>legend, .group>.glabel{position:absolute; top:-7px; left:6px; padding:0 3px;
-  font-size:11px; letter-spacing:.4px; color:var(--accent-glow); background:var(--group);
-  text-shadow:0 0 8px rgba(168,85,247,.6);}
-
-/* ---- widgets ------------------------------------------------------------ */
-.row{display:flex; align-items:center; gap:6px; padding:3px 0}
-.chk{width:13px; height:13px; flex:0 0 13px; position:relative; cursor:pointer;
-  background:linear-gradient(180deg,var(--field),var(--face));
-  box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset;}
-.chk.on{box-shadow:-1px -1px 0 var(--highlight) inset,1px 1px 0 var(--dark) inset,
-  0 0 10px rgba(168,85,247,.45); background:rgba(168,85,247,.16)}
-.chk.on:after{content:""; position:absolute; left:2px; top:0px; width:8px; height:10px;
-  border-right:2px solid var(--accent); border-bottom:2px solid var(--accent);
-  transform:rotate(40deg); filter:drop-shadow(0 0 4px rgba(168,85,247,.8));}
-.chkl{cursor:pointer; user-select:none}
-.sub{margin-left:18px}
-.dim{color:var(--text-dim); font-size:12px}
-
-.slider{display:flex; align-items:center; gap:6px; padding:3px 0}
-.slider .track{position:relative; flex:1; height:14px; background:var(--field);
-  box-shadow:1px 1px 0 var(--shadow) inset,-1px -1px 0 var(--highlight) inset;}
-.slider .fill{position:absolute; left:0; top:2px; bottom:2px; background:var(--accent);
-  box-shadow:0 0 10px rgba(168,85,247,.6)}
-.slider .thumb{position:absolute; top:-1px; width:11px; height:15px; margin-left:-5px;
-  background:linear-gradient(180deg,var(--light),var(--face));
-  box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset,
-             0 0 0 1px var(--accent-deep), 0 0 10px rgba(168,85,247,.4);}
-.slider .val{width:44px; text-align:right; font-size:12px; color:var(--accent-glow)}
-
-.btn{display:inline-block; padding:6px 16px; margin:3px 0; font-size:12px; font-weight:600;
-  color:var(--text); cursor:pointer; user-select:none;
-  background:linear-gradient(180deg,var(--btn-top),var(--btn-bot));
-  box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset,
-             0 0 0 1px var(--accent-deep); text-shadow:0 1px 1px rgba(0,0,0,.8);}
+  box-shadow:0 0 0 1.5px var(--accent-deep), 0 0 0 rgba(168,85,247,0);
+  transition:.15s}
 .btn:hover{background:linear-gradient(180deg,var(--btn-top-h),var(--btn-bot-h));
-  color:var(--accent-glow); box-shadow:1px 1px 0 var(--highlight) inset,-1px -1px 0 var(--dark) inset,
-   0 0 0 1px var(--accent-glow), 0 0 14px rgba(168,85,247,.55);}
-.btn:active{box-shadow:-1px -1px 0 var(--highlight) inset,1px 1px 0 var(--dark) inset,0 0 0 1px var(--accent)}
-.btn.accent{background:linear-gradient(180deg,var(--accent),var(--accent-deep)); color:#fff;
-  box-shadow:1px 1px 0 rgba(216,180,254,.5) inset,-1px -1px 0 rgba(0,0,0,.6) inset,
-             0 0 0 1px var(--accent-deep), 0 0 14px rgba(168,85,247,.4);}
-.btn.accent:hover{background:linear-gradient(180deg,var(--accent-glow),var(--accent));
-  box-shadow:1px 1px 0 rgba(255,255,255,.45) inset,-1px -1px 0 rgba(0,0,0,.6) inset,
-             0 0 0 1px var(--accent-glow), 0 0 22px rgba(168,85,247,.7);}
-.btn.dead{background:linear-gradient(180deg,var(--btn-bot),var(--bg-deep)); color:var(--text-dim);
-  cursor:not-allowed; box-shadow:1px 1px 0 rgba(255,255,255,.06) inset,-1px -1px 0 rgba(0,0,0,.6) inset,
-   0 0 0 1px var(--light);}
+  color:var(--accent-glow); box-shadow:0 0 0 1.5px var(--accent-glow), 0 0 16px rgba(168,85,247,.5)}
+.btn:active{transform:translateY(1px)}
+.btn.accent{background:linear-gradient(180deg,var(--accent),var(--accent-deep)); color:#fff}
+.btn.accent:hover{background:linear-gradient(180deg,var(--accent-glow),var(--accent))}
+.btn.dead{background:var(--btn-bot); color:var(--text-dim); cursor:not-allowed;
+  box-shadow:0 0 0 1px var(--light)}
+.btn.dead:hover{background:var(--btn-bot); color:var(--text-dim); box-shadow:0 0 0 1px var(--light)}
 
-.swatch{width:26px; height:14px; display:inline-block; margin-right:6px;
-  box-shadow:1px 1px 0 var(--shadow) inset,-1px -1px 0 var(--highlight) inset,0 0 0 1px var(--dark);}
+.note{font-size:11.5px; color:var(--text-dim); margin:2px 0 4px}
+.about{font-size:12.5px; font-weight:700; margin:2px 0}
+.about-sub{font-size:11.5px; color:var(--text-dim); margin-bottom:8px}
 
-/* ---- status bar --------------------------------------------------------- */
-.status{height:20px; margin:0 2px 2px; display:flex; align-items:center; justify-content:space-between;
-  padding:0 6px; font-size:11px; background:var(--status);
-  box-shadow:1px 1px 0 var(--shadow) inset,-1px -1px 0 var(--highlight) inset,
-             inset 0 1px 0 rgba(168,85,247,.45);}
-.status .user{color:var(--accent-glow); letter-spacing:1px; font-weight:700}
-.status .uid{color:var(--text-dim)}
-.grip{width:14px; height:14px; margin-left:6px;
-  background:repeating-linear-gradient(135deg,var(--light) 0 2px,transparent 2px 4px);
-  box-shadow:0 0 0 1px rgba(0,0,0,.5);}
-
-/* ---- floating icon ------------------------------------------------------ */
-.launcher{position:absolute; left:18px; top:18px; width:54px; height:54px; border-radius:50%;
-  display:grid; place-items:center; cursor:grab; z-index:5;
+/* ---- floating icon ------------------------------------------------------- */
+.launcher{position:absolute; left:16px; top:16px; width:52px; height:52px; border-radius:50%;
+  display:grid; place-items:center; cursor:grab; z-index:6;
   background:radial-gradient(60% 60% at 50% 32%, #3A2A5C 0%, #150F24 60%, #0A0710 100%);
-  box-shadow:0 0 0 2px var(--accent), 0 0 0 4px rgba(168,85,247,.18), 0 0 24px rgba(168,85,247,.55);
+  box-shadow:0 0 0 2px var(--accent), 0 0 0 4px rgba(168,85,247,.18),
+             0 0 24px rgba(168,85,247,.55);
   animation:pulse 2.4s ease-in-out infinite;}
-.launcher img{width:32px; height:32px; border-radius:50%}
+.launcher img{width:30px; height:30px; border-radius:50%}
 .launcher:active{cursor:grabbing}
 @keyframes pulse{
   0%,100%{box-shadow:0 0 0 2px var(--accent), 0 0 0 4px rgba(168,85,247,.14), 0 0 16px rgba(168,85,247,.35)}
   50%    {box-shadow:0 0 0 2px var(--accent-glow), 0 0 0 8px rgba(168,85,247,.22), 0 0 34px rgba(168,85,247,.7)}
 }
 
-/* ---- page caption ------------------------------------------------------- */
+/* ---- page caption -------------------------------------------------------- */
 .caption{text-align:center; color:#6d6288; font-size:12px; max-width:640px}
 .caption b{color:var(--accent-glow)}
-.panel{display:none}
-.panel.on{display:block}
+.caption code{color:var(--accent-glow)}
+.badges{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; max-width:640px}
+.badge{font-size:11px; padding:4px 10px; border-radius:999px;
+  background:rgba(168,85,247,.10); box-shadow:0 0 0 1px rgba(168,85,247,.25); color:#b9a9d6}
+.badge.no{background:rgba(255,255,255,.03); box-shadow:0 0 0 1px rgba(255,255,255,.07); color:#6b6183}
 </style>
 </head>
 <body>
@@ -194,185 +164,153 @@ body{
     <img src="icon.png" alt="SHADOW MODZ" />
   </div>
 
-  <div class="win" id="win">
-    <div class="title">
-      <img src="icon.png" alt="" />
-      <span class="t">Shadow Modz - Control Panel - WinXP</span>
-      <span class="tbtn">_</span><span class="tbtn">□</span>
-      <span class="tbtn close" id="btnClose">✕</span>
-    </div>
-
-    <div class="menubar">
-      <span>File</span><span>Settings</span><span>Skins</span><span>Help</span>
-    </div>
-
-    <div class="toolbar">
-      <div class="tb on" title="Toggle ESP">◉</div>
-      <div class="tb" title="Toggle Aimbot">✛</div>
-      <div class="tsep"></div>
-      <div class="tb" title="Accent">◐</div>
-      <div class="tb" title="Menu options">☰</div>
-      <div class="tb" title="Help">?</div>
-    </div>
-
-    <div class="tabs" id="tabs">
-      <div class="tab" data-p="aimbot">Aimbot</div>
-      <div class="tab" data-p="visuals">Visuals</div>
-      <div class="tab" data-p="world">World</div>
-      <div class="tab" data-p="skins">Skins</div>
-      <div class="tab" data-p="players">Players</div>
-      <div class="tab" data-p="misc">Misc</div>
-      <div class="tab" data-p="config">Config</div>
+  <div class="card" id="win">
+    <div class="head" id="head">
+      <img class="logo" src="icon.png" alt="" />
+      <span class="name">SHADOW MODZ</span>
+      <span class="chip">v4.0</span>
+      <button class="x" id="btnClose" title="collapse to the floating icon">✕</button>
     </div>
 
     <div class="body">
       <!-- AIMBOT -->
-      <div class="panel on" id="p-aimbot"><div class="cols">
-        <div class="group"><span class="glabel">Aimbot</span>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">Aimbot</span></div>
-          <div class="sub">
-            <div class="row"><span class="chk on" data-t></span><span class="chkl">Silent Aim</span></div>
-            <div class="row"><span class="chk" data-t></span><span class="chkl">Headshot</span></div>
-            <div class="row"><span class="chk on" data-t></span><span class="chkl">Ignore Knocked</span></div>
-            <div class="row"><span class="chk on" data-t></span><span class="chkl">Visible Check</span></div>
-          </div>
-          <div class="slider"><span class="track"><span class="fill" style="width:62%"></span><span class="thumb" style="left:62%"></span></span><span class="val">310</span></div>
-          <div class="slider"><span class="track"><span class="fill" style="width:18%"></span><span class="thumb" style="left:18%"></span></span><span class="val">0.18</span></div>
+      <div class="sect"><div class="sh"><i></i><h4>AIMBOT</h4><hr/></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Aimbot</span></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Silent Aim</span></div>
+        <div class="row"><div class="sw"><i></i></div><span class="lbl">Headshot</span></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Ignore Knocked</span></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Visible Check</span></div>
+        <div class="sl" data-min="1" data-max="500" data-val="310" data-fmt="0">
+          <div class="top"><span>Size</span><b>310</b></div>
+          <div class="track"><div class="fill"></div><div class="knob"></div></div>
         </div>
-        <div class="group"><span class="glabel">Recoil</span>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">No Recoil</span></div>
-          <div class="sub dim">Recoil control is always full</div>
+        <div class="sl" data-min="0" data-max="1" data-val="0.18" data-fmt="2">
+          <div class="top"><span>Smoothness</span><b>0.18</b></div>
+          <div class="track"><div class="fill"></div><div class="knob"></div></div>
         </div>
-      </div></div>
+      </div>
 
       <!-- VISUALS -->
-      <div class="panel" id="p-visuals"><div class="cols">
-        <div class="group"><span class="glabel">ESP</span>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">Enabled</span></div>
-          <div class="sub">
-            <div class="row"><span class="chk on" data-t></span><span class="chkl">Box</span></div>
-            <div class="row"><span class="chk on" data-t></span><span class="chkl">Line</span></div>
-            <div class="row"><span class="chk on" data-t></span><span class="chkl">Health</span></div>
-            <div class="row"><span class="chk" data-t></span><span class="chkl">Skeleton</span></div>
-            <div class="row"><span class="chk on" data-t></span><span class="chkl">Distance</span></div>
-          </div>
-        </div>
-        <div class="group"><span class="glabel">Colours</span>
-          <div class="row"><span class="swatch" style="background:#FF5959"></span><span>Box</span></div>
-          <div class="row"><span class="swatch" style="background:#FFFFFF"></span><span>Line</span></div>
-          <div class="row"><span class="swatch" style="background:#33E64D"></span><span>Health</span></div>
-          <div class="row"><span class="swatch" style="background:#FFD93D"></span><span>Skeleton</span></div>
-        </div>
-      </div></div>
+      <div class="sect"><div class="sh"><i></i><h4>VISUALS</h4><hr/></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Enabled</span></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Box</span></div>
+        <div class="row"><div class="sw"><i></i></div><span class="lbl">Line</span></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Name</span></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Distance</span></div>
+      </div>
 
       <!-- WORLD -->
-      <div class="panel" id="p-world"><div class="cols">
-        <div class="group"><span class="glabel">Environment</span>
-          <div class="row"><span class="chk" data-t></span><span class="chkl">World Grid</span></div>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">Radar Hack</span></div>
-          <div class="slider"><span class="track"><span class="fill" style="width:30%"></span><span class="thumb" style="left:30%"></span></span><span class="val">300</span></div>
+      <div class="sect"><div class="sh"><i></i><h4>WORLD</h4><hr/></div>
+        <div class="sl" data-min="50" data-max="1000" data-val="475" data-fmt="0">
+          <div class="top"><span>Render Distance</span><b>475</b></div>
+          <div class="track"><div class="fill"></div><div class="knob"></div></div>
         </div>
-        <div class="group"><span class="glabel">Exploits</span>
-          <div class="row"><span class="chkl">Level</span></div>
-          <div class="row"><span class="btn">Level 10 ▾</span></div>
+        <div class="sl" data-min="60" data-max="140" data-val="84" data-fmt="0">
+          <div class="top"><span>Field Of View</span><b>84</b></div>
+          <div class="track"><div class="fill"></div><div class="knob"></div></div>
         </div>
-      </div></div>
-
-      <!-- SKINS -->
-      <div class="panel" id="p-skins"><div class="cols">
-        <div class="group"><span class="glabel">Skin Changer</span>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">Enabled</span></div>
-          <div class="row"><span class="btn">Night ▾</span></div>
-        </div>
-        <div class="group"><span class="glabel">Paint</span>
-          <div class="row"><span class="swatch" style="background:#7C3AED"></span><span>Primary</span></div>
-          <div class="row"><span class="swatch" style="background:#D8B4FE"></span><span>Secondary</span></div>
-        </div>
-      </div></div>
-
-      <!-- PLAYERS -->
-      <div class="panel" id="p-players"><div class="cols">
-        <div class="group"><span class="glabel">Players</span>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">Name</span></div>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">Distance</span></div>
-          <div class="row"><span class="chk" data-t></span><span class="chkl">Weapon</span></div>
-        </div>
-        <div class="group"><span class="glabel">Local</span>
-          <div class="row"><span class="chk" data-t></span><span class="chkl">Anti-Aim</span></div>
-          <div class="row"><span class="chk" data-t></span><span class="chkl">Fake Lag</span></div>
-        </div>
-      </div></div>
+      </div>
 
       <!-- MISC -->
-      <div class="panel" id="p-misc"><div class="cols">
-        <div class="group"><span class="glabel">Misc</span>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">High FPS</span></div>
-          <div class="row"><span class="chk" data-t></span><span class="chkl">Speed Hack</span></div>
-          <div class="row"><span class="chk on" data-t></span><span class="chkl">Game Timer</span></div>
-        </div>
-        <div class="group"><span class="glabel">Config</span>
-          <div class="row"><span class="btn">Save Preset</span></div>
-          <div class="row"><span class="btn">Load Preset</span></div>
-        </div>
-      </div></div>
+      <div class="sect"><div class="sh"><i></i><h4>MISC</h4><hr/></div>
+        <div class="row"><div class="sw"><i></i></div><span class="lbl">Speed Hack</span></div>
+        <div class="row on"><div class="sw"><i></i></div><span class="lbl">Show Skeleton</span></div>
+        <div class="row"><div class="sw"><i></i></div><span class="lbl">3D Box</span></div>
+      </div>
 
-      <!-- CONFIG -->
-      <div class="panel" id="p-config"><div class="cols">
-        <div class="group"><span class="glabel">Presets</span>
-          <div class="row"><span class="btn">Reset All</span></div>
-          <div class="row"><span class="btn">Save Config</span></div>
-          <div class="row"><span class="btn">Load Config</span></div>
+      <!-- ACTIONS -->
+      <div class="sect"><div class="sh"><i></i><h4>ACTIONS</h4><hr/></div>
+        <div class="btns">
+          <button class="btn accent">Save Preset</button>
+          <button class="btn">Load Preset</button>
         </div>
-        <div class="group"><span class="glabel">About</span>
-          <div class="row dim">SHADOW MODZ v4.0</div>
-          <div class="row dim">Dark XP shell</div>
-          <div class="row"><span class="btn dead">Telegram - COMING SOON</span></div>
-        </div>
-      </div></div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="sect"><div class="sh"><i></i><h4>ABOUT</h4><hr/></div>
+        <div class="about">SHADOW MODZ v4.0</div>
+        <div class="about-sub">Floating panel shell</div>
+        <div class="btns"><button class="btn dead">Telegram - COMING SOON</button></div>
+        <p class="note">Every switch and slider above is bound to a live variable in the mod.</p>
+      </div>
     </div>
 
-    <div class="status">
+    <div class="foot">
+      <span class="dot"></span>
       <span class="user">SHADOW MODZ</span>
-      <span style="display:flex;align-items:center">
-        <span class="uid">UID: 1337</span><span class="grip"></span>
-      </span>
+      <span class="uid">UID: 1337</span>
     </div>
   </div>
 
-  <div class="stage-hint">Preview built from ShadowBrand.h palette · tap the floating icon or ✕ to toggle the menu</div>
+  <div class="stage-hint">Drag the header to move · tap the floating icon or ✕ to toggle</div>
+</div>
+
+<div class="badges">
+  <span class="badge no">no title bar</span>
+  <span class="badge no">no min / max / close row</span>
+  <span class="badge no">no menu bar</span>
+  <span class="badge no">no toolbar</span>
+  <span class="badge no">no tab strip</span>
+  <span class="badge no">no resize grip</span>
+  <span class="badge">rounded glass panel</span>
+  <span class="badge">one scroll column</span>
+  <span class="badge">draggable floating icon</span>
 </div>
 
 <p class="caption">
-  <b>SHADOW MODZ</b> — Windows&nbsp;XP chrome reskinned in dark black + violet: gradient title bar,
-  bevelled “OP” buttons with violet glow, dark group boxes and a draggable, pulsing floating icon.
-  Telegram stays <b>COMING SOON</b> until you fill <code>ShadowBrand::TelegramUrl</code>.
+  <b>SHADOW MODZ</b> — the old Windows&nbsp;XP window is gone. The menu is now one rounded
+  dark-black + violet glass card: drag it by the header, collapse it with ✕ back to the
+  pulsing floating icon, and every feature lives in a single scrolling column.
+  Telegram stays <b>COMING SOON</b> until <code>ShadowBrand::TelegramUrl</code> is filled.
 </p>
 
 <script>
-// tabs
-const tabs = document.querySelectorAll('#tabs .tab');
-tabs.forEach(t => t.addEventListener('click', () => {
-  tabs.forEach(x => x.classList.remove('on'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
-  t.classList.add('on');
-  document.getElementById('p-' + t.dataset.p).classList.add('on');
-}));
-tabs[0].classList.add('on');
-
-// checkboxes + toolbar toggles are live in the preview
-document.querySelectorAll('.chk[data-t]').forEach(c => {
-  c.addEventListener('click', () => c.classList.toggle('on'));
-});
-document.querySelectorAll('.tb').forEach(b => {
-  b.addEventListener('click', () => b.classList.toggle('on'));
+// switches
+document.querySelectorAll('.row').forEach(r => {
+  r.addEventListener('click', () => r.classList.toggle('on'));
 });
 
-// window <-> floating icon
+// sliders
+document.querySelectorAll('.sl').forEach(s => {
+  const track = s.querySelector('.track');
+  const fill  = s.querySelector('.fill');
+  const knob  = s.querySelector('.knob');
+  const out   = s.querySelector('.top b');
+  const min = parseFloat(s.dataset.min), max = parseFloat(s.dataset.max);
+  const fmt = parseInt(s.dataset.fmt, 10);
+  let val = parseFloat(s.dataset.val);
+
+  function paint(){
+    const f = (val - min) / (max - min);
+    fill.style.width = (f * 100) + '%';
+    knob.style.left  = (f * 100) + '%';
+    out.textContent  = val.toFixed(fmt);
+  }
+  function setFromEvent(e){
+    const r = track.getBoundingClientRect();
+    let f = (e.clientX - r.left) / r.width;
+    f = Math.max(0, Math.min(1, f));
+    val = min + f * (max - min);
+    paint();
+  }
+  track.addEventListener('pointerdown', e => {
+    track.setPointerCapture(e.pointerId);
+    setFromEvent(e);
+    const move = ev => setFromEvent(ev);
+    const up = () => { track.removeEventListener('pointermove', move);
+                       track.removeEventListener('pointerup', up); };
+    track.addEventListener('pointermove', move);
+    track.addEventListener('pointerup', up);
+  });
+  paint();
+});
+
+// panel <-> floating icon
 const win = document.getElementById('win');
 const launcher = document.getElementById('launcher');
 function toggle(){ win.classList.toggle('hidden'); }
 launcher.addEventListener('click', toggle);
-document.getElementById('btnClose').addEventListener('click', toggle);
+document.getElementById('btnClose').addEventListener('click', e => { e.stopPropagation(); toggle(); });
 
 // drag the floating icon around the stage
 const stage = document.querySelector('.stage');
@@ -382,7 +320,6 @@ launcher.addEventListener('pointerdown', e => {
   const r = launcher.getBoundingClientRect(), s = stage.getBoundingClientRect();
   ox = e.clientX - r.left; oy = e.clientY - r.top;
   launcher.setPointerCapture(e.pointerId);
-  launcher.style.transform = 'none';
   launcher.style.left = (r.left - s.left) + 'px';
   launcher.style.top  = (r.top  - s.top ) + 'px';
 });
@@ -400,6 +337,30 @@ launcher.addEventListener('pointerup', () => {
   if (dragging && !moved) toggle();
   dragging = false;
 });
+
+// drag the panel by its header
+const head = document.getElementById('head');
+let pd = false, px = 0, py = 0;
+head.addEventListener('pointerdown', e => {
+  if (e.target.id === 'btnClose') return;
+  pd = true;
+  const r = win.getBoundingClientRect();
+  px = e.clientX - r.left; py = e.clientY - r.top;
+  win.style.transform = 'none';
+  win.style.left = (r.left - stage.getBoundingClientRect().left) + 'px';
+  win.style.top  = (r.top  - stage.getBoundingClientRect().top ) + 'px';
+  head.setPointerCapture(e.pointerId);
+});
+head.addEventListener('pointermove', e => {
+  if (!pd) return;
+  const s = stage.getBoundingClientRect();
+  let x = e.clientX - s.left - px, y = e.clientY - s.top - py;
+  x = Math.max(4, Math.min(s.width  - win.offsetWidth  - 4, x));
+  y = Math.max(4, Math.min(s.height - win.offsetHeight - 4, y));
+  win.style.left = x + 'px';
+  win.style.top  = y + 'px';
+});
+head.addEventListener('pointerup', () => { pd = false; });
 </script>
 </body>
 </html>

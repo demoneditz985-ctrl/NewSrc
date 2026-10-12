@@ -5,9 +5,9 @@
  * Every string / colour that carries the SHADOW MODZ identity lives here, so a
  * rebrand is a one-file edit instead of a hunt through the shell.
  *
- * The shell itself (Win95UI.h) is a Windows-XP look-alike; the palette below
- * repaints it in dark black + violet while keeping the XP chrome: bevelled
- * frames, title bar, menu bar, toolbar, tabs, groups and status bar.
+ * The shell itself (Win95UI.h) is a floating glass panel: no window chrome at
+ * all - no title bar, min/max/close row, menu bar, toolbar, tab strip or status
+ * bar. The palette below paints it in dark black + violet.
  * ==========================================================================*/
 
 // Literal form of KeyUrl: OBFUSCATE() in Main.cpp needs a string literal, the
@@ -19,8 +19,8 @@ namespace ShadowBrand
     // ---- identity --------------------------------------------------------
     constexpr const char* BrandName    = "SHADOW MODZ";
     constexpr const char* Version      = "v4.0";
-    constexpr const char* BuildTag     = "Dark XP shell";
-    constexpr const char* WindowTitle  = "Shadow Modz - Control Panel - WinXP";
+    constexpr const char* BuildTag     = "Floating panel shell";
+    constexpr const char* WindowTitle  = "Shadow Modz - Control Panel";
     constexpr const char* StatusUser   = "SHADOW MODZ";
     constexpr const char* StatusUid    = "UID: 1337";
     constexpr const char* LauncherText = "SM";    // glyph drawn on the floating icon

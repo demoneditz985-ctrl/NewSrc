@@ -1,14 +1,15 @@
 # SHADOW MODZ — rebrand of `NIKUMODS.WINDOWS.XP.GUI`
 
-The release asset (`NIKUMODS.WINDOWS.XP.GUI.zip`, 41 MB) was unpacked and reskinned:
-same Windows‑XP shell, new **dark black + violet** skin, new **OP buttons**, new
-**floating icon**, and every visible string now reads **SHADOW MODZ**.
+The release asset (`NIKUMODS.WINDOWS.XP.GUI.zip`, 41 MB) was unpacked and reworked:
+the Windows‑XP window is **gone**, replaced by a **floating dark‑black + violet glass
+panel** with new **OP buttons**, a new **floating icon**, and every visible string
+reading **SHADOW MODZ**.
 
 ```
 ShadowModz/            <- the Android/JNI project (source of the release zip)
   app/src/main/jni/
     NikuMods/ShadowBrand.h   <- ALL brand strings + colours live here
-    NikuMods/Win95UI.h       <- the XP shell (palette, buttons, tabs, launcher)
+    NikuMods/Win95UI.h       <- the floating panel shell (palette, widgets, launcher)
     NikuMods/Win95Assets/    <- Micross font + SHADOW MODZ icon texture
     Main.cpp                 <- login window
   app/src/main/res/          <- app name, launcher icons, dark+violet theme
@@ -20,28 +21,37 @@ preview/                     <- browser preview of the new UI (see below)
 **Theme — dark black + violet**
 - `W95::style` palette rewritten: near‑black surfaces (`#0A0710` → `#1A1526`),
   violet accents `#A855F7` / `#7C3AED` / `#D8B4FE`.
-- Window body, group boxes, menu bar, toolbar, tabs, status bar and scrollbars
-  all repainted; XP bevels (raised / sunken / etched) kept.
+- Panel card, header, section heads, switches, sliders and scrollbar all
+  repainted in the dark/violet palette.
 - ImGui colour map in `ApplyStyle()` follows the same palette, so popups,
   inputs and combo boxes match.
 
+**No window chrome — one floating panel**
+- `BeginPanel()` / `EndPanel()` draw a rounded glass card: violet halo, dark
+  gradient face, accent border. Drag it by the header; the round ✕ collapses it
+  back to the floating icon.
+- `BeginGroup()` / `EndGroup()` became **section heads** (accent bar, uppercase
+  title, hairline), so all seven feature pages stack in a single scrolling
+  column instead of hiding behind tabs.
+- Deleted: title bar, min/max/close row, menu bar, toolbar, tab strip, status
+  bar, resize grip, XP group boxes and the XP scrollbar.
+
 **OP buttons**
-- `Button()` — vertical violet gradient face, XP bevel, gloss line, halo glow
-  that intensifies on hover/press, drop‑shadowed label.
-- New `AccentButton(label[, size][, enabled])` — full‑violet primary button,
-  dims itself and refuses clicks when `enabled == false`.
-- Tabs light up violet with an accent underline; toolbar buttons glow when
-  toggled on; checkboxes get a violet tick plus a halo.
+- `Button()` / `AccentButton()` — rounded violet pills with a gloss line and a
+  halo that intensifies on hover/press; `AccentButton(..., enabled=false)` dims
+  itself and refuses clicks.
+- `Checkbox()` is now a **pill switch** with a sliding knob and violet halo;
+  `Slider()` is a slim filled track with a round glowing knob.
 
 **Floating icon — rebuilt**
 - Was a flat grey 96×26 rectangle labelled “Niku Mods”.
 - Now a **draggable, pulsing violet disc**: breathing halo rings, lit top half,
   violet rim, SHADOW MODZ icon texture in the middle (falls back to an “SM”
-  glyph). Tap opens the menu, drag moves it, and it clamps to the screen edges.
+  glyph). Tap opens the panel, drag moves it, and it clamps to the screen edges.
 
 **Rebrand**
-- Window title `Shadow Modz - Control Panel - WinXP`, status bar
-  `SHADOW MODZ / UID: 1337`, About page `SHADOW MODZ v4.0 — Dark XP shell`.
+- Window title `Shadow Modz - Control Panel`, footer
+  `SHADOW MODZ / UID: 1337`, About page `SHADOW MODZ v4.0 — Floating panel shell`.
 - Login window retitled `SHADOW MODZ LOGIN` and repainted (dark glass, violet
   seam, violet primary button).
 - App name `Shadow Modz`, dark+violet `colors.xml` / `styles.xml`, new adaptive
@@ -70,9 +80,14 @@ constexpr bool        TelegramLive = true;
 
 ## Preview
 
-`preview/index.html` renders the new shell in the browser (tabs, sliders and
-buttons are clickable; the floating icon drags and toggles the window). Serve
-the folder and open it, e.g. `python3 -m http.server 8080 --directory preview`.
+`preview/index.html` renders the new shell in the browser (switches, sliders
+and buttons are live; the panel drags by its header and the floating icon drags
+around the stage). Serve the folder and open it, e.g.
+`python3 -m http.server 8080 --directory preview`.
+
+`preview/render_mockup.py` redraws the same shell to `preview/ui-mockup.png`
+with Pillow, straight from the `ShadowBrand.h` palette and the `Win95UI.h`
+metrics — `python3 preview/render_mockup.py`.
 
 ## Build
 
