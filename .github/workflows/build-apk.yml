@@ -68,6 +68,15 @@ jobs:
           cp    ShadowModz/app/build.gradle                 /tmp/build/app/build.gradle
           cp    ShadowModz/settings.gradle /tmp/build/settings.gradle
           cp    ShadowModz/build.gradle     /tmp/build/build.gradle
+
+          # Case-sensitivity shim: this tree was authored on a case-insensitive
+          # filesystem, so ur_nikuu/IL2CppSDKGenerator/Il2Cpp.cpp does
+          # #include "Il2cpp.h" while the header on disk is Unity/Il2Cpp.h.
+          # Drop a correctly-cased copy where the include path can see it.
+          JNI=/tmp/build/app/src/main/jni
+          cp -n "$JNI/NikuModsStuff/Unity/Il2Cpp.h" "$JNI/NikuModsStuff/Il2cpp.h"
+          ls -la "$JNI/NikuModsStuff/" | grep -i il2cpp
+
           echo "=== overlay done ==="
           ls /tmp/build
 
