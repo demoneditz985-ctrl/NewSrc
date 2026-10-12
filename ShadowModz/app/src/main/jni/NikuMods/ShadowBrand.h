@@ -17,7 +17,7 @@
 namespace ShadowBrand
 {
     // ---- identity --------------------------------------------------------
-    constexpr const char* Name         = "SHADOW MODZ";
+    constexpr const char* BrandName    = "SHADOW MODZ";
     constexpr const char* Version      = "v4.0";
     constexpr const char* BuildTag     = "Dark XP shell";
     constexpr const char* WindowTitle  = "Shadow Modz - Control Panel - WinXP";

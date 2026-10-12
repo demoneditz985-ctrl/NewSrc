@@ -2762,7 +2762,7 @@ inline void PageConfig()
     BeginGroup("About", 1);
     {
         char line[96];
-        std::snprintf(line, sizeof(line), "%s %s", ShadowBrand::Name, ShadowBrand::Version);
+        std::snprintf(line, sizeof(line), "%s %s", ShadowBrand::BrandName, ShadowBrand::Version);
         Label(line);
         Label(ShadowBrand::BuildTag);
 
