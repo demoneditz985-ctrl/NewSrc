@@ -369,7 +369,7 @@ static monoString* U3DStr(const char* text) {
 
 static monoString* U3DStrFormat(float distance, int hp) {
     char buffer[128] = {0};
-    sprintf(buffer, " NIKUMODS | HP: %d | Distance: %.f M", hp, distance);
+    sprintf(buffer, " SHADOW MODZ | HP: %d | Distance: %.f M", hp, distance);
     return U3DStr(buffer);
 }
 

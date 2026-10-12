@@ -2829,7 +2829,7 @@ inline void Render()
         PushModal();
     }
 
-    BeginMain("Nikumods - Untitled - Win95");
+    BeginMain(ShadowBrand::WindowTitle);
 
     BeginMenuBar();
     MenuBarItem("File");

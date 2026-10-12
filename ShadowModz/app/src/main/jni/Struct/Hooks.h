@@ -789,7 +789,7 @@ static void ShowCheatOussamaDialog2(monoString* message, monoString* title) {
 
 static void ShowCreditDialog1() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Owner - @ur_nikuu[00ff00]NIKUMODS\n[ffffff]Enhance your gaming experience with our updated mod.\n")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Owner - COMING SOON[00ff00]SHADOW MODZ\n[ffffff]Enhance your gaming experience with our updated mod.\n")),
         U3DStr(OBFUSCATE("INFORMATION")), 2);
 }
 static void TryShowEnableAllDialogOnce(bool enabled) {
@@ -812,55 +812,55 @@ static void AddTeammateHud(monoString* nick, monoString* info) {
 
 static void ShowCreditDialog2() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Official Channel:\n[00ff00]t.me/ur_nikuu\n[ffffff]Join us for updates & support.")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Official Channel:\n[00ff00]COMING SOON\n[ffffff]Join us for updates & support.")),
         U3DStr(OBFUSCATE("TELEGRAM")), 2);
 }
 
 static void ShowCreditDialog3() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Developed By: [00ff00]@ur_nikuu\n[ffffff]Copyright @2026\n[ffffff]All Rights Reserved.")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Developed By: [00ff00]COMING SOON\n[ffffff]Copyright @2026\n[ffffff]All Rights Reserved.")),
         U3DStr(OBFUSCATE("DEVELOPER")), 1);
 }
 
 static void ShowCreditDialog4() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Version: [00ff00]FreeFire\n[ffffff]Mod Status: [00ff00]Online\n[ffffff]Build: Max Update")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Version: [00ff00]FreeFire\n[ffffff]Mod Status: [00ff00]Online\n[ffffff]Build: Max Update")),
         U3DStr(OBFUSCATE("VERSION")), 2);
 }
 
 static void ShowCreditDialog5() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Features:\n[00ff00]- Aimkill\n[00ff00]- @ur_nikuu\n[00ff00]- Fly Hack\n[00ff00]- ESP")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Features:\n[00ff00]- Aimkill\n[00ff00]- COMING SOON\n[00ff00]- Fly Hack\n[00ff00]- ESP")),
         U3DStr(OBFUSCATE("FEATURES")), 2);
 }
 
 static void ShowCreditDialog6() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]New Update Available!\n[00ff00]@ur_nikuu\n[ffffff]Check Telegram for latest build.")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]New Update Available!\n[00ff00]COMING SOON\n[ffffff]Check Telegram for latest build.")),
         U3DStr(OBFUSCATE("UPDATE")), 2);
 }
 
 static void ShowCreditDialog7() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Premium Mod Menu\n[00ff00]Best Performance\n[ffffff]Optimized for all device")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Premium Mod Menu\n[00ff00]Best Performance\n[ffffff]Optimized for all device")),
         U3DStr(OBFUSCATE("PREMIUM")), 1);
 }
 
 static void ShowCreditDialog8() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffff00]Warning:\n[ffffff]Use at your own risk.\n[ffffff]Play smart, stay safe.")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffff00]Warning:\n[ffffff]Use at your own risk.\n[ffffff]Play smart, stay safe.")),
         U3DStr(OBFUSCATE("WARNING")), 2);
 }
 
 static void ShowCreditDialog9() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Thank you for using our mod!\n[00ff00]Support: t.me/ur_nikuu\n[ffffff]Share with friends.")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Thank you for using our mod!\n[00ff00]Support: COMING SOON\n[ffffff]Share with friends.")),
         U3DStr(OBFUSCATE("THANK YOU")), 3);
 }
 
 static void ShowCreditDialog10() {
     ShowPaymentCreditDialog(
-        U3DStr(OBFUSCATE("[ff0000]NIKUMODS\n[ffffff]Powered By @ur_nikuu\n[00ff00]Community\n[ffffff]Stay tuned for more!")),
+        U3DStr(OBFUSCATE("[a855f7]SHADOW MODZ\n[ffffff]Powered By COMING SOON\n[00ff00]Community\n[ffffff]Stay tuned for more!")),
         U3DStr(OBFUSCATE("COMMUNITY")), 2);
 }
 
@@ -1193,17 +1193,17 @@ static float lastCreditTime = 0.0f;
             void* ui = GetUIInGameScene();
             if (ui) {
                 if (!tipsShown) {
-                    ShowCenterUpTeammateTips(U3DStr(OBFUSCATE("Copyright NIKUMODS | Developed @ur_nikuu")), 99999.0f);
+                    ShowCenterUpTeammateTips(U3DStr(OBFUSCATE("Copyright SHADOW MODZ | Developed COMING SOON")), 99999.0f);
                     tipsShown = true;
                 }
 
                 if (now - lastCreditTime >= 3.0f) {
-                    ShowCreditPopup(U3DStr(OBFUSCATE("NIKUMODS | t.me/ur_nikuu")));
+                    ShowCreditPopup(U3DStr(OBFUSCATE("SHADOW MODZ | COMING SOON")));
                     lastCreditTime = now;
                 }
 
                 if (now - lastPopupTime >= 10.0f) {
-                    ShowPopupMessageNoAnim(U3DStr(OBFUSCATE("[ff0000] NIKUMODS | [ffffff] Owner - @ur_nikuu")), 1.5f);
+                    ShowPopupMessageNoAnim(U3DStr(OBFUSCATE("[a855f7] SHADOW MODZ | [ffffff] Owner - COMING SOON")), 1.5f);
                     lastPopupTime = now;
                 }
             }
