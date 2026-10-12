@@ -60,37 +60,31 @@ This migration can be done automatically using the AGP Upgrade Assistant, please
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:processDebugManifestForPackage
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
 > Task :app:processDebugJavaRes NO-SOURCE
 > Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugJavaResource
+> Task :app:processDebugResources
 > Task :app:desugarDebugFileDependencies
+> Task :app:compileDebugJavaWithJavac
+> Task :app:mergeLibDexDebug
 > Task :app:mergeExtDexDebug
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
 > Task :app:configureNdkBuildDebug[arm64-v8a]
 > Task :app:buildNdkBuildDebug[arm64-v8a]
 > Task :app:configureNdkBuildDebug[armeabi-v7a]
-> Task :app:processDebugManifestForPackage
 
-> Task :app:buildNdkBuildDebug[armeabi-v7a] FAILED
+> Task :app:buildNdkBuildDebug[armeabi-v7a]
 C/C++: ld: error: undefined symbol: __sync_add_and_fetch_4
 C/C++: >>> referenced by threads_pthread.c
 C/C++: >>>               threads_pthread.o:(CRYPTO_atomic_add) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-C/C++: ld: error: undefined symbol: signal
-C/C++: >>> referenced by ui_openssl.c
-C/C++: >>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-C/C++: >>> did you mean: psignal
-C/C++: >>> defined in: /usr/local/lib/android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/../sysroot/usr/lib/arm-linux-androideabi/19/libc.so
-C/C++: ld: error: undefined symbol: tcsetattr
-C/C++: >>> referenced by ui_openssl.c
-C/C++: >>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-C/C++: >>> referenced by ui_openssl.c
-C/C++: >>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-C/C++: ld: error: undefined symbol: tcgetattr
-C/C++: >>> referenced by ui_openssl.c
-C/C++: >>>               ui_openssl.o:(open_console) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
 C/C++: clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-C/C++: make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/armeabi-v7a/libNikuMods.so] Error 1
+C/C++: make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj/local/armeabi-v7a/libNikuMods.so] Error 1
+
+> Task :app:buildNdkBuildDebug[armeabi-v7a] FAILED
 
 FAILURE: Build failed with an exception.
 
@@ -132,32 +126,16 @@ Execution failed for task ':app:buildNdkBuildDebug[armeabi-v7a]'.
         APP_ABI=armeabi-v7a \
         NDK_ALL_ABIS=armeabi-v7a \
         NDK_DEBUG=1 \
-        APP_PLATFORM=android-19 \
-        NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj \
-        NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/lib \
+        APP_PLATFORM=android-21 \
+        NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj \
+        NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/lib \
         NikuMods
     from /tmp/build/app
   ld: error: undefined symbol: __sync_add_and_fetch_4
   >>> referenced by threads_pthread.c
   >>>               threads_pthread.o:(CRYPTO_atomic_add) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-  
-  ld: error: undefined symbol: signal
-  >>> referenced by ui_openssl.c
-  >>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-  >>> did you mean: psignal
-  >>> defined in: /usr/local/lib/android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/../sysroot/usr/lib/arm-linux-androideabi/19/libc.so
-  
-  ld: error: undefined symbol: tcsetattr
-  >>> referenced by ui_openssl.c
-  >>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-  >>> referenced by ui_openssl.c
-  >>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-  
-  ld: error: undefined symbol: tcgetattr
-  >>> referenced by ui_openssl.c
-  >>>               ui_openssl.o:(open_console) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
   clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-  make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/armeabi-v7a/libNikuMods.so] Error 1
+  make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj/local/armeabi-v7a/libNikuMods.so] Error 1
 
 * Try:
 > Run with --info or --debug option to get more log output.
@@ -194,6 +172,34 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:bui
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:288)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:462)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:379)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:115)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:135)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:120)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.internal.operations.DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$6(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:247)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$7(StateTransitionController.java:174)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:174)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:190)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:172)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:47)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:191)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:49)
 Caused by: org.gradle.internal.UncheckedException: com.android.ide.common.process.ProcessException: [armeabi-v7a] Compile++ arm  : NikuMods <= imgui.cpp
@@ -232,32 +238,16 @@ C++ build system [build] failed while executing:
       APP_ABI=armeabi-v7a \
       NDK_ALL_ABIS=armeabi-v7a \
       NDK_DEBUG=1 \
-      APP_PLATFORM=android-19 \
-      NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj \
-      NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/lib \
+      APP_PLATFORM=android-21 \
+      NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj \
+      NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/lib \
       NikuMods
   from /tmp/build/app
 ld: error: undefined symbol: __sync_add_and_fetch_4
 >>> referenced by threads_pthread.c
 >>>               threads_pthread.o:(CRYPTO_atomic_add) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-
-ld: error: undefined symbol: signal
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
->>> did you mean: psignal
->>> defined in: /usr/local/lib/android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/../sysroot/usr/lib/arm-linux-androideabi/19/libc.so
-
-ld: error: undefined symbol: tcsetattr
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-
-ld: error: undefined symbol: tcgetattr
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(open_console) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/armeabi-v7a/libNikuMods.so] Error 1
+make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj/local/armeabi-v7a/libNikuMods.so] Error 1
 	at org.gradle.internal.UncheckedException.throwAsUncheckedException(UncheckedException.java:68)
 	at org.gradle.internal.UncheckedException.throwAsUncheckedException(UncheckedException.java:41)
 	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:128)
@@ -371,6 +361,34 @@ make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.m
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:288)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:462)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:379)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:115)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:135)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:120)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.internal.operations.DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$6(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:247)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$7(StateTransitionController.java:174)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:174)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:190)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:172)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:47)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:191)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:49)
 Caused by: com.android.ide.common.process.ProcessException: [armeabi-v7a] Compile++ arm  : NikuMods <= imgui.cpp
@@ -409,32 +427,16 @@ C++ build system [build] failed while executing:
       APP_ABI=armeabi-v7a \
       NDK_ALL_ABIS=armeabi-v7a \
       NDK_DEBUG=1 \
-      APP_PLATFORM=android-19 \
-      NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj \
-      NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/lib \
+      APP_PLATFORM=android-21 \
+      NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj \
+      NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/lib \
       NikuMods
   from /tmp/build/app
 ld: error: undefined symbol: __sync_add_and_fetch_4
 >>> referenced by threads_pthread.c
 >>>               threads_pthread.o:(CRYPTO_atomic_add) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-
-ld: error: undefined symbol: signal
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
->>> did you mean: psignal
->>> defined in: /usr/local/lib/android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/../sysroot/usr/lib/arm-linux-androideabi/19/libc.so
-
-ld: error: undefined symbol: tcsetattr
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(read_string_inner) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
-
-ld: error: undefined symbol: tcgetattr
->>> referenced by ui_openssl.c
->>>               ui_openssl.o:(open_console) in archive /tmp/build/app/src/main/jni/NikuModsStuff/Hacks/Tools/curl/openssl-android-armeabi-v7a/lib/libcrypto.a
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/armeabi-v7a/libNikuMods.so] Error 1
+make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:657: /tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj/local/armeabi-v7a/libNikuMods.so] Error 1
 	at com.android.build.gradle.internal.cxx.process.ExecuteProcessKt.execute(ExecuteProcess.kt:274)
 	at com.android.build.gradle.internal.cxx.process.ExecuteProcessKt$executeProcess$1.invoke(ExecuteProcess.kt:106)
 	at com.android.build.gradle.internal.cxx.process.ExecuteProcessKt$executeProcess$1.invoke(ExecuteProcess.kt:104)
@@ -453,19 +455,19 @@ make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.m
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
-	... 112 more
-Caused by: com.android.ide.common.process.ProcessException: Error while executing process /usr/local/lib/android/sdk/ndk/25.2.9519653/ndk-build with arguments {NDK_PROJECT_PATH=null APP_BUILD_SCRIPT=/tmp/build/app/src/main/jni/Android.mk NDK_APPLICATION_MK=/tmp/build/app/src/main/jni/Application.mk APP_ABI=armeabi-v7a NDK_ALL_ABIS=armeabi-v7a NDK_DEBUG=1 APP_PLATFORM=android-19 NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/lib NikuMods}
+	... 140 more
+Caused by: com.android.ide.common.process.ProcessException: Error while executing process /usr/local/lib/android/sdk/ndk/25.2.9519653/ndk-build with arguments {NDK_PROJECT_PATH=null APP_BUILD_SCRIPT=/tmp/build/app/src/main/jni/Android.mk NDK_APPLICATION_MK=/tmp/build/app/src/main/jni/Application.mk APP_ABI=armeabi-v7a NDK_ALL_ABIS=armeabi-v7a NDK_DEBUG=1 APP_PLATFORM=android-21 NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/obj NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/4y713466/lib NikuMods}
 	at com.android.build.gradle.internal.process.GradleProcessResult.buildProcessException(GradleProcessResult.java:73)
 	at com.android.build.gradle.internal.process.GradleProcessResult.assertNormalExitValue(GradleProcessResult.java:48)
 	at com.android.build.gradle.internal.cxx.process.ExecuteProcessKt.execute(ExecuteProcess.kt:269)
-	... 129 more
+	... 157 more
 Caused by: org.gradle.process.internal.ExecException: Process 'command '/usr/local/lib/android/sdk/ndk/25.2.9519653/ndk-build'' finished with non-zero exit value 2
 	at org.gradle.process.internal.DefaultExecHandle$ExecResultImpl.assertNormalExitValue(DefaultExecHandle.java:415)
 	at com.android.build.gradle.internal.process.GradleProcessResult.assertNormalExitValue(GradleProcessResult.java:46)
-	... 130 more
+	... 158 more
 
 
 * Get more help at https://help.gradle.org
 
-BUILD FAILED in 1m 25s
-22 actionable tasks: 22 executed
+BUILD FAILED in 1m 31s
+27 actionable tasks: 27 executed
