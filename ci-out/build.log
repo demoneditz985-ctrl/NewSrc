@@ -35,12 +35,18 @@ Installing Android SDK Platform 30 in /usr/local/lib/android/sdk/platforms/andro
 > Task :app:compileDebugRenderscript NO-SOURCE
 > Task :app:generateDebugBuildConfig
 > Task :app:javaPreCompileDebug
-> Task :app:generateDebugResValues
 > Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
+
+> Task :app:processDebugMainManifest
+package="com.akn" found in source AndroidManifest.xml: /tmp/build/app/src/main/AndroidManifest.xml.
+Setting the namespace via a source AndroidManifest.xml's package attribute is deprecated.
+Please instead set the namespace (or testNamespace) in the module's build.gradle file, as described here: https://developer.android.com/studio/build/configure-app-module#set-namespace
+This migration can be done automatically using the AGP Upgrade Assistant, please refer to https://developer.android.com/studio/build/agp-upgrade-assistant for more information.
 
 > Task :app:mergeDebugResources
 >>>>>> No offset for gradient found>>>>>>
@@ -50,22 +56,16 @@ Installing Android SDK Platform 30 in /usr/local/lib/android/sdk/platforms/andro
 >>>>>> No offset for gradient found>>>>>>
 >>>>>> No offset for gradient found>>>>>>
 
-> Task :app:processDebugMainManifest
-package="com.akn" found in source AndroidManifest.xml: /tmp/build/app/src/main/AndroidManifest.xml.
-Setting the namespace via a source AndroidManifest.xml's package attribute is deprecated.
-Please instead set the namespace (or testNamespace) in the module's build.gradle file, as described here: https://developer.android.com/studio/build/configure-app-module#set-namespace
-This migration can be done automatically using the AGP Upgrade Assistant, please refer to https://developer.android.com/studio/build/agp-upgrade-assistant for more information.
-
 > Task :app:processDebugManifest
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
+> Task :app:processDebugManifestForPackage
 > Task :app:compressDebugAssets
 > Task :app:processDebugJavaRes NO-SOURCE
-> Task :app:processDebugManifestForPackage
-> Task :app:mergeDebugJavaResource
 > Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugJavaResource
 > Task :app:processDebugResources
 > Task :app:desugarDebugFileDependencies
 > Task :app:compileDebugJavaWithJavac
@@ -88,5 +88,5 @@ This migration can be done automatically using the AGP Upgrade Assistant, please
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 1m 22s
+BUILD SUCCESSFUL in 1m 42s
 36 actionable tasks: 36 executed
