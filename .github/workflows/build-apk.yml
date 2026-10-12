@@ -1,0 +1,103 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - 'arena/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+
+      - name: Install Gradle 7.6.4
+        run: |
+          curl -sSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-7.6.4-bin.zip
+          sudo unzip -q /tmp/gradle.zip -d /opt
+          sudo ln -sf /opt/gradle-7.6.4/bin/gradle /usr/local/bin/gradle
+          gradle --version | head -6
+
+      - name: Android SDK info + licences
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME  ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          ls "$ANDROID_HOME" || true
+          ls "$ANDROID_HOME/ndk" || true
+          if [ -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+            yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
+          fi
+
+      - name: Download upstream release (vendored prebuilts)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p /tmp/rel
+          gh release download Src --repo demoneditz985-ctrl/NewSrc --dir /tmp/rel --clobber
+          rm -rf /tmp/upstream && mkdir -p /tmp/upstream
+          unzip -q /tmp/rel/NIKUMODS.WINDOWS.XP.GUI.zip -d /tmp/upstream
+          ls "/tmp/upstream/NIKUMODS WINDOWS XP GUI"
+
+      - name: Assemble build tree
+        run: |
+          set -e
+          SRC="/tmp/upstream/NIKUMODS WINDOWS XP GUI"
+          rm -rf /tmp/build && mkdir -p /tmp/build
+          # full upstream tree: keeps Dobby/curl/openssl .a prebuilts and headers
+          cp -a "$SRC/." /tmp/build/
+          # overlay the rebranded SHADOW MODZ sources from this repo
+          cp -a ShadowModz/app/src/main/jni/NikuMods/. /tmp/build/app/src/main/jni/NikuMods/
+          cp    ShadowModz/app/src/main/jni/Main.cpp   /tmp/build/app/src/main/jni/Main.cpp
+          rm -rf /tmp/build/app/src/main/res
+          cp -a ShadowModz/app/src/main/res /tmp/build/app/src/main/res
+          rm -rf /tmp/build/app/src/main/java
+          cp -a ShadowModz/app/src/main/java /tmp/build/app/src/main/java
+          cp    ShadowModz/app/src/main/AndroidManifest.xml /tmp/build/app/src/main/AndroidManifest.xml
+          cp    ShadowModz/app/build.gradle                 /tmp/build/app/build.gradle
+          cp    ShadowModz/settings.gradle /tmp/build/settings.gradle
+          cp    ShadowModz/build.gradle     /tmp/build/build.gradle
+          echo "=== overlay done ==="
+          ls /tmp/build
+
+      - name: Build
+        id: gradle
+        run: |
+          cd /tmp/build
+          gradle assembleDebug --no-daemon --stacktrace > /tmp/build.log 2>&1
+          echo "gradle_exit=$?"
+          tail -120 /tmp/build.log
+
+      - name: Collect build log and artifacts
+        if: always()
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/ci-out"
+          cp /tmp/build.log "$GITHUB_WORKSPACE/ci-out/build.log" 2>/dev/null || echo "no build log"
+          mkdir -p "$GITHUB_WORKSPACE/apk"
+          find /tmp/build -type f -name '*.apk' -exec cp {} "$GITHUB_WORKSPACE/apk/" \; 2>/dev/null || true
+          # keep the compiled native module too - that is the payload a loader injects
+          mkdir -p "$GITHUB_WORKSPACE/native"
+          find /tmp/build -type f -name 'libNikuMods.so' -exec sh -c 'abi=$(basename $(dirname {})); cp {} "$1/native/$abi-libNikuMods.so"' _ "$GITHUB_WORKSPACE" \; 2>/dev/null || true
+          ls -la "$GITHUB_WORKSPACE/apk" "$GITHUB_WORKSPACE/native" 2>&1 | head -30
+
+      - name: Commit artifacts
+        if: always()
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          git config user.name "Arena Agent"
+          git config user.email "agent@arena.ai"
+          git pull --rebase origin "${GITHUB_REF_NAME}" 2>/dev/null || true
+          git add -A
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "ci: APK build output [skip ci]"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

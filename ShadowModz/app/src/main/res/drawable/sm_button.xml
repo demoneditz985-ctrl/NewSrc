@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SHADOW MODZ button: violet gradient face with an accent rim. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="270"
+        android:startColor="#6D28D9"
+        android:endColor="#2A1650" />
+    <stroke
+        android:width="1dp"
+        android:color="#A855F7" />
+    <corners android:radius="3dp" />
+    <padding
+        android:left="24dp"
+        android:top="10dp"
+        android:right="24dp"
+        android:bottom="10dp" />
+</shape>

@@ -1,0 +1,23 @@
+// Root project file - the release archive shipped only the app/ module, so the
+// Gradle entry points are added here. Pinned to a JDK 11 / Gradle 7.6 combo
+// that is known to work with this vintage of AGP.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.buildDir
+}
