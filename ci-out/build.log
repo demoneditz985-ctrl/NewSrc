@@ -34,8 +34,8 @@ Installing Android SDK Platform 30 in /usr/local/lib/android/sdk/platforms/andro
 > Task :app:compileDebugAidl NO-SOURCE
 > Task :app:compileDebugRenderscript NO-SOURCE
 > Task :app:generateDebugBuildConfig
-> Task :app:javaPreCompileDebug
 > Task :app:checkDebugAarMetadata
+> Task :app:javaPreCompileDebug
 > Task :app:generateDebugResValues
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
@@ -63,25 +63,49 @@ This migration can be done automatically using the AGP Upgrade Assistant, please
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
 > Task :app:processDebugJavaRes NO-SOURCE
-> Task :app:processDebugManifestForPackage
 > Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugJavaResource
-> Task :app:processDebugResources
 > Task :app:desugarDebugFileDependencies
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeExtDexDebug
+> Task :app:processDebugResources
+> Task :app:configureNdkBuildDebug[arm64-v8a]
 > Task :app:compileDebugJavaWithJavac
 > Task :app:dexBuilderDebug
-> Task :app:mergeExtDexDebug
-> Task :app:configureNdkBuildDebug[arm64-v8a]
 > Task :app:mergeDexDebug
 
 > Task :app:buildNdkBuildDebug[arm64-v8a]
 C/C++: In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
-C/C++: In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:19:
-C/C++: In file included from /tmp/build/app/src/main/jni/Struct/Hooks.h:13:
-C/C++: /tmp/build/app/src/main/jni/NikuModsStuff/Unity/Tools.h:3:10: fatal error: 'dobby/dobby.h' file not found
-C/C++: #include "dobby/dobby.h"
-C/C++:          ^~~~~~~~~~~~~~~
-C/C++: 1 error generated.
+C/C++: In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+C/C++: In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+C/C++: /tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: default initialization of an object of const type 'const char *(const'
+C/C++:     constexpr const char* Name         = "SHADOW MODZ";
+C/C++:                           ^
+C/C++: /tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+C/C++: #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+C/C++:               ^
+C/C++: In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+C/C++: In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+C/C++: In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+C/C++: /tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: expected ';' after top level declarator
+C/C++: /tmp/build/app/src/main/jni/Struct/Class.h:139:26: note: expanded from macro 'Name'
+C/C++: #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+C/C++:                          ^
+C/C++: In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+C/C++: In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+C/C++: /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: expected unqualified-id
+C/C++:         std::snprintf(line, sizeof(line), "%s %s", ShadowBrand::Name, ShadowBrand::Version);
+C/C++:                                                                 ^
+C/C++: /tmp/build/app/src/main/jni/Struct/Class.h:139:14: note: expanded from macro 'Name'
+C/C++: #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+C/C++:              ^
+C/C++: In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+C/C++: In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+C/C++: /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: unexpected type name 'uintptr_t': expected expression
+C/C++: /tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+C/C++: #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+C/C++:               ^
+C/C++: 4 errors generated.
 C/C++: make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:424: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/arm64-v8a/objs/NikuMods/Main.o] Error 1
 
 > Task :app:buildNdkBuildDebug[arm64-v8a] FAILED
@@ -126,12 +150,36 @@ Execution failed for task ':app:buildNdkBuildDebug[arm64-v8a]'.
         NikuMods
     from /tmp/build/app
   In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
-  In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:19:
-  In file included from /tmp/build/app/src/main/jni/Struct/Hooks.h:13:
-  /tmp/build/app/src/main/jni/NikuModsStuff/Unity/Tools.h:3:10: fatal error: 'dobby/dobby.h' file not found
-  #include "dobby/dobby.h"
-           ^~~~~~~~~~~~~~~
-  1 error generated.
+  In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+  In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+  /tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: default initialization of an object of const type 'const char *(const'
+      constexpr const char* Name         = "SHADOW MODZ";
+                            ^
+  /tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+  #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+                ^
+  In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+  In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+  In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+  /tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: expected ';' after top level declarator
+  /tmp/build/app/src/main/jni/Struct/Class.h:139:26: note: expanded from macro 'Name'
+  #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+                           ^
+  In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+  In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+  /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: expected unqualified-id
+          std::snprintf(line, sizeof(line), "%s %s", ShadowBrand::Name, ShadowBrand::Version);
+                                                                  ^
+  /tmp/build/app/src/main/jni/Struct/Class.h:139:14: note: expanded from macro 'Name'
+  #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+               ^
+  In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+  In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+  /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: unexpected type name 'uintptr_t': expected expression
+  /tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+  #define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+                ^
+  4 errors generated.
   make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:424: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/arm64-v8a/objs/NikuMods/Main.o] Error 1
 
 * Try:
@@ -169,6 +217,34 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:bui
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:288)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:462)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:379)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:115)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:135)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:120)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.internal.operations.DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$6(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:247)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$7(StateTransitionController.java:174)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:174)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:190)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:172)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:47)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:191)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:49)
 Caused by: org.gradle.internal.UncheckedException: com.android.ide.common.process.ProcessException: [arm64-v8a] Compile++      : NikuMods <= imgui.cpp
@@ -207,12 +283,36 @@ C++ build system [build] failed while executing:
       NikuMods
   from /tmp/build/app
 In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
-In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:19:
-In file included from /tmp/build/app/src/main/jni/Struct/Hooks.h:13:
-/tmp/build/app/src/main/jni/NikuModsStuff/Unity/Tools.h:3:10: fatal error: 'dobby/dobby.h' file not found
-#include "dobby/dobby.h"
-         ^~~~~~~~~~~~~~~
-1 error generated.
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+/tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: default initialization of an object of const type 'const char *(const'
+    constexpr const char* Name         = "SHADOW MODZ";
+                          ^
+/tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+              ^
+In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+/tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: expected ';' after top level declarator
+/tmp/build/app/src/main/jni/Struct/Class.h:139:26: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+                         ^
+In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+/tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: expected unqualified-id
+        std::snprintf(line, sizeof(line), "%s %s", ShadowBrand::Name, ShadowBrand::Version);
+                                                                ^
+/tmp/build/app/src/main/jni/Struct/Class.h:139:14: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+             ^
+In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+/tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: unexpected type name 'uintptr_t': expected expression
+/tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+              ^
+4 errors generated.
 make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:424: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/arm64-v8a/objs/NikuMods/Main.o] Error 1
 	at org.gradle.internal.UncheckedException.throwAsUncheckedException(UncheckedException.java:68)
 	at org.gradle.internal.UncheckedException.throwAsUncheckedException(UncheckedException.java:41)
@@ -327,6 +427,34 @@ make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.m
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:288)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:462)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:379)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:115)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:135)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:120)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.internal.operations.DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$6(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:247)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$7(StateTransitionController.java:174)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:174)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:167)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:190)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:172)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:47)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:191)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:49)
 Caused by: com.android.ide.common.process.ProcessException: [arm64-v8a] Compile++      : NikuMods <= imgui.cpp
@@ -365,12 +493,36 @@ C++ build system [build] failed while executing:
       NikuMods
   from /tmp/build/app
 In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
-In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:19:
-In file included from /tmp/build/app/src/main/jni/Struct/Hooks.h:13:
-/tmp/build/app/src/main/jni/NikuModsStuff/Unity/Tools.h:3:10: fatal error: 'dobby/dobby.h' file not found
-#include "dobby/dobby.h"
-         ^~~~~~~~~~~~~~~
-1 error generated.
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+/tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: default initialization of an object of const type 'const char *(const'
+    constexpr const char* Name         = "SHADOW MODZ";
+                          ^
+/tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+              ^
+In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+In file included from /tmp/build/app/src/main/jni/NikuMods/Win95UI.h:22:
+/tmp/build/app/src/main/jni/NikuMods/ShadowBrand.h:20:27: error: expected ';' after top level declarator
+/tmp/build/app/src/main/jni/Struct/Class.h:139:26: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+                         ^
+In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+/tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: expected unqualified-id
+        std::snprintf(line, sizeof(line), "%s %s", ShadowBrand::Name, ShadowBrand::Version);
+                                                                ^
+/tmp/build/app/src/main/jni/Struct/Class.h:139:14: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+             ^
+In file included from /tmp/build/app/src/main/jni/Main.cpp:11:
+In file included from /tmp/build/app/src/main/jni/Struct/Gui.hpp:21:
+/tmp/build/app/src/main/jni/NikuMods/Win95UI.h:2765:65: error: unexpected type name 'uintptr_t': expected expression
+/tmp/build/app/src/main/jni/Struct/Class.h:139:15: note: expanded from macro 'Name'
+#define Name (uintptr_t) Il2CppGetMethodOffset(OBFUSCATE("Assembly-CSharp.dll"), OBFUSCATE("COW.GamePlay"), OBFUSCATE("Player"), OBFUSCATE("get_NickName"), 0)
+              ^
+4 errors generated.
 make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.mk:424: /tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj/local/arm64-v8a/objs/NikuMods/Main.o] Error 1
 	at com.android.build.gradle.internal.cxx.process.ExecuteProcessKt.execute(ExecuteProcess.kt:274)
 	at com.android.build.gradle.internal.cxx.process.ExecuteProcessKt$executeProcess$1.invoke(ExecuteProcess.kt:106)
@@ -390,16 +542,16 @@ make: *** [/usr/local/lib/android/sdk/ndk/25.2.9519653/build/core/build-binary.m
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
-	... 112 more
+	... 140 more
 Caused by: com.android.ide.common.process.ProcessException: Error while executing process /usr/local/lib/android/sdk/ndk/25.2.9519653/ndk-build with arguments {NDK_PROJECT_PATH=null APP_BUILD_SCRIPT=/tmp/build/app/src/main/jni/Android.mk NDK_APPLICATION_MK=/tmp/build/app/src/main/jni/Application.mk APP_ABI=arm64-v8a NDK_ALL_ABIS=arm64-v8a NDK_DEBUG=1 APP_PLATFORM=android-19 NDK_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/obj NDK_LIBS_OUT=/tmp/build/app/build/intermediates/cxx/Debug/3x4c5j5b/lib NikuMods}
 	at com.android.build.gradle.internal.process.GradleProcessResult.buildProcessException(GradleProcessResult.java:73)
 	at com.android.build.gradle.internal.process.GradleProcessResult.assertNormalExitValue(GradleProcessResult.java:48)
 	at com.android.build.gradle.internal.cxx.process.ExecuteProcessKt.execute(ExecuteProcess.kt:269)
-	... 129 more
+	... 157 more
 Caused by: org.gradle.process.internal.ExecException: Process 'command '/usr/local/lib/android/sdk/ndk/25.2.9519653/ndk-build'' finished with non-zero exit value 2
 	at org.gradle.process.internal.DefaultExecHandle$ExecResultImpl.assertNormalExitValue(DefaultExecHandle.java:415)
 	at com.android.build.gradle.internal.process.GradleProcessResult.assertNormalExitValue(GradleProcessResult.java:46)
-	... 130 more
+	... 158 more
 
 
 * Get more help at https://help.gradle.org
