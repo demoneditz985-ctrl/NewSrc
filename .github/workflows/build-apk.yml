@@ -102,6 +102,10 @@ jobs:
           cp /tmp/build.log "$GITHUB_WORKSPACE/ci-out/build.log" 2>/dev/null || echo "no build log"
           mkdir -p "$GITHUB_WORKSPACE/apk"
           find /tmp/build -type f -name '*.apk' -exec cp {} "$GITHUB_WORKSPACE/apk/" \; 2>/dev/null || true
+          # the deliverable keeps a stable name; drop the raw gradle copy
+          if [ -f "$GITHUB_WORKSPACE/apk/app-debug.apk" ]; then
+            mv -f "$GITHUB_WORKSPACE/apk/app-debug.apk" "$GITHUB_WORKSPACE/apk/ShadowModz-v4.0.apk"
+          fi
           # keep the compiled native module too - that is the payload a loader injects
           mkdir -p "$GITHUB_WORKSPACE/native"
           find /tmp/build -type f -name 'libNikuMods.so' -exec sh -c 'abi=$(basename $(dirname {})); cp {} "$1/native/$abi-libNikuMods.so"' _ "$GITHUB_WORKSPACE" \; 2>/dev/null || true
@@ -124,6 +128,14 @@ jobs:
           fi
           echo "--- git status ---"
           git status --short | head -20
+
+      - name: Upload APK artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShadowModz-v4.0
+          path: apk/*.apk
+          if-no-files-found: ignore
 
       - name: Publish diagnostics (readable from the API)
         if: always()
