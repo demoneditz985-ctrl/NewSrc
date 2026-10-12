@@ -1,0 +1,2 @@
+# CI writes this raw Gradle output name; the named copy is the deliverable
+apk/app-debug.apk
