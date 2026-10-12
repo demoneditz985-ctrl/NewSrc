@@ -463,7 +463,8 @@ inline void BeginPanel()
     // ---- glass card ------------------------------------------------------
     style::GlowRound(s_dl, s_winMin, s_winMax, r, 0.9f);
     s_dl->AddRectFilledMultiColorRounded(s_winMin, s_winMax, style::BgDeep,
-                                         style::Face, style::Face, style::BgDeep, style::BgDeep, r, 0);
+                                         style::Face, style::Face, style::BgDeep, style::BgDeep, r,
+                                         ImDrawFlags_RoundCornersAll);
     s_dl->AddRect(s_winMin, s_winMax, style::AccentDeep, r, 0, 2.f);
     s_dl->AddRect(ImVec2(s_winMin.x + 1.f, s_winMin.y + 1.f),
                   ImVec2(s_winMax.x - 1.f, s_winMax.y - 1.f),
@@ -478,7 +479,7 @@ inline void BeginPanel()
     style::GlowRound(s_dl, hMin, hMax, 12.f, 0.35f);
     s_dl->AddRectFilledMultiColorRounded(hMin, hMax, style::AccentDeep,
                                          style::AccentDeep, style::Accent, style::Accent, style::AccentDeep,
-                                         12.f, 0);
+                                         12.f, ImDrawFlags_RoundCornersAll);
     s_dl->AddRect(hMin, hMax,
                   IM_COL32(ShadowBrand::Accent.r, ShadowBrand::Accent.g, ShadowBrand::Accent.b, 90),
                   12.f, 0, 1.f);
@@ -790,7 +791,8 @@ inline bool Button(const char* label, const ImVec2& size)
                                          hovered ? style::BtnTopHover : style::BtnTop,
                                          hovered ? style::BtnTopHover : style::BtnTop,
                                          hovered ? style::BtnBotHover : style::BtnBot,
-                                         hovered ? style::BtnBotHover : style::BtnBot, r, 0);
+                                         hovered ? style::BtnBotHover : style::BtnBot, r,
+                                         ImDrawFlags_RoundCornersAll);
     s_dl->AddRect(a, b, hovered ? style::AccentGlow : style::AccentDeep, r, 0, 1.5f);
     s_dl->AddRectFilled(ImVec2(a.x + 6.f, a.y + 2.f), ImVec2(b.x - 6.f, a.y + 3.f),
                         IM_COL32(255, 255, 255, hovered ? 56 : 26));
@@ -828,7 +830,8 @@ inline bool AccentButton(const char* label, const ImVec2& size, bool enabled = t
                                              hovered ? style::AccentGlow : style::Accent,
                                              hovered ? style::AccentGlow : style::Accent,
                                              hovered ? style::Accent : style::AccentDeep,
-                                             hovered ? style::Accent : style::AccentDeep, r, 0);
+                                             hovered ? style::Accent : style::AccentDeep, r,
+                                             ImDrawFlags_RoundCornersAll);
         s_dl->AddRect(a, b, hovered ? style::AccentGlow : style::AccentDeep, r, 0, 1.5f);
     }
     s_dl->AddRectFilled(ImVec2(a.x + 6.f, a.y + 2.f), ImVec2(b.x - 6.f, a.y + 3.f),
@@ -1608,7 +1611,8 @@ inline void DrawMsgBox()
     const float r = 16.f * style::S;
     style::GlowRound(s_dl, s_msgMin, s_msgMax, r, 0.8f);
     s_dl->AddRectFilledMultiColorRounded(s_msgMin, s_msgMax, style::BgDeep,
-                                         style::Face, style::Face, style::BgDeep, style::BgDeep, r, 0);
+                                         style::Face, style::Face, style::BgDeep, style::BgDeep, r,
+                                         ImDrawFlags_RoundCornersAll);
     s_dl->AddRect(s_msgMin, s_msgMax, style::AccentDeep, r, 0, 2.f);
 
     s_dl->AddRectFilled(ImVec2(s_msgMin.x + 14.f, s_msgMin.y + 9.f),
